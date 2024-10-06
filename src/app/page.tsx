@@ -1,6 +1,8 @@
+'use client'
 import Image from 'next/image'
 
 import logo from '@/assets/brand/pragmattic.svg'
+import Button from '@/components/Button'
 
 export default function HomePage() {
   return (
@@ -8,7 +10,11 @@ export default function HomePage() {
       <header className="flex w-full items-center justify-center">
         <Image src={logo} alt="Pragmattic" height={40} />
       </header>
-      <section></section>
+      <section>
+        <Button variant="filled" onClick={() => {}}>
+          Press me
+        </Button>
+      </section>
     </main>
   )
 }
