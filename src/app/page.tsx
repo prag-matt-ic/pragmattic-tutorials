@@ -3,6 +3,7 @@ import Image from 'next/image'
 
 import logo from '@/assets/brand/pragmattic.svg'
 import Button from '@/components/Button'
+import TestimonialsMarquee from '@/components/Marquee'
 import Nav, { SectionId } from '@/components/Nav'
 
 export default function HomePage() {
@@ -17,25 +18,20 @@ export default function HomePage() {
           Press me
         </Button>
       </section> */}
-      <section id={SectionId.Welcome} className="nav-section h-[100vh] w-full p-20">
-        {/* <h2 className="text-xl font-bold text-green">Welcome</h2> */}
+      <section
+        id={SectionId.Welcome}
+        className="nav-section flex h-[100vh] w-full flex-col items-center justify-center gap-8">
+        <TestimonialsMarquee />
+        <TestimonialsMarquee isReversed />
       </section>
 
-      <section id={SectionId.About} className="nav-section h-[200vh] w-full p-20">
-        {/* <h2 className="text-xl font-bold text-green">About</h2> */}
-      </section>
+      <section id={SectionId.About} className="nav-section h-[200vh] w-full p-20"></section>
 
-      <section id={SectionId.Services} className="nav-section h-[100vh] w-full p-20">
-        {/* <h2 className="text-xl font-bold text-green">Services</h2> */}
-      </section>
+      <section id={SectionId.Services} className="nav-section h-[100vh] w-full p-20"></section>
 
-      <section id={SectionId.Portfolio} className="nav-section h-[200vh] w-full p-20">
-        {/* <h2 className="text-xl font-bold text-green">Portfolio</h2> */}
-      </section>
+      <section id={SectionId.Portfolio} className="nav-section h-[200vh] w-full p-20"></section>
 
-      <section id={SectionId.Contact} className="nav-section h-[200vh] w-full p-20">
-        {/* <h2 className="text-xl font-bold text-green">Contact</h2> */}
-      </section>
+      <section id={SectionId.Contact} className="nav-section h-[200vh] w-full p-20"></section>
     </main>
   )
 }
