@@ -3,10 +3,7 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { ScrollToPlugin } from 'gsap/dist/ScrollToPlugin'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import Image from 'next/image'
 import React, { type FC, useState } from 'react'
-
-import logo from '@/assets/brand/pragmattic.svg'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP)
 
@@ -28,14 +25,14 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP)
 // https://gsap.com/docs/v3/Plugins/ScrollToPlugin/
 
 export enum SectionId {
-  Welcome = 'Welcome',
+  Welcome = 'Animate Responsibly',
   About = 'About',
   Services = 'Services',
   Portfolio = 'Portfolio',
   Contact = 'Contact',
 }
 
-const Nav: FC = () => {
+const HomeNav: FC = () => {
   const [activeSection, setActiveSection] = useState<SectionId>(SectionId.Welcome)
 
   useGSAP(
@@ -78,12 +75,14 @@ const Nav: FC = () => {
     { dependencies: [activeSection] },
   )
 
+  const indicatorHeight = 12
+
   useGSAP(() => {
     // Update scroll progress indicator
     const scrollBarHeight = document.getElementById('scroll-bar')?.getBoundingClientRect()?.height
     if (!scrollBarHeight) return
     gsap.to('#scroll-indicator', {
-      y: scrollBarHeight - 16, // 16 is the height of the scroll indicator
+      y: scrollBarHeight - indicatorHeight,
       ease: 'none',
       scrollTrigger: {
         start: 0,
@@ -98,14 +97,13 @@ const Nav: FC = () => {
   }
 
   return (
-    <nav className="fixed left-4 top-4 gap-4 sm:left-10 sm:top-10">
+    <nav className="fixed left-4 top-4 z-50 gap-4 sm:left-6 sm:top-16">
       {/* Scroll bar */}
       <div id="scroll-bar" className="absolute h-20 w-1 bg-white/20 sm:h-full">
-        <div id="scroll-indicator" className="absolute top-0 h-4 w-full bg-green" />
+        <div id="scroll-indicator" className="absolute top-0 w-full bg-white" style={{ height: indicatorHeight }} />
       </div>
       {/* Links */}
-      <div className="ml-6 flex flex-col gap-4 text-white">
-        <Image src={logo} alt="Pragmattic" height={24} />
+      <div className="ml-4 flex flex-col gap-4 py-4 text-sm text-white">
         {Object.values(SectionId).map((id) => (
           <a
             key={id}
@@ -120,4 +118,4 @@ const Nav: FC = () => {
   )
 }
 
-export default Nav
+export default HomeNav

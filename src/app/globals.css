@@ -19,13 +19,13 @@ html {
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
   background-color: #000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #fff;
+  background-color: #c7c4cc;
   border-radius: 0px;
 }
 
