@@ -4,23 +4,29 @@ import Image from 'next/image'
 import logo from '@/assets/brand/pragmattic.svg'
 import Button from '@/components/Button'
 import TestimonialsMarquee from '@/components/Marquee'
+import Modal from '@/components/Modal'
 import Nav, { SectionId } from '@/components/Nav'
+import { useState } from 'react'
+import SideMenu from '@/components/SideMenu'
 
 export default function HomePage() {
+  const [isModalShowing, setIsModalShowing] = useState(false)
+
+  const [isSideMenuShowing, setIsSideMenuShowing] = useState(false)
+
   return (
     <main className="w-full bg-off-black font-sans">
       <Nav />
-      {/* <header className="flex w-full items-center justify-center">
-        <Image src={logo} alt="Pragmattic" height={40} />
-      </header> */}
-      {/* <section>
-        <Button variant="filled" onClick={() => {}}>
-          Press me
-        </Button>
-      </section> */}
       <section
         id={SectionId.Welcome}
         className="nav-section flex h-[100vh] w-full flex-col items-center justify-center gap-8">
+        <Button variant="filled" onClick={() => setIsModalShowing(true)}>
+          Open Modal
+        </Button>
+
+        <Button variant="filled" onClick={() => setIsSideMenuShowing(true)}>
+          Open Menu
+        </Button>
         <TestimonialsMarquee />
         <TestimonialsMarquee isReversed />
       </section>
@@ -32,6 +38,10 @@ export default function HomePage() {
       <section id={SectionId.Portfolio} className="nav-section h-[200vh] w-full p-20"></section>
 
       <section id={SectionId.Contact} className="nav-section h-[200vh] w-full p-20"></section>
+
+      <Modal isShowing={isModalShowing} onClose={() => setIsModalShowing(false)} />
+
+      <SideMenu isShowing={isSideMenuShowing} onClose={() => setIsSideMenuShowing(false)} />
     </main>
   )
 }
