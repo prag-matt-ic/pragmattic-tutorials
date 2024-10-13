@@ -13,7 +13,8 @@ const config: Config = {
       cyan: '#37F3FF',
       orange: '#E5A019',
       'off-black': '#1E1B23',
-      black: '#000',
+      'light-grey': '#C7C4CC',
+      black: '#0A090C',
       transparent: 'transparent',
     },
 
