@@ -1,4 +1,5 @@
 'use client'
+import useCursorStore from '@/hooks/useCursorStore'
 import Link from 'next/link'
 import React, { type FC, type MouseEvent, type PropsWithChildren } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -13,6 +14,7 @@ type Props = PropsWithChildren<{
   size?: Size
   href?: string
   isDisabled?: boolean
+  hoverEmoji?: string
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void
 }>
 
@@ -29,7 +31,21 @@ const VARIANT_CLASSES: Record<Variant, string> = {
 } as const
 
 const Button: FC<Props> = (props) => {
-  const { children, size = 'medium', variant = 'filled', className, href, type = 'button', isDisabled, onClick } = props
+  const setCursor = useCursorStore((s) => s.setCursor)
+  const {
+    children,
+    size = 'medium',
+    variant = 'filled',
+    hoverEmoji,
+    className,
+    href,
+    type = 'button',
+    isDisabled,
+    onClick,
+  } = props
+
+  const onPointerEnter = () => setCursor({ type: 'hover', label: hoverEmoji ?? '🚀' })
+  const onPointerLeave = () => setCursor({ type: 'default' })
 
   const button = (
     <button
@@ -43,6 +59,8 @@ const Button: FC<Props> = (props) => {
       onClick={(e) => {
         onClick?.(e)
       }}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
       disabled={isDisabled}>
       {children}
     </button>

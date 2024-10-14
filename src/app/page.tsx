@@ -20,7 +20,7 @@ export default function HomePage() {
       <section
         id={SectionId.Welcome}
         className="nav-section flex h-[100vh] w-full flex-col items-center justify-center gap-8">
-        <Button variant="filled" onClick={() => setIsModalShowing(true)}>
+        <Button variant="filled" hoverEmoji="💚" onClick={() => setIsModalShowing(true)}>
           Open Modal
         </Button>
 

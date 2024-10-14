@@ -32,3 +32,9 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #000;
 }
+
+/* Hide the cursor */
+.no-cursor,
+.no-cursor * {
+  cursor: none !important;
+}
