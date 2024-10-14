@@ -1,12 +1,12 @@
 'use client'
 import Image from 'next/image'
+import { useState } from 'react'
 
 import logo from '@/assets/brand/pragmattic.svg'
 import Button from '@/components/Button'
 import TestimonialsMarquee from '@/components/Marquee'
 import Modal from '@/components/Modal'
 import Nav, { SectionId } from '@/components/Nav'
-import { useState } from 'react'
 import SideMenu from '@/components/SideMenu'
 
 export default function HomePage() {

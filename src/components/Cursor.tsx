@@ -1,11 +1,14 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { OS, useOs } from '@mantine/hooks'
+import { type OS, useOs } from '@mantine/hooks'
 import gsap from 'gsap'
 import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { type FC } from 'react'
 
 import useCursorStore from '@/hooks/useCursorStore'
+
+// Video Tutorial:
+// https://www.youtube.com/watch?v=GTnlZGjWJUA
 
 // Show the cursor on desktop devices only
 const CustomCursor: FC = () => {
@@ -28,6 +31,7 @@ const Cursor: FC = () => {
   const { type, label } = useCursorStore()
 
   useLayoutEffect(() => {
+    // Center the cursor
     gsap.set(pointer.current, {
       xPercent: -50,
       yPercent: -50,
