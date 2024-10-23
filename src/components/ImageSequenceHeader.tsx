@@ -72,20 +72,14 @@ const ImageSequenceHeader: FC = () => {
         end: 'bottom top',
         scrub: true,
         trigger: header.current,
+        // Pin the content container so it doesn't scroll off the screen
+        pin: '#content-wrapper',
         onUpdate: ({ progress }) => {
           const nextFrame = Math.floor(progress * loadedImages.length)
           const nextImage = loadedImages[nextFrame]
           if (!nextImage) return
           updateCanvasImage(context, canvas.current!, nextImage)
         },
-      })
-
-      // Pin the content container so it doesn't scroll off the screen
-      ScrollTrigger.create({
-        trigger: header.current,
-        start: 0,
-        end: 'bottom top',
-        pin: '#content-wrapper',
       })
 
       // Animations
@@ -173,7 +167,7 @@ const ImageSequenceHeader: FC = () => {
           </div>
 
           <h2 className="absolute scale-75 text-center text-2xl font-bold leading-none tracking-tighter text-white opacity-0 md:text-[6vmax]">
-            Master your craft
+            Be principled
           </h2>
           <canvas ref={canvas} className="pointer-events-none absolute scale-75 bg-transparent opacity-0" />
         </div>
