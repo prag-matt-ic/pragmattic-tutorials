@@ -79,39 +79,10 @@ const ImageSequenceHeader: FC = () => {
       })
 
       // Animations
-
-      // Scroll controlled animations for headings
-      const animateTextOnScroll = () => {
-        gsap
-          .timeline({
-            defaults: {
-              ease: 'none',
-            },
-            scrollTrigger: { trigger: header.current, start: 0, end: 'bottom top', scrub: true },
-          })
-          .to('#heading', {
-            keyframes: [{ scale: 1.1 }, { scale: 1.15, opacity: 0 }],
-            duration: 0.5,
-          })
-          .to(
-            'h2',
-            {
-              keyframes: [
-                { scale: 0.9, opacity: 1, duration: 0.2 },
-                { scale: 1, opacity: 0, duration: 0.1 },
-              ],
-            },
-            '+=0.05',
-          )
-      }
-
       // Animate content in
       gsap
         .timeline({
           delay: 0.2,
-          onComplete: () => {
-            animateTextOnScroll()
-          },
         })
         .to(canvas.current, { opacity: 1, duration: 0.8 })
         .to(canvas.current, { scale: 1, duration: 0.9, ease: 'power2.inOut' })
@@ -120,6 +91,28 @@ const ImageSequenceHeader: FC = () => {
           { opacity: 0, scale: 0.8 },
           { opacity: 1, scale: 1, duration: 0.7, ease: 'power2.inOut' },
           '-=0.7',
+        )
+      // Scroll controlled animations for headings
+      gsap
+        .timeline({
+          defaults: {
+            ease: 'none',
+          },
+          scrollTrigger: { trigger: header.current, start: 0, end: 'bottom top', scrub: true },
+        })
+        .to('#heading', {
+          keyframes: [{ scale: 1.1 }, { scale: 1.15, opacity: 0 }],
+          duration: 0.5,
+        })
+        .to(
+          'h2',
+          {
+            keyframes: [
+              { scale: 0.9, opacity: 1, duration: 0.2 },
+              { scale: 1, opacity: 0, duration: 0.1 },
+            ],
+          },
+          '+=0.05',
         )
     },
     {
