@@ -37,9 +37,6 @@ const ImageSequenceHeader: FC = () => {
       canvas.current!.width = viewportSize.width
       canvas.current!.height = viewportSize.height
 
-      const context = canvas.current!.getContext('2d', { alpha: true })
-      if (!context) return
-
       const imageSrcs: string[] = Array.from(
         { length: 60 },
         (_, i) => `/images/bottle/pragma100${i + 1 < 10 ? `0${i + 1}` : i + 1}.png`,
@@ -47,7 +44,6 @@ const ImageSequenceHeader: FC = () => {
 
       const images = await loadImagesAndDrawFirstFrame({
         canvas: canvas.current!,
-        canvasContext: context,
         imageSrcs: imageSrcs,
         imageWidth: imageWidth,
         imageHeight: imageHeight,
@@ -182,13 +178,11 @@ export default ImageSequenceHeader
 
 const loadImagesAndDrawFirstFrame = async ({
   canvas,
-  canvasContext,
   imageSrcs,
   imageWidth,
   imageHeight,
 }: {
   canvas: HTMLCanvasElement
-  canvasContext: CanvasRenderingContext2D
   imageSrcs: string[]
   imageWidth: number
   imageHeight: number
@@ -199,7 +193,11 @@ const loadImagesAndDrawFirstFrame = async ({
   return new Promise<HTMLImageElement[]>(async (resolve, reject) => {
     const onImageLoad = (index: number, img: HTMLImageElement) => {
       // Draw the first frame ASAP
-      if (index === 0) updateCanvasImage(canvasContext, canvas, img)
+      if (index === 0) {
+        const context = canvas.getContext('2d', { alpha: true })
+        if (!context) return
+        updateCanvasImage(context, canvas, img)
+      }
       loadedCount++
       const hasLoadedAll = loadedCount === imageSrcs.length - 1
       if (hasLoadedAll) resolve(images)
@@ -226,7 +224,6 @@ const loadImagesAndDrawFirstFrame = async ({
       const scale = Math.max(canvas!.width / imageWidth, canvas!.height / imageHeight)
       img.width = imageWidth * scale
       img.height = imageHeight * scale
-      console.log('Image Dimensions:', img.width, img.height)
       img.addEventListener('load', (e: any) => onImageLoad(i, img))
       img.addEventListener('error', (e) => onImageError(i, img))
       images.push(img)
