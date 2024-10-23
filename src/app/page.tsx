@@ -9,6 +9,7 @@ import ImageSequenceHeader from '@/components/ImageSequenceHeader'
 import TestimonialsMarquee from '@/components/Marquee'
 import Modal from '@/components/Modal'
 import SideMenu from '@/components/SideMenu'
+import BackgroundCanvas from '@/components/threejs/BackgroundCanvas'
 
 export default function HomePage() {
   const [isModalShowing, setIsModalShowing] = useState(false)
@@ -16,9 +17,11 @@ export default function HomePage() {
 
   return (
     <>
+      <BackgroundCanvas />
+
       <main className="w-full bg-black font-sans">
         <nav className="fixed left-6 top-4 z-50">
-          <Image src={logo} alt="Pragmattic" width={140} />
+          <Image src={logo} alt="Pragmattic" width={120} />
         </nav>
         <HomeNav />
 
