@@ -84,12 +84,8 @@ void main() {
   vec4 textureColour = texture2D(uTexture, textureUv);
   textureColour = linearToSRGB(textureColour);
 
-  vec4 finalColour = mix(vec4(noiseColour, 1.0), textureColour, 0.2);
+  vec4 finalColour = mix(vec4(noiseColour, 1.0), textureColour, 0.75);
 
 
   gl_FragColor = finalColour;
 }
-
-// TODO: Distance function for circle
-// TODO: Create rings
-// TODO: use colour palette function

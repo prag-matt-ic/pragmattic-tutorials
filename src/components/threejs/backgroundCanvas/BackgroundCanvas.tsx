@@ -4,7 +4,7 @@ import { OrthographicCamera } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import React, { type FC } from 'react'
 
-import BackdropPlane from '@/components/threejs/backdropPlane/BackdropPlane'
+import BackdropPlane from '@/components/threejs/backgroundCanvas/BackdropPlane'
 
 type Props = {}
 

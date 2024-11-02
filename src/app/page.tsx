@@ -9,7 +9,7 @@ import ImageSequenceHeader from '@/components/ImageSequenceHeader'
 import TestimonialsMarquee from '@/components/Marquee'
 import Modal from '@/components/Modal'
 import SideMenu from '@/components/SideMenu'
-import BackgroundCanvas from '@/components/threejs/BackgroundCanvas'
+import BackgroundCanvas from '@/components/threejs/backgroundCanvas/BackgroundCanvas'
 
 export default function HomePage() {
   const [isModalShowing, setIsModalShowing] = useState(false)
