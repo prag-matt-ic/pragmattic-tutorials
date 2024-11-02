@@ -30,27 +30,10 @@ void main() {
   finalColour = mix(finalColour, vignetteColour, vignette);
 
   // create noise grain
-  float noiseGrain = noise(vec3(vUv * 160., uTime * 10.0)) * 0.5 + 0.5;
+  float noiseGrain = noise(vec3(vUv * 320., uTime * 10.0)) * 0.5 + 0.5;
   vec4 noiseGrainColour = vec4(vec3(noiseGrain), 1.0);
 
   finalColour = mix(finalColour, noiseGrainColour, 0.1);
 
   gl_FragColor = finalColour;
 }
-
-
-
-
-
-// https://learnopengl.com/Advanced-Lighting/Bloom
-
-// vec4 brightColour = getBrightColour(sceneColour, uv);
-// vec4 getBrightColour (in vec4 sceneColour, in vec2 uv) {
-//   // Get the brightness from the greyscale value
-//   float brightness = dot(sceneColour.rgb, vec3(0.299, 0.587, 0.114));
-//   if (brightness > 0.7) {
-//     return sceneColour;
-//   } else {
-//     return vec4(0.0, 0.0, 0.0, 1.0);
-//   }
-// }
