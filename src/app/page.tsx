@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 
 import logo from '@/assets/brand/pragmattic.svg'
@@ -21,7 +22,9 @@ export default function HomePage() {
 
       <main className="w-full bg-black font-sans">
         <nav className="fixed left-6 top-4 z-50">
-          <Image src={logo} alt="Pragmattic" width={120} />
+          <Link href="/">
+            <Image src={logo} alt="Pragmattic" width={120} />
+          </Link>
         </nav>
         <HomeNav />
 
