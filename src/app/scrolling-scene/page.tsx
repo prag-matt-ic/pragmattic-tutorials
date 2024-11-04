@@ -125,7 +125,7 @@ const ProgressBar: FC = () => {
   }, [])
 
   return (
-    <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-[100] h-3 overflow-hidden bg-white">
+    <div className="pointer-events-none fixed bottom-0 left-0 right-0 z-[100] h-2 overflow-hidden bg-white">
       <div
         id="progress-bar"
         style={{ transform: 'scaleX(0)' }}
