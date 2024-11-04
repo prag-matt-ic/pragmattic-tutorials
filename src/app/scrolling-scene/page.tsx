@@ -235,8 +235,8 @@ const ScenePage: FC<ScenePageProps> = ({ position, radius = 1, columnWidth, sect
       ease: 'none',
       scrollTrigger: {
         trigger: `#section-${sectionIndex}`,
-        start: 'top bottom',
-        end: 'bottom top',
+        start: 'top 90%',
+        end: 'bottom 10%',
         scrub: true,
       },
     })
