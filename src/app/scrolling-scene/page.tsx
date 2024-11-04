@@ -227,19 +227,26 @@ const ScenePage: FC<ScenePageProps> = ({ position, radius = 1, columnWidth, sect
 
   useGSAP(() => {
     // Fade in and out as the corresponding section enters/exits the viewport
-    gsap.to(material.current, {
-      keyframes: [
-        { opacity: 1, duration: 0.5 },
-        { opacity: 0, duration: 0.5 },
-      ],
-      ease: 'none',
-      scrollTrigger: {
-        trigger: `#section-${sectionIndex}`,
-        start: 'top 90%',
-        end: 'bottom 10%',
-        scrub: true,
+    gsap.fromTo(
+      material.current,
+      {
+        opacity: 0,
       },
-    })
+      {
+        keyframes: [
+          { opacity: 1, duration: 0.33 }, // fade in for 1/3 of the scroll distance
+          { opacity: 1, duration: 0.33 }, // be fully visible for 1/3 of the scroll distance
+          { opacity: 0, duration: 0.33 }, // fade out for 1/3 of the scroll distance
+        ],
+        ease: 'none',
+        scrollTrigger: {
+          trigger: `#section-${sectionIndex}`,
+          start: 'top 90%',
+          end: 'bottom 10%',
+          scrub: true,
+        },
+      },
+    )
   }, [])
 
   return (
