@@ -147,7 +147,7 @@ const ImageSequenceHeader: FC = () => {
             <h1 className="whitespace-nowrap text-3xl font-extrabold leading-none tracking-tighter text-white md:text-[8.5vmax]">
               Animate Responsibly
             </h1>
-            <span className="block place-self-end text-right text-sm text-light-grey">
+            <span className="text-light block place-self-end text-right text-sm">
               Blended at{' '}
               <a className="cursor-pointer underline hover:text-white" href="https://www.derrk.com/" rel="noreferrer">
                 DERRK.COM

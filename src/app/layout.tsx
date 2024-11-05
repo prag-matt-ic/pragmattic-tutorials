@@ -12,8 +12,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Pragmattic | Design and Engineering',
-  description: 'Cinematic coding for commercial projects, by Matthew Frawley',
+  title: { template: '%s | Pragmattic', default: 'Pragmattic | design and engineering' },
+  description: 'Frontend development for commercial projects',
 }
 
 export default function RootLayout({

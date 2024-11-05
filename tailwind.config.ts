@@ -10,9 +10,11 @@ const config: Config = {
   theme: {
     colors: {
       white: '#F6F6F6',
-      green: '#37FFA8',
+      green: '#45F1A6',
+      'green-alt': '#0DAF69',
       cyan: '#37F3FF',
-      'light-grey': '#C7C4CC',
+      light: '#7A718E',
+      mid: '#2E2A37',
       'off-black': '#1E1B23',
       black: '#0A090C',
       transparent: 'transparent',
@@ -31,6 +33,30 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+    function ({ addUtilities, theme }: any) {
+      const newUtilities = {
+        '.horizontal-padding': {
+          paddingLeft: '1.5rem', // px-6 equivalent
+          paddingRight: '1.5rem',
+          '@screen md': {
+            paddingLeft: '3rem', // md:px-12 equivalent
+            paddingRight: '3rem',
+          },
+          '@screen lg': {
+            paddingLeft: '4rem', // lg:px-16 equivalent
+            paddingRight: '4rem',
+          },
+          '@screen xl': {
+            paddingLeft: '6rem', // xl:px-24 equivalent
+            paddingRight: '6rem',
+          },
+        },
+      }
+
+      addUtilities(newUtilities)
+    },
+  ],
 }
 export default config
