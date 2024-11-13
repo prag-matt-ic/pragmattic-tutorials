@@ -2,8 +2,6 @@ import fs from 'fs'
 import matter from 'gray-matter'
 import path from 'path'
 
-const postsDirectory = path.join(process.cwd(), 'src/posts')
-
 type PostMetadata = {
   title: string
   date: string
@@ -22,10 +20,18 @@ const formatMetadata = (data: any): PostMetadata => {
   } as PostMetadata
 }
 
+const postsDirectory = path.join(process.cwd(), 'src/blog')
+
 export function getSortedPostsData(): (PostMetadata & { slug: string })[] {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory)
-  const allPostsData = fileNames.map((fileName) => {
+
+  let allPostsData: (PostMetadata & { slug: string })[] = []
+
+  fileNames.forEach((fileName) => {
+    // Ignore non-markdown files
+    if (!fileName.endsWith('.md')) return
+
     // Remove ".md" from file name to get id
     const slug = fileName.replace(/\.md$/, '')
 
@@ -38,16 +44,16 @@ export function getSortedPostsData(): (PostMetadata & { slug: string })[] {
     const metadata = formatMetadata(file.data)
 
     // Combine the data with the id
-    return {
+    allPostsData.push({
       slug,
       ...metadata,
-    }
+    })
   })
   // Sort posts by date
   return allPostsData.sort(sortByDate)
 }
 
-export function getPostBySlug(slug: string): PostMetadata & { content: string } {
+export function getBlogBySlug(slug: string): PostMetadata & { content: string } {
   const fullPath = path.join(postsDirectory, `${slug}.md`)
   const fileContents = fs.readFileSync(fullPath, 'utf8')
 

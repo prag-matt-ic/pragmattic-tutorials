@@ -1,4 +1,3 @@
-'use client'
 import Link from 'next/link'
 import type { ButtonHTMLAttributes, FC, PropsWithChildren } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -58,9 +57,10 @@ const Button: FC<Props> = (props) => {
   )
 
   if (href?.startsWith('/')) return <Link href={href}>{button}</Link>
-  else if (!!href)
+
+  if (!!href)
     return (
-      <a href={href} target="_blank">
+      <a href={href} target="_blank" rel="noreferrer">
         {button}
       </a>
     )

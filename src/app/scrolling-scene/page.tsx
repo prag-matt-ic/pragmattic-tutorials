@@ -1,4 +1,5 @@
 'use client'
+import PointerCamera from '@/components/PointerCamera'
 import { useGSAP } from '@gsap/react'
 import { Environment, PerspectiveCamera, Sphere } from '@react-three/drei'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
@@ -133,33 +134,6 @@ const ProgressBar: FC = () => {
       />
     </div>
   )
-}
-
-const PointerCamera: FC = () => {
-  const { viewport, size } = useThree()
-  let cameraPointer = useRef({ x: 0, y: 0 })
-
-  useEffect(() => {
-    const onPointerMove = (e: PointerEvent) => {
-      const normalizedX = e.clientX / size.width
-      const normalizedY = e.clientY / size.height
-      cameraPointer.current.x = normalizedX - 0.5
-      cameraPointer.current.y = normalizedY - 0.5
-    }
-    window.addEventListener('pointermove', onPointerMove)
-    return () => {
-      window.removeEventListener('pointermove', onPointerMove)
-    }
-  }, [viewport, size])
-
-  useFrame(({ camera, scene }) => {
-    // use the pointer to move the camera whilst keeping it looking at the center
-    camera.position.x += (cameraPointer.current.x - camera.position.x) * 0.05
-    camera.position.y += (-cameraPointer.current.y - camera.position.y) * 0.05
-    camera.lookAt(scene.position)
-  })
-
-  return <PerspectiveCamera makeDefault={true} position={[0, 0, 5]} fov={60} far={10} near={0.001} />
 }
 
 const ScrollingGroup: FC = () => {

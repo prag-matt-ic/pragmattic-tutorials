@@ -1,6 +1,5 @@
 // Vertex Shader for ScreenQuad
-
-// By removing the transformation matrices, your vertex shader becomes more efficient
+// By removing transformation matrices, the vertex shader becomes more efficient
 
 varying vec2 vUv;
 

@@ -59,6 +59,7 @@ const BackdropPlane: FC = () => {
   })
 
   return (
+    // TODO: replace with ScreenQuad
     <Plane args={[viewport.width, viewport.height, 1, 1]} position={[0, 0, 0]}>
       <backdropPlaneShader
         key={BackdropPlaneShader.key}

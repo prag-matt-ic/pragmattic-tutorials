@@ -4,13 +4,13 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import logo from '@/assets/brand/pragmattic.svg'
+import BackgroundCanvas from '@/components/backgroundCanvas/BackgroundCanvas'
 import Button from '@/components/Button'
 import HomeNav, { SectionId } from '@/components/HomeNav'
 import ImageSequenceHeader from '@/components/ImageSequenceHeader'
 import TestimonialsMarquee from '@/components/Marquee'
 import Modal from '@/components/Modal'
 import SideMenu from '@/components/SideMenu'
-import BackgroundCanvas from '@/components/threejs/backgroundCanvas/BackgroundCanvas'
 
 export default function HomePage() {
   const [isModalShowing, setIsModalShowing] = useState(false)
