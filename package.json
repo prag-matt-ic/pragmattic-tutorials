@@ -17,6 +17,7 @@
     "@react-three/fiber": "^8.17.5",
     "@react-three/postprocessing": "^2.16.2",
     "@tailwindcss/typography": "^0.5.15",
+    "date-fns": "^4.1.0",
     "file-saver": "^2.0.5",
     "glsl-blend": "^1.0.3",
     "glsl-constants": "^2.0.1",

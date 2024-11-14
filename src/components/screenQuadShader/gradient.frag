@@ -1,5 +1,4 @@
 // gradient.frag
-// Fragment shader
 
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 
@@ -22,7 +21,7 @@ void main() {
   vec3 color = palette(colourInput, vec3(0.5), vec3(0.166), vec3(1.0), vec3(0.0, 0.333, 0.667));
 
   // [[0.369 0.919 0.590] [0.344 0.306 0.378] [0.965 1.011 1.259] [0.976 4.801 2.072]]
-  vec3 color2 = palette(colourNoise, vec3(0.369, 0.919, 0.590), vec3(0.344, 0.306, 0.378), vec3(0.965, 1.011, 1.259), vec3(0.976, 4.801, 2.072));
+  vec3 color2 = palette(colourInput, vec3(0.369, 0.919, 0.590), vec3(0.344, 0.306, 0.378), vec3(0.965, 1.011, 1.259), vec3(0.976, 4.801, 2.072));
 
-  gl_FragColor = vec4(color2, 1.0);;
+  gl_FragColor = vec4(color, 1.0);;
 }

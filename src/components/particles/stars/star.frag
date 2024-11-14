@@ -6,7 +6,6 @@ varying vec3 vViewPosition;
 
 const vec3 COLOUR = vec3(0.6745, 0.6745, 0.5686);
 
-
 void main() {
   // Creating the soft circle
   // gl_PointCoord is a vec2 containing coordinates of the fragment within the point being rendered
@@ -21,7 +20,7 @@ void main() {
   float distanceFade = smoothstep(maxFadeDistance, maxFadeDistance * 0.5, -vViewPosition.z);
 
 
-  // Start to fade out particles after scroll progress reaches 0.8
+  // Start to fade out particles after scroll progress reaches 85%
   float fadeOutOpacity = smoothstep(1.0, 0.85, uScrollProgress);
 
   float opacity = circle * distanceFade * fadeOutOpacity * 0.9;

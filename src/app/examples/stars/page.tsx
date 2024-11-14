@@ -6,11 +6,13 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import React, { type FC, useRef } from 'react'
 
+import BasicParticles from '@/components/particles/basicParticles/BasicParticles'
 import Stars from '@/components/particles/stars/Stars'
 import PointerCamera from '@/components/PointerCamera'
-import BasicParticles from '@/components/particles/basicParticles/BasicParticles'
 
 // Install dependencies: npm install @gsap/react @react-three/drei @react-three/fiber gsap
+
+// Building modern day scroll controlled star wars intro with React Three Fiber and GSAP
 
 // Agenda
 // 1 - Basic Points with a predefined geometry and points material
@@ -39,14 +41,14 @@ export default function StarsPage() {
           antialias: false,
           powerPreference: 'high-performance',
         }}>
-        <BasicParticles />
-        {/* <Stars /> */}
+        {/* <BasicParticles /> */}
+        <Stars />
         <PointerCamera cameraProps={{ far: 20 }} />
         <Stats />
       </Canvas>
 
       {/* HTML content */}
-      {/* <TextSection /> */}
+      <TextSection />
     </main>
   )
 }
@@ -54,23 +56,23 @@ export default function StarsPage() {
 const TextSection: FC = () => {
   const section = useRef<HTMLDivElement>(null)
 
-  // useGSAP(
-  //   () => {
-  //     gsap.set('p', { opacity: 1 })
-  //     gsap.fromTo(
-  //       'p',
-  //       {
-  //         yPercent: 50,
-  //       },
-  //       {
-  //         yPercent: -100,
-  //         ease: 'none',
-  //         scrollTrigger: { start: 0, end: 'max', scrub: true },
-  //       },
-  //     )
-  //   },
-  //   { dependencies: [], scope: section },
-  // )
+  useGSAP(
+    () => {
+      gsap.set('p', { opacity: 1 })
+      gsap.fromTo(
+        'p',
+        {
+          yPercent: 50,
+        },
+        {
+          yPercent: -100,
+          ease: 'none',
+          scrollTrigger: { start: 0, end: 'max', scrub: true },
+        },
+      )
+    },
+    { dependencies: [], scope: section },
+  )
 
   return (
     <section

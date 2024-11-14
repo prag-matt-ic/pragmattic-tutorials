@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} bg-off-black`}>
+      <body className={`${inter.variable} bg-off-black antialiased`}>
         {children}
         <CustomCursor />
       </body>

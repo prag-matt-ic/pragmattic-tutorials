@@ -2,7 +2,7 @@
 import { shaderMaterial } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
 import React, { type FC, useMemo, useRef } from 'react'
-import { AdditiveBlending, ShaderMaterial } from 'three'
+import { AdditiveBlending, Color, ShaderMaterial } from 'three'
 
 import { getRandomSpherePositions } from '@/utils/particles/particles'
 
@@ -22,18 +22,25 @@ const BasicParticles: FC = () => {
   return (
     <points>
       {/* Basic setup with predefined geometry and material */}
-      {/* <sphereGeometry attach="geometry" args={[2, 40, 40]} /> */}
-      {/* <pointsMaterial attach="material" color={'#fff'} size={0.02} sizeAttenuation={true} /> */}
+      <sphereGeometry attach="geometry" args={[2, 48, 48]} />
 
-      <bufferGeometry attach="geometry">
+      <pointsMaterial
+        attach="material"
+        color={new Color('#45F1A6')}
+        size={0.03}
+        sizeAttenuation={true}
+        blending={AdditiveBlending}
+      />
+
+      {/* <bufferGeometry attach="geometry">
         <bufferAttribute
           attach="attributes-position"
           array={particlesPosition}
           count={particlesPosition.length / 3}
           itemSize={3}
         />
-      </bufferGeometry>
-
+      </bufferGeometry> */}
+      {/* 
       <basicParticleShaderMaterial
         key={BasicParticleShaderMaterial.key}
         ref={particlesShader}
@@ -41,7 +48,7 @@ const BasicParticles: FC = () => {
         depthTest={false}
         transparent={true}
         blending={AdditiveBlending}
-      />
+      /> */}
     </points>
   )
 }
@@ -49,6 +56,7 @@ const BasicParticles: FC = () => {
 type Uniforms = {
   uTime: number
 }
+
 const INITIAL_UNIFORMS: Uniforms = {
   uTime: 0,
 } as const

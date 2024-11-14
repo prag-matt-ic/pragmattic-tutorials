@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { type ButtonHTMLAttributes, type FC, type PropsWithChildren } from 'react'
 import Markdown from 'react-markdown'
 
+import BlogHeader from '@/components/blog/header/Header'
 // import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
 // import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 // import js from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript'
@@ -22,10 +23,10 @@ export async function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: Props, parent: ResolvingMetadata): Metadata {
-  const post = getBlogBySlug(params.slug)
+  const { metadata } = getBlogBySlug(params.slug)
   return {
-    title: post.title,
-    description: post.date,
+    title: metadata.title,
+    description: metadata.date,
   }
 }
 
@@ -35,26 +36,14 @@ export default function PostPage({ params }: Props) {
   const post = getBlogBySlug(params.slug)
   console.log(post)
 
-  const { tags = [], title, content } = post
+  const { content, metadata } = post
 
   return (
-    <main className="flex w-full flex-col items-center bg-mid font-sans lg:px-8">
-      <div className="grid h-full min-h-screen w-full max-w-[1024px] grid-cols-1 grid-rows-[auto_1fr] bg-white">
-        {/* TODO: Design nice header with shader visuals */}
-        <header className="w-full select-none space-y-4 bg-black px-12 py-32">
-          <div className="flex gap-2">
-            {tags.map((tag) => (
-              <span key={tag} className="rounded bg-green px-2 py-1 font-mono text-sm font-bold tracking-wide">
-                #{tag}
-              </span>
-            ))}
-          </div>
-          <h1 className="max-w-2xl text-5xl font-extrabold leading-snug text-white">{title}</h1>
-        </header>
-        <article className="prose size-full text-pretty px-12 py-16 text-black xl:prose-lg">
-          <Markdown className="w-full">{content}</Markdown>
-        </article>
-      </div>
+    <main className="flex w-full flex-col items-center bg-off-black font-sans">
+      <BlogHeader {...metadata} />
+      <article className="prose w-full max-w-[1024px] text-pretty bg-white px-12 py-20 text-black xl:prose-lg">
+        <Markdown className="w-full">{content}</Markdown>
+      </article>
     </main>
   )
 }

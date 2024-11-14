@@ -2,10 +2,12 @@ import fs from 'fs'
 import matter from 'gray-matter'
 import path from 'path'
 
-type PostMetadata = {
+export type PostMetadata = {
   title: string
   date: string
   tags: string[]
+  youtubeUrl?: string
+  exampleUrl?: string
 }
 
 const sortByDate = (a: PostMetadata, b: PostMetadata): number => {
@@ -53,7 +55,7 @@ export function getSortedPostsData(): (PostMetadata & { slug: string })[] {
   return allPostsData.sort(sortByDate)
 }
 
-export function getBlogBySlug(slug: string): PostMetadata & { content: string } {
+export function getBlogBySlug(slug: string): { metadata: PostMetadata; content: string } {
   const fullPath = path.join(postsDirectory, `${slug}.md`)
   const fileContents = fs.readFileSync(fullPath, 'utf8')
 
@@ -61,7 +63,7 @@ export function getBlogBySlug(slug: string): PostMetadata & { content: string } 
   const metadata = formatMetadata(file.data)
 
   return {
-    ...metadata,
+    metadata,
     content: file.content,
   }
 }

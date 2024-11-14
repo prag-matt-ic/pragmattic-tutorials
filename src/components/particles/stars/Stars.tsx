@@ -22,8 +22,6 @@ const StarsParticleShaderMaterial = shaderMaterial(INITIAL_UNIFORMS, vertex, fra
 
 extend({ StarsParticleShaderMaterial })
 
-const zDepth = 4
-
 const Stars: FC = () => {
   const particlesCount = 6144
   const particlesPositions: Float32Array = useMemo(() => getPositions(particlesCount), [particlesCount])
@@ -89,6 +87,7 @@ const getPositions = (count: number): Float32Array => {
   const positions = new Float32Array(count * 3)
 
   for (let i = 0; i < count; i++) {
+    const zDepth = 4
     const z = Math.random() * zDepth
 
     const spread = z * 2

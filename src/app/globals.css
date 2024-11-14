@@ -30,7 +30,7 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #000;
+  background-color: #fff;
 }
 
 /* Hide the cursor */

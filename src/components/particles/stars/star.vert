@@ -1,4 +1,5 @@
 #pragma glslify: rotation3dZ = require(glsl-rotate/rotation-3d-z)
+#pragma glslify: noise = require('glsl-noise/simplex/3d')
 
 uniform float uTime;
 uniform float uScrollProgress;
@@ -11,6 +12,12 @@ const float MAX_POINT_SIZE = 64.0;
 
 void main() {
   vec3 particlePosition = position;
+
+  // Move the particles up and down based on the time
+  // Generate a noise value based on the particle's position and time
+  // float noiseValue = noise(vec3(particlePosition.xy * 10.0 * particlePosition.z, uTime * 4.0)) * 0.01;
+  // Adjust the position based on the noise value
+  // particlePosition.xy += noiseValue;
 
   // Move the particle forward based on the scroll progress
   particlePosition.z -= uScrollProgress * 3.0;
