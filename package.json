@@ -30,6 +30,7 @@
     "gray-matter": "^4.0.3",
     "gsap": "npm:@gsap/business@^3.12.5",
     "highlight.js": "^11.10.0",
+    "leva": "^0.9.35",
     "next": "^14.2.16",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "raw-loader": "^4.0.2",

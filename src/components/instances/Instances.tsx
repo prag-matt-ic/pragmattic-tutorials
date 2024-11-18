@@ -28,10 +28,10 @@ const InstancedParticles: FC = () => {
 
   return (
     <>
-      <instancedMesh geometry={nodes['py-lod2-object'].geometry} count={count}>
+      {/* <instancedMesh geometry={nodes['py-lod2-object'].geometry} count={count}>
         <instancedBufferAttribute attach="instancePosition" args={[positions, 3]} />
         <instanceShaderMaterial attach="material" uTime={0} />
-      </instancedMesh>
+      </instancedMesh> */}
     </>
   )
 }

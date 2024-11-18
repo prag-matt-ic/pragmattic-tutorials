@@ -11,7 +11,7 @@ varying vec2 vUv;
 
 
 void main() {
-  float n = noise(vec3(vUv.x * 1.2, vUv.y, uTime * 0.1));
+  float n = noise(vec3(vUv.x * 1.2, vUv.y, uTime * 0.16));
   vec3 color = mix(uLightColour, uDarkColour, n);
   
   gl_FragColor = vec4(color, 1.0);;

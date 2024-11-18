@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import CustomCursor from '@/components/Cursor'
+import Nav from '@/components/Nav'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,7 +24,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} bg-off-black antialiased`}>
+      <body className={`${inter.variable} bg-off-black font-sans antialiased`}>
+        <Nav />
         {children}
         <CustomCursor />
       </body>
