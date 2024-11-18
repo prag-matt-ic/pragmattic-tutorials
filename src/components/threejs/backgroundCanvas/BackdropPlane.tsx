@@ -1,6 +1,6 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { Plane, shaderMaterial, useTexture } from '@react-three/drei'
+import { Plane, ScreenQuad, shaderMaterial, useTexture } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame, useThree } from '@react-three/fiber'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import React, { type FC, useRef } from 'react'
@@ -59,7 +59,11 @@ const BackdropPlane: FC = () => {
   })
 
   return (
+<<<<<<< Updated upstream:src/components/threejs/backgroundCanvas/BackdropPlane.tsx
     <Plane args={[viewport.width, viewport.height, 1, 1]} position={[0, 0, 0]}>
+=======
+    <ScreenQuad>
+>>>>>>> Stashed changes:src/components/backgroundCanvas/BackdropPlane.tsx
       <backdropPlaneShader
         key={BackdropPlaneShader.key}
         ref={shader}
@@ -70,7 +74,7 @@ const BackdropPlane: FC = () => {
         uDarkColour={INITIAL_UNIFORMS.uDarkColour}
         uTexture={texture}
       />
-    </Plane>
+    </ScreenQuad>
   )
 }
 export default BackdropPlane

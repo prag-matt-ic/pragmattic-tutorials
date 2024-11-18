@@ -1,26 +1,8 @@
-// Vertex shader
+// Vertex Shader for ScreenQuad
 
 varying vec2 vUv;
 
-// Perform transformations on the vertex position
-
 void main() {
-    vUv = uv;
-    vec4 position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    gl_Position = position;
+    vUv = position.xy * 0.5 + 0.5; // Map NDC to UV coordinates
+    gl_Position = vec4(position.xy, 0.0, 1.0); // Use NDC position
 }
-
-
-
-// varying vec3 vViewPosition;  // position in view (camera) space
-// varying vec3 vWorldPosition; // position in world space
-
-  // // Transform the vertex position to view space
-    // vec4 viewPosition = modelViewMatrix * vec4(position, 1.0);
-    // vViewPosition = viewPosition.xyz;
-    // vWorldPosition = position;
-    // // Transform the vertex position to clip space
-    // vec4 clipPosition = projectionMatrix * viewPosition;
-    // gl_Position = clipPosition;
-
-

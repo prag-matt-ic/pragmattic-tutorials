@@ -2,17 +2,20 @@
 
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
+import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import Image, { type StaticImageData } from 'next/image'
 import { type FC, useMemo, useRef } from 'react'
 import { twJoin, twMerge } from 'tailwind-merge'
 
-import gsapIcon from '@/assets/technologyIcons/gsap.svg'
-import nextIcon from '@/assets/technologyIcons/next.svg'
-import openGLIcon from '@/assets/technologyIcons/opengl.svg'
-import reactIcon from '@/assets/technologyIcons/react.svg'
-import tailwindIcon from '@/assets/technologyIcons/tailwind.svg'
-import threeIcon from '@/assets/technologyIcons/three.svg'
-import typescriptIcon from '@/assets/technologyIcons/typescript.svg'
+import gsapIcon from '@/assets/icons/technologies/gsap.svg'
+import nextIcon from '@/assets/icons/technologies/next.svg'
+import openGLIcon from '@/assets/icons/technologies/opengl.svg'
+import reactIcon from '@/assets/icons/technologies/react.svg'
+import tailwindIcon from '@/assets/icons/technologies/tailwind.svg'
+import threeIcon from '@/assets/icons/technologies/three.svg'
+import typescriptIcon from '@/assets/icons/technologies/typescript.svg'
+
+gsap.registerPlugin(useGSAP, ScrollTrigger)
 
 type Props = {
   isReversed?: boolean
@@ -23,7 +26,7 @@ const ICONS: StaticImageData[] = [gsapIcon, nextIcon, openGLIcon, reactIcon, tai
 
 const ELEMENTS = [...ICONS, ...ICONS]
 
-const TestimonialsMarquee: FC<Props> = ({ isReversed = false, className }) => {
+const Marquee: FC<Props> = ({ isReversed = false, className }) => {
   const movingContainer = useRef<HTMLDivElement>(null)
   const timeline = useRef<GSAPTimeline>()
 
@@ -75,7 +78,7 @@ const TestimonialsMarquee: FC<Props> = ({ isReversed = false, className }) => {
               key={index}
               className={twJoin('relative flex shrink-0 items-center justify-center', isLast && 'mr-10')}
               style={{ height: src.height, width: src.width }}>
-              <Image src={src} alt="Technology icon" height={40} className="object-contain" />
+              <Image src={src} alt="technologies icon" height={40} className="object-contain" />
             </div>
           )
         })}
@@ -100,4 +103,4 @@ const TestimonialsMarquee: FC<Props> = ({ isReversed = false, className }) => {
   )
 }
 
-export default TestimonialsMarquee
+export default Marquee
