@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import CustomCursor from '@/components/Cursor'
+import Nav from '@/components/Nav'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -12,8 +13,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Pragmattic | Design and Engineering',
-  description: 'Cinematic coding for commercial projects, by Matthew Frawley',
+  title: { template: '%s | Pragmattic', default: 'Pragmattic | design and engineering' },
+  description: 'Frontend development for commercial projects',
 }
 
 export default function RootLayout({
@@ -23,7 +24,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} bg-off-black`}>
+      <body className={`${inter.variable} bg-off-black font-sans antialiased`}>
+        <Nav />
         {children}
         <CustomCursor />
       </body>

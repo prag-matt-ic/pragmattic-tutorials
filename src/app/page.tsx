@@ -1,62 +1,36 @@
 'use client'
+import { Canvas } from '@react-three/fiber'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
 import logo from '@/assets/brand/pragmattic.svg'
+import BackgroundCanvas from '@/components/backgroundCanvas/BackgroundCanvas'
 import Button from '@/components/Button'
+import WavePlane from '@/components/examples/wavePlane/WavePlane'
 import HomeNav, { SectionId } from '@/components/HomeNav'
 import ImageSequenceHeader from '@/components/ImageSequenceHeader'
-import TestimonialsMarquee from '@/components/Marquee'
+import Marquee from '@/components/Marquee'
 import Modal from '@/components/Modal'
-import SideMenu from '@/components/SideMenu'
-import BackgroundCanvas from '@/components/threejs/backgroundCanvas/BackgroundCanvas'
+import PointerCamera from '@/components/PointerCamera'
 
 export default function HomePage() {
   const [isModalShowing, setIsModalShowing] = useState(false)
-  const [isSideMenuShowing, setIsSideMenuShowing] = useState(false)
 
   return (
     <>
-      <BackgroundCanvas />
+      <Canvas
+        className="!fixed inset-0"
+        dpr={2}
+        gl={{
+          antialias: false,
+        }}>
+        <ambientLight intensity={2} />
+        <WavePlane screenHeights={5} />
+        <PointerCamera cameraProps={{ far: 20 }} />
+      </Canvas>
 
-      <main className="w-full bg-black font-sans">
-        <nav className="fixed left-6 top-4 z-50">
-          <Link href="/">
-            <Image src={logo} alt="Pragmattic" width={120} />
-          </Link>
-        </nav>
-        <HomeNav />
-
-        <ImageSequenceHeader />
-
-        <section
-          id={SectionId.Welcome}
-          className="nav-section relative flex h-[100vh] w-full flex-col items-center justify-center gap-8">
-          <Button variant="filled" hoverEmoji="💚" onClick={() => setIsModalShowing(true)}>
-            Open Modal
-          </Button>
-
-          <Button variant="filled" onClick={() => setIsSideMenuShowing(true)}>
-            Open Menu
-          </Button>
-        </section>
-
-        <section id={SectionId.About} className="nav-section relative h-[200vh] w-full p-20">
-          <TestimonialsMarquee />
-          <TestimonialsMarquee isReversed className="mt-8" />
-        </section>
-
-        <section id={SectionId.Services} className="nav-section h-[100vh] w-full p-20"></section>
-
-        <section id={SectionId.Portfolio} className="nav-section h-[200vh] w-full p-20"></section>
-
-        <section id={SectionId.Contact} className="nav-section h-[200vh] w-full p-20"></section>
-
-        <Modal isShowing={isModalShowing} onClose={() => setIsModalShowing(false)} />
-
-        <SideMenu isShowing={isSideMenuShowing} onClose={() => setIsSideMenuShowing(false)} />
-      </main>
+      <main className="h-[500vh] w-full bg-black font-sans"></main>
     </>
   )
 }
