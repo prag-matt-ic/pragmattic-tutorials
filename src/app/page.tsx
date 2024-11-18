@@ -5,32 +5,29 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import logo from '@/assets/brand/pragmattic.svg'
-import BackgroundCanvas from '@/components/backgroundCanvas/BackgroundCanvas'
+import { ExamplePathname } from '@/resources/navigation'
 import Button from '@/components/Button'
-import WavePlane from '@/components/examples/wavePlane/WavePlane'
-import HomeNav, { SectionId } from '@/components/HomeNav'
-import ImageSequenceHeader from '@/components/ImageSequenceHeader'
-import Marquee from '@/components/Marquee'
-import Modal from '@/components/Modal'
-import PointerCamera from '@/components/PointerCamera'
 
 export default function HomePage() {
-  const [isModalShowing, setIsModalShowing] = useState(false)
-
   return (
     <>
-      <Canvas
+      {/* <Canvas
         className="!fixed inset-0"
         dpr={2}
         gl={{
           antialias: false,
         }}>
         <ambientLight intensity={2} />
-        <WavePlane screenHeights={5} />
         <PointerCamera cameraProps={{ far: 20 }} />
-      </Canvas>
+      </Canvas> */}
 
-      <main className="h-[500vh] w-full bg-black font-sans"></main>
+      <main className="h-lvh w-full bg-black p-16 font-sans">
+        <h2 className="my-20 text-white">Something cool, coming soon!</h2>
+
+        <Button variant="outlined" href={ExamplePathname.ImageSequence}>
+          Check out the examples
+        </Button>
+      </main>
     </>
   )
 }
