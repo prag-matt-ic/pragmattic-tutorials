@@ -5,6 +5,8 @@
 uniform float uTime;
 uniform float uScrollProgress;
 // Config
+
+uniform float uUvScale; // 1
 uniform float uSpeed; // 0.2
 uniform float uUvDistortionIterations; // 4
 uniform float uUvDistortionIntensity; // 0.2
@@ -22,6 +24,7 @@ void main() {
   vec2 uv = vUv;
   // Translate the uv coordinates based on the scroll progress
   uv.y -= uScrollProgress;
+  uv *= uUvScale;
 
   // Adjust the time value based on the speed
   float time = uTime * uSpeed;

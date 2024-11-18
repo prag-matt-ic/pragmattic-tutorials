@@ -7,7 +7,7 @@ import React from 'react'
 import ScreenQuadShader from '@/components/examples/screenQuadShader/ScreenQuadShader'
 import ScrollDownArrow from '@/components/ScrollDown'
 
-const SCREENS = 10
+const SCREENS = 30
 
 // Tasks
 
@@ -28,7 +28,6 @@ export default function ScreenQuadBoilerPlate() {
           powerPreference: 'high-performance',
         }}>
         <ScreenQuadShader screens={SCREENS} />
-        {/* <Stats /> */}
       </Canvas>
 
       <ScrollDownArrow />

@@ -1,34 +1,31 @@
 'use client'
 
 import { useGSAP } from '@gsap/react'
-import { ScreenQuad, shaderMaterial, useTexture } from '@react-three/drei'
-import { extend, type ShaderMaterialProps, useFrame, useThree } from '@react-three/fiber'
+import { ScreenQuad, shaderMaterial } from '@react-three/drei'
+import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import { useControls } from 'leva'
 import React, { type FC, useRef } from 'react'
-import { ShaderMaterial, Texture, Vector3 } from 'three'
+import { ShaderMaterial, Vector3 } from 'three'
 
 import { COSINE_COLOUR_PALETTES } from '@/resources/colours'
 
 import gradientFragment from './gradient.frag'
 import vertexShader from './screen.vert'
-import textureFragment from './texture.frag'
-import textureImg from './texture.jpg'
+// import textureFragment from './texture.frag'
+// import textureImg from './texture.jpg'
+
 // Boilerplate for creating a screen quad shader - ideal for backgrounds, post-processing effects, etc.
 
 // Remember to register the plugins if using GSAP
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
-enum Type {
-  Gradient = 'Gradient',
-  Texture = 'Texture',
-}
-
-type GradientUniforms = {
+type Uniforms = {
   uTime: number
   uScrollProgress: number
   uSpeed: number
+  uUvScale: number
   uUvDistortionIterations: number
   uUvDistortionIntensity: number
   uColourPalette: Vector3[]
@@ -39,42 +36,24 @@ const ScreenQuadShaderGradientMaterial = shaderMaterial(
     uTime: 0,
     uScrollProgress: 0,
     uSpeed: 0.2,
+    uUvScale: 1,
     uUvDistortionIterations: 4,
     uUvDistortionIntensity: 0.16,
     uColourPalette: COSINE_COLOUR_PALETTES['Rainbow'],
-  } as GradientUniforms,
+  } as Uniforms,
   vertexShader,
   gradientFragment,
 )
 
-type TextureUniforms = {
-  uTime: number
-  uAspect: number
-  uTexture: Texture | null
-}
-
-const ScreenQuadShaderTextureMaterial = shaderMaterial(
-  {
-    uTime: 0,
-    uAspect: 0,
-    uTexture: null,
-  } as TextureUniforms,
-  vertexShader,
-  textureFragment,
-)
-
-extend({ ScreenQuadShaderGradientMaterial, ScreenQuadShaderTextureMaterial })
+extend({ ScreenQuadShaderGradientMaterial })
 
 type Props = {
   screens: number
 }
 
 const ScreenQuadShader: FC<Props> = ({ screens }) => {
-  const { colourPalette, speed, distortionIterations, distortionIntensity } = useConfig()
-  // const texture = useTexture(textureImg.src)
-  // const { viewport } = useThree()
-  const gradientShader = useRef<ShaderMaterial & Partial<GradientUniforms>>(null)
-  const textureShader = useRef<ShaderMaterial & Partial<TextureUniforms>>(null)
+  const { colourPalette, speed, scale, distortionIterations, distortionIntensity } = useConfig()
+  const gradientShader = useRef<ShaderMaterial & Partial<Uniforms>>(null)
   const scrollProgress = useRef(0)
 
   useFrame(({ clock }) => {
@@ -82,11 +61,6 @@ const ScreenQuadShader: FC<Props> = ({ screens }) => {
     gradientShader.current.uTime = clock.elapsedTime
     gradientShader.current.uScrollProgress = scrollProgress.current * screens
   })
-
-  // useFrame(({ clock }) => {
-  //   if (!textureShader.current) return
-  //   textureShader.current.uTime = clock.elapsedTime
-  // })
 
   useGSAP(() => {
     ScrollTrigger.create({
@@ -107,22 +81,11 @@ const ScreenQuadShader: FC<Props> = ({ screens }) => {
         uTime={0}
         uScrollProgress={0}
         uSpeed={speed}
+        uUvScale={scale}
         uUvDistortionIterations={distortionIterations}
         uUvDistortionIntensity={distortionIntensity}
         uColourPalette={COSINE_COLOUR_PALETTES[colourPalette]}
       />
-
-      {/* {type === Type.Texture && (
-        <screenQuadShaderTextureMaterial
-          attach="material"
-          key={ScreenQuadShaderTextureMaterial.key}
-          ref={textureShader}
-          // Uniforms
-          uTime={0}
-          uAspect={viewport.width / viewport.height}
-          uTexture={texture}
-        />
-      )} */}
     </ScreenQuad>
   )
 }
@@ -131,7 +94,7 @@ export default ScreenQuadShader
 
 function useConfig() {
   // Config for the shader
-  const { colourPalette, speed, distortionIterations, distortionIntensity } = useControls({
+  const { colourPalette, speed, scale, distortionIterations, distortionIntensity } = useControls({
     // Only available for the gradient shader
     colourPalette: {
       label: 'Palette',
@@ -144,6 +107,13 @@ function useConfig() {
       min: 0,
       max: 1,
       step: 0.05,
+    },
+    scale: {
+      label: 'Scale',
+      value: 1,
+      min: 0.1,
+      max: 4,
+      step: 0.1,
     },
     distortionIterations: {
       label: 'Iterations',
@@ -162,14 +132,29 @@ function useConfig() {
     },
   })
 
-  return { colourPalette, speed, distortionIterations, distortionIntensity }
+  return { colourPalette, speed, scale, distortionIterations, distortionIntensity }
 }
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      screenQuadShaderGradientMaterial: ShaderMaterialProps & GradientUniforms
-      screenQuadShaderTextureMaterial: ShaderMaterialProps & TextureUniforms
+      screenQuadShaderGradientMaterial: ShaderMaterialProps & Uniforms
     }
   }
 }
+
+// type TextureUniforms = {
+//   uTime: number
+//   uAspect: number
+//   uTexture: Texture | null
+// }
+
+// const ScreenQuadShaderTextureMaterial = shaderMaterial(
+//   {
+//     uTime: 0,
+//     uAspect: 0,
+//     uTexture: null,
+//   } as TextureUniforms,
+//   vertexShader,
+//   textureFragment,
+// )
