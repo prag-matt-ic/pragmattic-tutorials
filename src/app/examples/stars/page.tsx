@@ -9,6 +9,7 @@ import React, { type FC, useRef } from 'react'
 import BasicParticles from '@/components/particles/basicParticles/BasicParticles'
 import Stars from '@/components/particles/stars/Stars'
 import PointerCamera from '@/components/PointerCamera'
+import ScrollDownArrow from '@/components/ScrollDown'
 
 // Install dependencies: npm install @gsap/react @react-three/drei @react-three/fiber gsap
 
@@ -49,16 +50,36 @@ export default function StarsPage() {
 
       {/* HTML content */}
       <TextSection />
+      <ScrollDownArrow />
     </main>
   )
 }
 
 const TextSection: FC = () => {
-  const section = useRef<HTMLDivElement>(null)
+  const container = useRef<HTMLDivElement>(null)
 
   useGSAP(
     () => {
+      // Match media
+      const matchMedia = gsap.matchMedia()
+
+      // Mobile
+      matchMedia.add('screen and (max-width: 800px)', () => {
+        gsap.set(container.current, {
+          rotateX: 16,
+        })
+      })
+
+      // Desktop
+      matchMedia.add('screen and (min-width: 800px)', () => {
+        gsap.set(container.current, {
+          translateY: '-30vh',
+          rotateX: 48,
+        })
+      })
+
       gsap.set('p', { opacity: 1 })
+
       gsap.fromTo(
         'p',
         {
@@ -71,24 +92,23 @@ const TextSection: FC = () => {
         },
       )
     },
-    { dependencies: [], scope: section },
+    { dependencies: [], scope: container },
   )
 
   return (
     <section
-      ref={section}
-      className="pointer-events-none fixed inset-0 z-20"
+      className="perspective-3d pointer-events-none fixed inset-0 z-20"
       style={{
-        perspective: '1000px',
+        perspective: '800px',
         transformStyle: 'preserve-3d',
       }}>
       <div
+        ref={container}
         className="h-fit w-full px-10"
         style={{
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%)',
-          transform: 'translateY(-50vh) rotateX(50deg)',
         }}>
-        <p className="block w-full text-justify text-5xl font-bold uppercase leading-relaxed tracking-wide text-white opacity-0">
+        <p className="block w-full text-justify text-sm font-bold uppercase tracking-wide text-white opacity-0 md:text-5xl md:leading-relaxed">
           The internet&apos;s journey began in the late 1960s with the development of ARPANET by the U.S. Department of
           Defense&apos;s Advanced Research Projects Agency (ARPA). ARPANET was designed as a decentralized communication
           network that could withstand outages and connect various research institutions. Utilizing packet-switching

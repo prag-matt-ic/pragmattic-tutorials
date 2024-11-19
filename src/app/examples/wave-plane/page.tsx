@@ -22,7 +22,7 @@ export default function WavePlaneExample() {
           powerPreference: 'high-performance',
         }}>
         <color attach="background" args={['#000']} />
-        <WavePlane screenHeights={20} />
+        <WavePlane screenHeights={20 - 1} />
         <PointerCamera />
       </Canvas>
 

@@ -11,10 +11,8 @@ import { ShaderMaterial, Vector3 } from 'three'
 
 import { COSINE_COLOUR_PALETTES } from '@/resources/colours'
 
-import gradientFragment from './gradient.frag'
+import fragmentShader from './gradient.frag'
 import vertexShader from './screen.vert'
-// import textureFragment from './texture.frag'
-// import textureImg from './texture.jpg'
 
 // Boilerplate for creating a screen quad shader - ideal for backgrounds, post-processing effects, etc.
 
@@ -42,7 +40,7 @@ const ScreenQuadShaderGradientMaterial = shaderMaterial(
     uColourPalette: COSINE_COLOUR_PALETTES['BluePurpleOrange'],
   } as Uniforms,
   vertexShader,
-  gradientFragment,
+  fragmentShader,
 )
 
 extend({ ScreenQuadShaderGradientMaterial })
@@ -142,19 +140,3 @@ declare global {
     }
   }
 }
-
-// type TextureUniforms = {
-//   uTime: number
-//   uAspect: number
-//   uTexture: Texture | null
-// }
-
-// const ScreenQuadShaderTextureMaterial = shaderMaterial(
-//   {
-//     uTime: 0,
-//     uAspect: 0,
-//     uTexture: null,
-//   } as TextureUniforms,
-//   vertexShader,
-//   textureFragment,
-// )

@@ -48,10 +48,7 @@ const WavePlane: FC<{ screenHeights: number }> = ({ screenHeights }) => {
   const planeSegments = useMemo(() => planeSize * 32, [planeSize])
 
   const shaderMaterial = useRef<ShaderMaterial & Uniforms>(null)
-
   const scrollProgress = useRef(0)
-
-  console.log({ planeSize })
 
   useFrame(({ clock }) => {
     if (!shaderMaterial.current) return

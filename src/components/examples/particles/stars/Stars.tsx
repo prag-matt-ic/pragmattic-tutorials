@@ -23,7 +23,7 @@ const StarsParticleShaderMaterial = shaderMaterial(INITIAL_UNIFORMS, vertex, fra
 extend({ StarsParticleShaderMaterial })
 
 const Stars: FC = () => {
-  const particlesCount = 6144
+  const particlesCount = 1024 * 8
   const particlesPositions: Float32Array = useMemo(() => getPositions(particlesCount), [particlesCount])
   const particlesShader = useRef<ShaderMaterial & Uniforms>(null)
 

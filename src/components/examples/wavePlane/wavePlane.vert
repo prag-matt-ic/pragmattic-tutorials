@@ -16,7 +16,7 @@ void main() {
 
     // Noise value between -1 and 1
     float time = 0.;// uTime * 0.1;
-    float noiseValue = noise(vec3(position.x / 4.0, position.y / 4.0 + uScrollOffset, time));
+    float noiseValue = noise(vec3(position.x / 4.0,( position.y / 4.0) + uScrollOffset, time));
     // Noise value between 0 and 1
     float normalisedNoise = noiseValue * 0.5 + 0.5;
     

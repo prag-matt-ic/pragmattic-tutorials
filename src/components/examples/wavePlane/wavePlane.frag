@@ -26,7 +26,7 @@ vec3 cosineGradientColor(in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d)
 }
 
 float brightenValue(in float colour) {
-  return clamp(colour + 0.12, 0.0, 1.0);
+  return clamp(colour + 0.2, 0.0, 1.0);
 }
 
 void main() {
