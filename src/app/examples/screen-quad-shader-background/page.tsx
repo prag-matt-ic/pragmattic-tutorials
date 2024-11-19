@@ -1,5 +1,4 @@
 'use client'
-import { Stats } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { Leva } from 'leva'
 import React from 'react'
@@ -27,7 +26,7 @@ export default function ScreenQuadBoilerPlate() {
           antialias: false,
           powerPreference: 'high-performance',
         }}>
-        <ScreenQuadShader screens={SCREENS} />
+        <ScreenQuadShader screens={SCREENS - 1} />
       </Canvas>
 
       <ScrollDownArrow />
