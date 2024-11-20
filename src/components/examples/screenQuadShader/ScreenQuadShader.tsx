@@ -39,7 +39,7 @@ const ScreenQuadShaderGradientMaterial = shaderMaterial(
     uUvScale: 1,
     uUvDistortionIterations: 4,
     uUvDistortionIntensity: 0.16,
-    uColourPalette: COSINE_COLOUR_PALETTES['Rainbow'],
+    uColourPalette: COSINE_COLOUR_PALETTES['BluePurpleOrange'],
   } as Uniforms,
   vertexShader,
   gradientFragment,
@@ -98,7 +98,7 @@ function useConfig() {
     // Only available for the gradient shader
     colourPalette: {
       label: 'Palette',
-      value: 'Rainbow',
+      value: 'BluePurpleOrange',
       options: Object.keys(COSINE_COLOUR_PALETTES),
     },
     speed: {

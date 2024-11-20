@@ -11,6 +11,14 @@ import { Vector3 } from 'three'
 
 // http://dev.thi.ng/gradients/
 export const COSINE_COLOUR_PALETTES: Record<string, Vector3[]> = {
+  // Custom
+  BluePurpleOrange: [
+    new Vector3(0.57, 0.254, 0.893),
+    new Vector3(0.522, 0.533, 0.953),
+    new Vector3(0.639, 1.158, 0.816),
+    new Vector3(2.416, 2.916, 5.794),
+  ],
+  // Presets:
   Rainbow: [
     new Vector3(0.5, 0.5, 0.5),
     new Vector3(0.166, 0.166, 0.166),

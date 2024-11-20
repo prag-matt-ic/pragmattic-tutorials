@@ -30,7 +30,7 @@ type Uniforms = {
 const INITIAL_UNIFORMS: Uniforms = {
   uTime: 0,
   uScrollOffset: 0,
-  uColourPalette: COSINE_COLOUR_PALETTES['Rainbow'],
+  uColourPalette: COSINE_COLOUR_PALETTES['BluePurpleOrange'],
   uShowGrid: true,
   uGridSize: 16,
 }
