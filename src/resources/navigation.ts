@@ -8,7 +8,7 @@ export enum ExamplePathname {
   ImageSequence = '/examples/scroll-driven-image-sequence',
   ScreenQuadShader = '/examples/screen-quad-shader-background',
   ScrollingThreeJs = '/examples/scrolling-three-scene',
-  Stars = '/examples/particles-stars',
+  Stars = '/examples/stars-particles',
   FBOEffects = '/examples/fbo-effects',
   InfiniteMarquee = '/examples/infinite-scrolling-marquee',
   WavePlane = '/examples/wave-plane',

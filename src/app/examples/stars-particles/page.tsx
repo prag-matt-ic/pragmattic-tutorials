@@ -1,15 +1,14 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { OrbitControls, Stats } from '@react-three/drei'
+import { Stats } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
+import SplitText from 'gsap/dist/SplitText'
 import React, { type FC, useRef } from 'react'
 
-import BasicParticles from '@/components/examples/particles/basicParticles/BasicParticles'
-import GLTFParticles from '@/components/examples/particles/basicParticles/GLTFParticles'
-import MeshSamplerParticles from '@/components/examples/particles/basicParticles/MeshSamplerParticles'
-import Stars from '@/components/examples/particles/stars/Stars'
+import BasicParticles from '@/components/particles/basicParticles/BasicParticles'
+import Stars from '@/components/particles/stars/Stars'
 import PointerCamera from '@/components/PointerCamera'
 import ScrollDownArrow from '@/components/ScrollDown'
 
@@ -18,21 +17,19 @@ import ScrollDownArrow from '@/components/ScrollDown'
 // Building modern day scroll controlled star wars intro with React Three Fiber and GSAP
 
 // Agenda
-// - Basic Points with a predefined geometry and points material
-// - Basic Points with custom geometry and custom shader material
-// - Placing Points on the surface of a 3D model
-// - Creating the Stars
-// - Moving the positions using vertex shader
-// - Additive blending
+// 1 - Basic Points with a predefined geometry and points material
+// 2 - Basic Points with custom geometry and custom shader material
+// 3 - Creating the Stars with custom vertex and fragment shader
+// 4 - Additive blending
 
-// - HTML 3D transforms using perspective and rotateX
-// - GSAP ScrollTrigger to animate the text movement
+// 5 - HTML 3D transforms using perspective and rotateX
+// 6 - GSAP ScrollTrigger to animate the text movement
 
 // Not covered
 // - fragment shader basics (uniforms, varyings, gl_FragColor etc) - see my other video
 // - simulation shaders (using FBO render target)
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
+gsap.registerPlugin(ScrollTrigger, useGSAP, SplitText)
 // https://codepen.io/nucro/pen/yYWdPp
 
 export default function StarsPage() {
@@ -46,16 +43,10 @@ export default function StarsPage() {
           antialias: false,
           powerPreference: 'high-performance',
         }}>
-        <ambientLight intensity={2} />
         {/* <BasicParticles /> */}
-        {/* <MeshSamplerParticles /> */}
-        {/* <GLTFParticles /> */}
         <Stars />
-
         <PointerCamera cameraProps={{ far: 20 }} />
-
-        {/* <OrbitControls /> */}
-        {/* <Stats /> */}
+        <Stats />
       </Canvas>
 
       {/* HTML content */}
@@ -66,41 +57,62 @@ export default function StarsPage() {
 }
 
 const TextSection: FC = () => {
-  const section = useRef<HTMLDivElement>(null)
+  const container = useRef<HTMLDivElement>(null)
 
   useGSAP(
     () => {
+      // Match media
+      const matchMedia = gsap.matchMedia()
+
+      // Mobile
+      matchMedia.add('screen and (max-width: 800px)', () => {
+        gsap.set(container.current, {
+          rotateX: 16,
+        })
+      })
+
+      // Desktop
+      matchMedia.add('screen and (min-width: 800px)', () => {
+        gsap.set(container.current, {
+          translateY: '-30vh',
+          rotateX: 48,
+        })
+      })
+
+      // Split Text
+      // const splitP = new SplitText('p', { type: 'lines' })
+      // gsap.set(splitP.lines, { opacity: 0.5 })
+
+      // console.log('splitP', splitP.lines)
       gsap.set('p', { opacity: 1 })
-      gsap.fromTo(
+
+      gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { start: 0, end: 'max', scrub: true } }).fromTo(
         'p',
         {
           yPercent: 50,
         },
         {
           yPercent: -100,
-          ease: 'none',
-          scrollTrigger: { start: 0, end: 'max', scrub: true },
         },
       )
     },
-    { dependencies: [], scope: section },
+    { dependencies: [], scope: container },
   )
 
   return (
     <section
-      ref={section}
       className="pointer-events-none fixed inset-0 z-20"
       style={{
-        perspective: '1000px',
+        perspective: '800px',
         transformStyle: 'preserve-3d',
       }}>
       <div
-        className="flex h-fit w-full justify-center px-10"
+        ref={container}
+        className="h-fit w-full px-10"
         style={{
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%)',
-          transform: 'translateY(-50vh) rotateX(50deg)',
         }}>
-        <p className="max-w-5xl text-pretty text-4xl font-semibold leading-relaxed tracking-normal text-white opacity-0">
+        <p className="block w-full text-justify text-sm font-bold uppercase tracking-wide text-white opacity-0 md:text-5xl md:leading-relaxed">
           The internet&apos;s journey began in the late 1960s with the development of ARPANET by the U.S. Department of
           Defense&apos;s Advanced Research Projects Agency (ARPA). ARPANET was designed as a decentralized communication
           network that could withstand outages and connect various research institutions. Utilizing packet-switching
