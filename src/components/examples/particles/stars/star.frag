@@ -13,7 +13,7 @@ void main() {
   // Calculate the distance from the center of the point
   float dist = length(normalizedPoint);
   // Smooth the distance to get a soft circle
-  float circle = 1.0 - smoothstep(0.0, 0.4, dist);
+  float circle = 1.0 - smoothstep(0.0, 0.5, dist);
   
   // Fade out particles based on their distance from the camera
   float maxFadeDistance = 6.5; // Adjust as needed

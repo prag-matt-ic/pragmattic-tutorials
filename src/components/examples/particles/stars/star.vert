@@ -16,10 +16,9 @@ void main() {
   // Move the particles up and down based on the time
   // Generate a noise value based on the particle's position and time
   // float noiseValue = noise(vec3(particlePosition * uTime / 8.)) * 0.5 + 0.5;
-  // Move the particle around in a small circle around it's current position
-  // float circleRadius = 0.02;
-  // float circleSpeed  = noiseValue * 0.1;
-  // float circleAngle = uTime * circleSpeed;
+  // // Move the particle around in a small circle around it's current position
+  // float circleRadius = 0.1;
+  // float circleAngle = uTime * 0.2;
   // particlePosition.x += cos(circleAngle) * circleRadius;
   // particlePosition.y += sin(circleAngle) * circleRadius;
 

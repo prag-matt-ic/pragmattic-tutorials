@@ -53,7 +53,6 @@ const ArtShader: FC<Props> = ({ screens }) => {
       onUpdate: ({ progress }) => {
         const adjustedProgress = progress * screens
         scrollProgress.current = adjustedProgress
-        console.log(adjustedProgress, screens)
       },
     })
   }, [])

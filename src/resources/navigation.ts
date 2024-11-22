@@ -6,7 +6,7 @@ export enum Pathname {
 
 export enum ExamplePathname {
   ImageSequence = '/examples/scroll-driven-image-sequence',
-  ScreenQuadShader = '/examples/screen-quad-shader-background',
+  ScreenQuadShader = '/examples/scrolling-background-shader',
   ScrollingThreeJs = '/examples/scrolling-three-scene',
   Stars = '/examples/stars-particles',
   FBOEffects = '/examples/fbo-effects',
@@ -30,7 +30,7 @@ export const EXAMPLES: Record<ExamplePathname, Example> = {
     githubUrl: 'https://github.com/prag-matt-ic/pragmattic-tutorials/blob/main/src/components/ImageSequenceHeader.tsx',
   },
   [ExamplePathname.ScreenQuadShader]: {
-    title: 'Fullscreen background shader using <ScreenQuad>',
+    title: 'Magical gradients in a scrolling background shader',
     pathname: ExamplePathname.ScreenQuadShader,
   },
   [ExamplePathname.ScrollingThreeJs]: {

@@ -8,14 +8,7 @@ import ScrollDownArrow from '@/components/ScrollDown'
 
 const SCREENS = 30
 
-// Tasks
-
-// 1. Create a fullscreen shader background using a screen quad
-// 2. Implement a gradient shader that animates over time
-// 3. Implement a texture shader that animates over time
-// 4. Add scroll based uniform
-// 4. Add config controls
-
+// Explorations in art and shaders
 export default function ArtPage() {
   return (
     <main className="w-full font-sans" style={{ height: `${SCREENS * 100}vh` }}>
