@@ -8,7 +8,7 @@ export enum ExamplePathname {
   ImageSequence = '/examples/scroll-driven-image-sequence',
   ScrollingBackgroundShader = '/examples/scrolling-background-shader',
   ScrollingThreeJs = '/examples/scrolling-three-scene',
-  Stars = '/examples/stars-particles',
+  StarsParticles = '/examples/stars-particles',
   FBOEffects = '/examples/fbo-effects',
   InfiniteMarquee = '/examples/infinite-scrolling-marquee',
   WavePlane = '/examples/wave-plane',
@@ -41,9 +41,9 @@ export const EXAMPLES: Record<ExamplePathname, Example> = {
     pathname: ExamplePathname.ScrollingThreeJs,
     youtubeUrl: 'https://youtu.be/1GGe3j59aKQ',
   },
-  [ExamplePathname.Stars]: {
+  [ExamplePathname.StarsParticles]: {
     title: 'Stars Particles with 3D HTML Text',
-    pathname: ExamplePathname.Stars,
+    pathname: ExamplePathname.StarsParticles,
   },
   [ExamplePathname.WavePlane]: {
     title: 'Wave Plane',
