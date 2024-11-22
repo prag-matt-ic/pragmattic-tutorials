@@ -6,7 +6,7 @@ export enum Pathname {
 
 export enum ExamplePathname {
   ImageSequence = '/examples/scroll-driven-image-sequence',
-  ScreenQuadShader = '/examples/scrolling-background-shader',
+  ScrollingBackgroundShader = '/examples/scrolling-background-shader',
   ScrollingThreeJs = '/examples/scrolling-three-scene',
   Stars = '/examples/stars-particles',
   FBOEffects = '/examples/fbo-effects',
@@ -29,9 +29,12 @@ export const EXAMPLES: Record<ExamplePathname, Example> = {
     youtubeUrl: 'https://youtu.be/l8hwkDAr0Eg',
     githubUrl: 'https://github.com/prag-matt-ic/pragmattic-tutorials/blob/main/src/components/ImageSequenceHeader.tsx',
   },
-  [ExamplePathname.ScreenQuadShader]: {
+  [ExamplePathname.ScrollingBackgroundShader]: {
     title: 'Magical gradients in a scrolling background shader',
-    pathname: ExamplePathname.ScreenQuadShader,
+    pathname: ExamplePathname.ScrollingBackgroundShader,
+    youtubeUrl: 'https://youtu.be/_YvCZ4I16Vg',
+    githubUrl:
+      'https://github.com/prag-matt-ic/pragmattic-tutorials/blob/main/src/app/examples/scrolling-background-shader/page.tsx',
   },
   [ExamplePathname.ScrollingThreeJs]: {
     title: 'Scrolling React Three Fiber Scene',
