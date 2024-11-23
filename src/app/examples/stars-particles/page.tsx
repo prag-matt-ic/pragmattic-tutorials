@@ -1,36 +1,35 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { Stats } from '@react-three/drei'
+import { OrbitControls, Stats } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
-import SplitText from 'gsap/dist/SplitText'
 import React, { type FC, useRef } from 'react'
 
-import BasicParticles from '@/components/particles/basicParticles/BasicParticles'
-import Stars from '@/components/particles/stars/Stars'
+import BasicParticles from '@/components/examples/particles/basicParticles/BasicParticles'
+import MeshSamplerParticles from '@/components/examples/particles/gltfParticles/MeshSamplerParticles'
+import Stars from '@/components/examples/particles/stars/Stars'
 import PointerCamera from '@/components/PointerCamera'
 import ScrollDownArrow from '@/components/ScrollDown'
 
-// Install dependencies: npm install @gsap/react @react-three/drei @react-three/fiber gsap
-
 // Building modern day scroll controlled star wars intro with React Three Fiber and GSAP
+// Inspiration: https://codepen.io/nucro/pen/yYWdPp
 
 // Agenda
 // 1 - Basic Points with a predefined geometry and points material
 // 2 - Basic Points with custom geometry and custom shader material
-// 3 - Creating the Stars with custom vertex and fragment shader
-// 4 - Additive blending
+// 3 - Mesh surface sampler particles on a 3D model
+// 4 - Creating and animating our Stars with custom vertex and fragment shader
 
 // 5 - HTML 3D transforms using perspective and rotateX
 // 6 - GSAP ScrollTrigger to animate the text movement
 
 // Not covered
 // - fragment shader basics (uniforms, varyings, gl_FragColor etc) - see my other video
-// - simulation shaders (using FBO render target)
+// - simulation shaders (using a FBO render target - future topic as I learn more about it)
+// - peformance optimisations for mobile - look into Drei helpers and reduce particle count
 
-gsap.registerPlugin(ScrollTrigger, useGSAP, SplitText)
-// https://codepen.io/nucro/pen/yYWdPp
+gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 export default function StarsPage() {
   return (
@@ -44,14 +43,17 @@ export default function StarsPage() {
           powerPreference: 'high-performance',
         }}>
         {/* <BasicParticles /> */}
+
+        {/* <MeshSamplerParticles /> */}
         <Stars />
         <PointerCamera cameraProps={{ far: 20 }} />
-        <Stats />
+        {/* <OrbitControls /> */}
+        {/* <Stats /> */}
       </Canvas>
 
       {/* HTML content */}
       <TextSection />
-      <ScrollDownArrow />
+      {/* <ScrollDownArrow /> */}
     </main>
   )
 }
@@ -79,20 +81,17 @@ const TextSection: FC = () => {
         })
       })
 
-      // Split Text
-      // const splitP = new SplitText('p', { type: 'lines' })
-      // gsap.set(splitP.lines, { opacity: 0.5 })
-
-      // console.log('splitP', splitP.lines)
       gsap.set('p', { opacity: 1 })
 
-      gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { start: 0, end: 'max', scrub: true } }).fromTo(
+      gsap.fromTo(
         'p',
         {
           yPercent: 50,
         },
         {
+          ease: 'none',
           yPercent: -100,
+          scrollTrigger: { start: 0, end: 'max', scrub: true },
         },
       )
     },
@@ -110,7 +109,7 @@ const TextSection: FC = () => {
         ref={container}
         className="h-fit w-full px-10"
         style={{
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 25%)',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 20%)',
         }}>
         <p className="block w-full text-justify text-sm font-bold uppercase tracking-wide text-white opacity-0 md:text-5xl md:leading-relaxed">
           The internet&apos;s journey began in the late 1960s with the development of ARPANET by the U.S. Department of

@@ -4,11 +4,11 @@ import React, { type FC, useMemo } from 'react'
 import { AdditiveBlending, Mesh, Vector3 } from 'three'
 import { MeshSurfaceSampler } from 'three/addons/math/MeshSurfaceSampler.js'
 
-// Position the particles over the model's surface at random positions
+// The MeshSurfaceSampler allows us to position the particles over the model's surface at random positions
+
 const MeshSamplerParticles: FC = () => {
   // Load our model
-  // https://sketchfab.com/3d-models/laurel-tree-low-poly-f1a5baa9d2e24f27a98be75f23f38f35
-  // https://sketchfab.com/3d-models/free-porsche-911-carrera-4s-d01b254483794de3819786d93e0e1ebf
+  // Credit: https://sketchfab.com/3d-models/black-panther-e73e355bdafa4fbeae0e42fca8c34bcc
   const gltf = useGLTF('/models/black_panther.glb')
 
   const meshSurfacePositions: Float32Array | null = useMemo(() => {
@@ -42,7 +42,7 @@ const MeshSamplerParticles: FC = () => {
 
   return (
     <>
-      <points>
+      <points position={[0, -1.5, 0]}>
         <bufferGeometry attach="geometry">
           <bufferAttribute
             attach="attributes-position"
@@ -54,8 +54,9 @@ const MeshSamplerParticles: FC = () => {
         <pointsMaterial
           attach="material"
           color="#45F1A6"
-          size={0.02}
-          opacity={0.3}
+          size={0.024}
+          opacity={0.4}
+          depthTest={false}
           transparent={true}
           sizeAttenuation={true}
           blending={AdditiveBlending}
