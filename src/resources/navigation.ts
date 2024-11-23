@@ -42,7 +42,7 @@ export const EXAMPLES: Record<ExamplePathname, Example> = {
     youtubeUrl: 'https://youtu.be/1GGe3j59aKQ',
   },
   [ExamplePathname.StarsParticles]: {
-    title: 'Stars Particles with 3D HTML Text',
+    title: 'Stars Wars particles with scrolling text',
     pathname: ExamplePathname.StarsParticles,
   },
   [ExamplePathname.WavePlane]: {
@@ -54,7 +54,7 @@ export const EXAMPLES: Record<ExamplePathname, Example> = {
     pathname: ExamplePathname.FBOEffects,
   },
   [ExamplePathname.InfiniteMarquee]: {
-    title: 'Infinite Scrolling Marquee',
+    title: 'Infinite marquee for logos or icons',
     pathname: ExamplePathname.InfiniteMarquee,
   },
 } as const

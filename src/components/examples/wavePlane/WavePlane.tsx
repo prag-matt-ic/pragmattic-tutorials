@@ -3,13 +3,12 @@
 import { useGSAP } from '@gsap/react'
 import { shaderMaterial } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame, useThree } from '@react-three/fiber'
+import { COSINE_GRADIENTS, type CosineGradientPreset } from '@thi.ng/color'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/src/ScrollTrigger'
 import { useControls } from 'leva'
 import React, { type FC, useMemo, useRef } from 'react'
 import { ShaderMaterial, Vector3 } from 'three'
-
-import { COSINE_COLOUR_PALETTES } from '@/resources/colours'
 
 import fragmentShader from './wavePlane.frag'
 import vertexShader from './wavePlane.vert'
@@ -27,10 +26,12 @@ type Uniforms = {
   uGridSize: number
 }
 
+const DEFAULT_COLOUR_PALETTE: Vector3[] = COSINE_GRADIENTS['heat1'].map((color) => new Vector3(...color))
+
 const INITIAL_UNIFORMS: Uniforms = {
   uTime: 0,
   uScrollOffset: 0,
-  uColourPalette: COSINE_COLOUR_PALETTES['BluePurpleOrange'],
+  uColourPalette: DEFAULT_COLOUR_PALETTE,
   uShowGrid: true,
   uGridSize: 16,
 }
@@ -88,11 +89,11 @@ const WavePlane: FC<{ screenHeights: number }> = ({ screenHeights }) => {
 
 function useConfig() {
   // Config for the shader
-  const { colourPalette, showGrid, gridSize } = useControls({
-    colourPalette: {
+  const { paletteKey, showGrid, gridSize } = useControls({
+    paletteKey: {
       label: 'Palette',
-      value: 'Rainbow',
-      options: Object.keys(COSINE_COLOUR_PALETTES),
+      value: 'heat1' as CosineGradientPreset,
+      options: Object.keys(COSINE_GRADIENTS),
     },
     showGrid: {
       label: 'Grid',
@@ -107,7 +108,9 @@ function useConfig() {
     },
   })
 
-  return { colourPalette: COSINE_COLOUR_PALETTES[colourPalette], showGrid, gridSize }
+  const colourPaletteVec3 = COSINE_GRADIENTS[paletteKey as CosineGradientPreset].map((color) => new Vector3(...color))
+
+  return { colourPalette: colourPaletteVec3, showGrid, gridSize }
 }
 
 declare global {
