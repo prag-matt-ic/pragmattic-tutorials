@@ -3,11 +3,11 @@ import { Environment, OrbitControls, PerspectiveCamera } from '@react-three/drei
 import { Canvas } from '@react-three/fiber'
 import React, { type FC } from 'react'
 
-import InstancedParticles from '@/components/instances/Instances'
-import BasicParticles from '@/components/particles/basicParticles/BasicParticles'
-import FBOParticles from '@/components/particles/fboParticles/FBOParticles'
-import MeshSamplerParticles from '@/components/particles/meshSamplerParticles/MeshSamplerParticles'
-import ParallaxParticles from '@/components/particles/parallaxParticles/ParallaxParticles'
+// import InstancedParticles from '@/components/instances/Instances'
+// import BasicParticles from '@/components/particles/basicParticles/BasicParticles'
+// import FBOParticles from '@/components/particles/fboParticles/FBOParticles'
+// import MeshSamplerParticles from '@/components/particles/meshSamplerParticles/MeshSamplerParticles'
+// import ParallaxParticles from '@/components/particles/parallaxParticles/ParallaxParticles'
 import PointerCamera from '@/components/PointerCamera'
 
 export default function Page() {
@@ -30,7 +30,7 @@ export default function Page() {
         {/* <BasicParticles /> */}
 
         {/* Part 2 - Parallax Particles for background */}
-        <ParallaxParticles />
+        {/* <ParallaxParticles /> */}
 
         {/* Part 3 - Instanced Mesh particles for 3D particles */}
         {/* <InstancedParticles /> */}
