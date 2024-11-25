@@ -27,7 +27,7 @@ const fragmentShader = glsl`
 
     varying vec2 v_uv;
 
-    // Simplex 2D noise
+    // Simplex 2D noise from https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
     vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
 
     float snoise(vec2 v){

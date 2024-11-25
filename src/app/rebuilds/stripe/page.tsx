@@ -29,15 +29,16 @@ import GLSLCanvas from '@/components/glsl/GLSLCanvas'
 // Not covering:
 // Nav bar
 
+const headingClass = 'text-[min(88px,7vmax)] font-bold leading-[1] tracking-tighter text-[#3a3a3a]'
+const gridWidthClass = 'relative grid w-full max-w-[1080px]'
+const headerGridClass = twJoin(gridWidthClass, 'grid-cols-1 pb-24 pt-40 md:grid-cols-[max(50%,400px)_1fr]')
+
 export default function StripeHeaderRebuild() {
-  const headingClass = 'text-[min(88px,7vmax)] font-bold leading-[1] tracking-tighter text-[#3a3a3a]'
-  const gridWidthClass = 'grid w-full max-w-[1080px]'
-  const headerGridClass =
-    'relative grid w-full max-w-[1080px] grid-cols-1 pb-24 pt-40 md:grid-cols-[max(50%,400px)_1fr]'
   return (
     <>
       <main className="relative min-h-screen w-full overflow-x-hidden text-black">
         {/* TODO: Hacky implemenation of dashed lines in the background */}
+        {/* see how this can be merged with the aside block below */}
         <div className="fixed left-0 right-0 top-0 z-0 flex h-full w-full justify-center bg-white px-5">
           <div className={twJoin(gridWidthClass, 'h-full grid-cols-2 md:grid-cols-4')}>
             <div className="size-full border-l border-[#E4E4E4]" />
@@ -115,14 +116,14 @@ export default function StripeHeaderRebuild() {
               alt="dashboard"
               height={580}
               width={920}
-              className="absolute bottom-12 left-56 col-start-2 h-full max-w-max border-black"
+              className="absolute bottom-12 left-56 col-start-2 hidden h-full max-w-max border-black md:block"
             />
             <div className="relative hidden h-full items-center justify-center md:flex">
-              <Image src={phoneImg} alt="phone" width={270} height={536} className="relative object-contain" />
+              <Image src={phoneImg} alt="phone" width={270} height={536} />
             </div>
           </header>
 
-          <section className="grid w-full max-w-[1080px] grid-cols-2 place-items-center gap-y-12 py-10 md:grid-cols-4">
+          <section className={twJoin(gridWidthClass, 'grid-cols-2 place-items-center gap-y-12 py-10 md:grid-cols-4')}>
             {BRAND_ICONS.map((logos) => (
               <Image src={logos.src} key={logos.name} alt={logos.name} />
             ))}
