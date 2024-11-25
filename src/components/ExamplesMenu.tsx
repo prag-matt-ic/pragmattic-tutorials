@@ -52,7 +52,7 @@ const ExamplesMenu: FC<Props> = ({ isShowing, onClose }) => {
           className="backdrop absolute inset-0 cursor-pointer bg-black/30 opacity-0 backdrop-blur-md"
           onClick={onClose}
         />
-        <nav className="absolute right-0 top-0 grid h-full w-[400px] grid-cols-1 grid-rows-[auto_1fr] gap-4 overflow-hidden bg-black px-4 py-6 text-white shadow-2xl">
+        <nav className="absolute right-0 top-0 grid h-full w-[400px] max-w-[calc(100%-40px)] grid-cols-1 grid-rows-[auto_1fr] gap-4 overflow-hidden bg-black px-4 py-6 text-white shadow-2xl">
           <Image src={pragmatticLogo} alt="Pragmattic" width={120} />
           <div className="w-full space-y-2 overflow-y-auto p-1">
             {Object.values(EXAMPLES).map(({ title, pathname, youtubeUrl, githubUrl }) => {
