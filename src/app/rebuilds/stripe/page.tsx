@@ -50,7 +50,9 @@ export default function StripeHeaderRebuild() {
         {/* Heading layered beneath the canvas without color burn blending */}
         <aside className="absolute flex h-full w-full flex-col items-center px-5">
           <div className={headerGridClass}>
-            <span className={twJoin(headingClass, 'mt-14 pl-6')}>Financial infrastructure to grow your revenue</span>
+            <span className={twJoin(headingClass, 'mt-14 block px-5')}>
+              Financial infrastructure to grow your revenue
+            </span>
           </div>
         </aside>
 
@@ -61,8 +63,8 @@ export default function StripeHeaderRebuild() {
         <div className="relative flex w-full flex-col items-center px-5">
           <header className={headerGridClass}>
             {/* Text section */}
-            <div className="space-y-7 pl-6">
-              <div className="flex h-7 w-fit items-center gap-2 whitespace-nowrap rounded-full bg-black/50 px-3 py-0.5 text-xs font-semibold text-white backdrop-blur">
+            <div className="space-y-7 px-5">
+              <div className="flex h-7 w-fit items-center gap-2 whitespace-nowrap rounded-full bg-black/40 px-3 py-0.5 text-xs font-semibold text-white backdrop-blur">
                 Sessions 2025<span className="block pb-1 text-[20px]">•</span>Early-bird registration now open
               </div>
 

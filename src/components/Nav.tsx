@@ -11,7 +11,7 @@ const Nav: FC = () => {
   const [isMenuShowing, setIsMenuShowing] = useState(false)
   return (
     <>
-      <nav className="fixed left-0 right-0 top-0 z-[500] flex items-center justify-between bg-[#000] px-6">
+      <nav className="fixed left-0 right-0 top-0 z-[500] flex items-center justify-between px-6">
         <Link href="/">
           <Image alt="Pragmattic" src={logo} height={20} className="h-11" />
         </Link>
