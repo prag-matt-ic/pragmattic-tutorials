@@ -29,8 +29,8 @@ const ExamplesMenu: FC<Props> = ({ isShowing, onClose }) => {
     gsap
       .timeline()
       .to('.backdrop', { opacity: 1, duration: 0.5 })
-      .fromTo('nav', { opacity: 0, xPercent: 100 }, { opacity: 1, xPercent: 0, duration: 0.3 }, 0)
-      .fromTo('.example', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.24, stagger: 0.05 }, '-=0.2')
+      .fromTo('nav', { opacity: 0, xPercent: 100 }, { opacity: 1, xPercent: 0, duration: 0.25 }, 0)
+      .fromTo('.example', { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2, stagger: 0.05 }, '-=0.2')
   })
 
   const onExit = contextSafe(() => {

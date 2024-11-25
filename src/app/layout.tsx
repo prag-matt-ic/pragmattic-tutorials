@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} bg-off-black font-sans antialiased`}>
+      <body className={`${inter.variable} w-full bg-off-black font-sans antialiased`}>
         <Nav />
         {children}
         <CustomCursor />

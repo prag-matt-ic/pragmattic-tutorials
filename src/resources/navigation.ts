@@ -12,6 +12,8 @@ export enum ExamplePathname {
   FBOEffects = '/examples/fbo-effects',
   InfiniteMarquee = '/examples/infinite-scrolling-marquee',
   WavePlane = '/examples/wave-plane',
+  // Rebuilds
+  StripeHeader = '/rebuilds/stripe',
 }
 
 type Example = {
@@ -66,5 +68,9 @@ export const EXAMPLES: Record<ExamplePathname, Example> = {
   [ExamplePathname.WavePlane]: {
     title: 'Wave Plane',
     pathname: ExamplePathname.WavePlane,
+  },
+  [ExamplePathname.StripeHeader]: {
+    title: 'Stripe Header Rebuild',
+    pathname: ExamplePathname.StripeHeader,
   },
 } as const

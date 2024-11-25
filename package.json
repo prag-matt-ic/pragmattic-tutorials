@@ -21,6 +21,7 @@
     "date-fns": "^4.1.0",
     "file-saver": "^2.0.5",
     "glsl-blend": "^1.0.3",
+    "glsl-canvas-js": "^0.2.9",
     "glsl-constants": "^2.0.1",
     "glsl-fast-gaussian-blur": "^1.0.2",
     "glsl-noise": "^0.0.0",
