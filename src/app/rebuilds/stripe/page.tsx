@@ -1,11 +1,10 @@
 import Image, { type StaticImageData } from 'next/image'
 import { type FC } from 'react'
-import { twJoin, twMerge } from 'tailwind-merge'
+import { twJoin } from 'tailwind-merge'
 
 import airbnbLogo from '@/assets/rebuilds/airbnb.svg'
 import amazonLogo from '@/assets/rebuilds/amazon.svg'
 import anthropicLogo from '@/assets/rebuilds/anthropic.svg'
-import dashboardImg from '@/assets/rebuilds/dashboard.svg'
 import googleLogo from '@/assets/rebuilds/google.svg'
 import marriottLogo from '@/assets/rebuilds/marriott.svg'
 import openAiLogo from '@/assets/rebuilds/openai.svg'
@@ -14,21 +13,8 @@ import shopifyLogo from '@/assets/rebuilds/shopify.svg'
 import urbnLogo from '@/assets/rebuilds/urbn.svg'
 import GLSLCanvas from '@/components/glsl/GLSLCanvas'
 
-// Rebuild the Stripe home page header using Tailwind CSS and React
-
-// Plan of action
-
-// Foreground:
-// - text section
-// - image section
-// - logos section
-
-// Background:
-// - canvas shader
-// - striped lines
-
-// Not covering:
-// Nav bar
+// Rebuild of the Stripe home page header using Tailwind CSS and React (November 2024)
+// https://stripe.com/gb
 
 export default function StripeHeaderRebuild() {
   const gridWidthClass = 'grid w-full max-w-[1080px]'
@@ -39,20 +25,20 @@ export default function StripeHeaderRebuild() {
     <>
       <main className="relative min-h-screen w-full overflow-x-hidden bg-white text-black">
         {/* Layer beneath the canvas */}
-        <div className="absolute flex h-full w-full flex-col items-center px-5">
+        <div className="pointer-events-none absolute flex h-full w-full flex-col items-center px-5">
+          {/* Pinstripe lines created using borders */}
           <div className={twJoin(gridWidthClass, 'absolute h-full grid-cols-2 px-5 md:grid-cols-4 md:px-0')}>
             <div className="size-full border-l-2 border-[#F1F1F1]" />
             <div className="hidden size-full border-l-2 border-r-2 border-dashed border-[#F1F1F1] md:block" />
             <div className="hidden size-full border-r-2 border-dashed border-[#F1F1F1] md:block" />
             <div className="size-full border-r-2 border-[#F1F1F1]" />
           </div>
-
-          <header className={headerGridClass}>
-            {/* Text section */}
-            <div className="space-y-8 px-4">
+          {/* heading aligned to the one above */}
+          <div className={headerGridClass}>
+            <div className="px-4">
               <h1 className={twJoin(h1Class, 'mt-14')}>Financial infrastructure to grow your revenue</h1>
             </div>
-          </header>
+          </div>
         </div>
 
         {/* Background shader */}
@@ -75,7 +61,7 @@ export default function StripeHeaderRebuild() {
                 Financial infrastructure to grow your revenue
               </span>
 
-              <p className="text-lg">
+              <p className="text-base md:text-lg">
                 Join the millions of companies of all sizes that use Stripe to accept payments online and in person,
                 embed financial services, power custom revenue models, and build a more profitable business.
               </p>
@@ -97,7 +83,7 @@ export default function StripeHeaderRebuild() {
 
             {/* Images section */}
             <div className="absolute bottom-48 left-56 col-start-2 h-[580px] w-[920px] overflow-hidden rounded-2xl bg-white/30 shadow-2xl">
-              <div className="ml-56 mt-16 size-full rounded-tl-2xl bg-white" />
+              <div className="ml-56 mt-16 size-full rounded-tl-lg bg-white" />
             </div>
             <div className="relative hidden h-full items-center justify-center md:flex">
               <Image
@@ -105,10 +91,10 @@ export default function StripeHeaderRebuild() {
                 alt="phone"
                 width={270}
                 height={536}
+                className="relative object-contain"
                 style={{
                   filter: 'drop-shadow(0 6px 24px rgba(0,0,0,0.4))',
                 }}
-                className="relative object-contain"
               />
             </div>
           </header>

@@ -71,13 +71,14 @@ const fragmentShader = glsl`
         float timeB = u_time * 0.2;
         float timeC = u_time * 0.3;
         
-        float noiseA = snoise(v_uv * 0.8 + timeA) * 0.5 + 0.5;
-        float noiseB = snoise(v_uv * 0.5 - timeB) * 0.5 + 0.5;
-        float noiseC = snoise(v_uv * 1.2 + timeC) * 0.5 + 0.5;
+        // Normalized noise values with different uv scales
+        float noiseA = snoise(v_uv + timeA) * 0.5 + 0.5;
+        float noiseB = snoise(v_uv * 0.2 - timeB) * 0.5 + 0.5;
+        float noiseC = snoise(v_uv * 0.5 + timeC) * 0.5 + 0.5;
 
         // Creates 2 layers for above and below the wave
         vec4 colourA = mix(mix(COLOUR_YELLOW, COLOUR_PURPLE, noiseA), COLOUR_BLUE, noiseC);
-        vec4 colourB = mix(mix(COLOUR_BLUE, COLOUR_YELLOW, noiseC), COLOUR_PEACH, noiseB);
+        vec4 colourB = mix(mix(COLOUR_PEACH, COLOUR_YELLOW, noiseC), COLOUR_BLUE, noiseB);
 
         // Mix the 2 colours using a wave pattern
         float mixWave = sin((v_uv.x * 4.0) + u_time * 0.25) + (v_uv.y + noiseB * 0.5 + 1.0);
@@ -85,8 +86,6 @@ const fragmentShader = glsl`
         mixWave = smoothstep(0.0, maxStep, mixWave - noiseB * 0.2);
 
         vec4 finalColor = mix(colourA, colourB, mixWave);
-
-        // vec4 finalColor = mix(vec4(1.0), vec4(0.0), mixWave);
 
         gl_FragColor = finalColor;
     }
