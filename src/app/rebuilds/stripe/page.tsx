@@ -1,5 +1,6 @@
 import Image, { type StaticImageData } from 'next/image'
-import { twJoin } from 'tailwind-merge'
+import { type FC } from 'react'
+import { twJoin, twMerge } from 'tailwind-merge'
 
 import airbnbLogo from '@/assets/rebuilds/airbnb.svg'
 import amazonLogo from '@/assets/rebuilds/amazon.svg'
@@ -29,33 +30,30 @@ import GLSLCanvas from '@/components/glsl/GLSLCanvas'
 // Not covering:
 // Nav bar
 
-const headingClass = 'text-[min(88px,7vmax)] font-bold leading-[1] tracking-tighter text-[#3a3a3a]'
-const gridWidthClass = 'relative grid w-full max-w-[1080px]'
-const headerGridClass = twJoin(gridWidthClass, 'grid-cols-1 pb-24 pt-40 md:grid-cols-[max(50%,400px)_1fr]')
-
 export default function StripeHeaderRebuild() {
+  const gridWidthClass = 'grid w-full max-w-[1080px]'
+  const headerGridClass = `${gridWidthClass} relative grid-cols-1 pb-24 pt-32 md:grid-cols-[max(50%,400px)_1fr]`
+  const h1Class = 'text-[min(88px,7vmax)] font-bold leading-[1.1] tracking-tighter text-[#3a3a3a]'
+
   return (
     <>
-      <main className="relative min-h-screen w-full overflow-x-hidden text-black">
-        {/* TODO: Hacky implemenation of dashed lines in the background */}
-        {/* see how this can be merged with the aside block below */}
-        <div className="fixed left-0 right-0 top-0 z-0 flex h-full w-full justify-center bg-white px-5">
-          <div className={twJoin(gridWidthClass, 'h-full grid-cols-2 md:grid-cols-4')}>
-            <div className="size-full border-l border-[#E4E4E4]" />
-            <div className="relative hidden size-full border-l border-r border-dashed border-[#E4E4E4] md:block" />
-            <div className="relative hidden size-full border-r border-dashed border-[#E4E4E4] md:block" />
-            <div className="relative size-full border-r border-[#E4E4E4]" />
+      <main className="relative min-h-screen w-full overflow-x-hidden bg-white text-black">
+        {/* Layer beneath the canvas */}
+        <div className="absolute flex h-full w-full flex-col items-center px-5">
+          <div className={twJoin(gridWidthClass, 'absolute h-full grid-cols-2 px-5 md:grid-cols-4 md:px-0')}>
+            <div className="size-full border-l-2 border-[#F1F1F1]" />
+            <div className="hidden size-full border-l-2 border-r-2 border-dashed border-[#F1F1F1] md:block" />
+            <div className="hidden size-full border-r-2 border-dashed border-[#F1F1F1] md:block" />
+            <div className="size-full border-r-2 border-[#F1F1F1]" />
           </div>
-        </div>
 
-        {/* Heading layered beneath the canvas without color burn blending */}
-        <aside className="absolute flex h-full w-full flex-col items-center px-5">
-          <div className={headerGridClass}>
-            <span className={twJoin(headingClass, 'mt-14 block px-5')}>
-              Financial infrastructure to grow your revenue
-            </span>
-          </div>
-        </aside>
+          <header className={headerGridClass}>
+            {/* Text section */}
+            <div className="space-y-8 px-4">
+              <h1 className={twJoin(h1Class, 'mt-14')}>Financial infrastructure to grow your revenue</h1>
+            </div>
+          </header>
+        </div>
 
         {/* Background shader */}
         <GLSLCanvas />
@@ -64,16 +62,20 @@ export default function StripeHeaderRebuild() {
         <div className="relative flex w-full flex-col items-center px-5">
           <header className={headerGridClass}>
             {/* Text section */}
-            <div className="space-y-7 px-5">
-              <div className="flex h-7 w-fit items-center gap-2 whitespace-nowrap rounded-full bg-black/40 px-3 py-0.5 text-xs font-semibold text-white backdrop-blur">
-                Sessions 2025<span className="block pb-1 text-[20px]">•</span>Early-bird registration now open
+            <div className="space-y-8 px-4">
+              <div className="flex h-6 w-fit items-center gap-2 whitespace-nowrap rounded-full bg-black/30 py-0.5 pl-3 pr-2 text-xs font-semibold text-white backdrop-blur">
+                Sessions 2025<span className="block pb-1 text-[20px]">•</span>
+                <a className="group flex cursor-pointer items-center gap-2 hover:opacity-60">
+                  Early-bird registration now open
+                  <ArrowIcon />
+                </a>
               </div>
 
-              <h1 className={twJoin(headingClass, 'isolate mix-blend-color-burn')}>
+              <span className={twJoin(h1Class, 'isolate block mix-blend-color-burn')}>
                 Financial infrastructure to grow your revenue
-              </h1>
+              </span>
 
-              <p className="text-lg text-off-black">
+              <p className="text-lg">
                 Join the millions of companies of all sizes that use Stripe to accept payments online and in person,
                 embed financial services, power custom revenue models, and build a more profitable business.
               </p>
@@ -81,50 +83,38 @@ export default function StripeHeaderRebuild() {
               <form className="relative flex w-96 items-center">
                 <input
                   type="email"
-                  className="relative h-12 w-full rounded-full border border-black/10 bg-[#f6f9fb] py-2 pl-4 pr-32 outline-offset-1 focus:outline-[#0048e5]"
+                  className="relative h-12 w-full rounded-full border border-black/10 bg-[#f6f9fb] py-2 pl-4 pr-32 outline-offset-2 focus:outline-[#4d5ae0]"
                   placeholder="Email address"
                 />
                 <button
                   type="submit"
                   className="group absolute right-2 flex items-center gap-2.5 rounded-full bg-black py-1 pl-4 pr-2 font-semibold text-white hover:bg-mid">
                   Start now
-                  {/* Icon with hover effect */}
-                  <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-                    <line
-                      x1="0"
-                      y1="5"
-                      x2="6"
-                      y2="5"
-                      stroke="#fff"
-                      strokeWidth={2}
-                      fill="#fff"
-                      className="opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                    />
-                    <path
-                      d="M1 1l4 4-4 4"
-                      fill="#fff"
-                      className="transition-transform duration-150 group-hover:translate-x-1"
-                    />
-                  </svg>
+                  <ArrowIcon />
                 </button>
               </form>
             </div>
 
             {/* Images section */}
-            <Image
-              src={dashboardImg}
-              alt="dashboard"
-              height={580}
-              width={920}
-              className="absolute bottom-12 left-56 col-start-2 hidden h-full max-w-max border-black md:block"
-            />
+            <div className="absolute bottom-48 left-56 col-start-2 h-[580px] w-[920px] overflow-hidden rounded-2xl bg-white/30 shadow-2xl">
+              <div className="ml-56 mt-16 size-full rounded-tl-2xl bg-white" />
+            </div>
             <div className="relative hidden h-full items-center justify-center md:flex">
-              <Image src={phoneImg} alt="phone" width={270} height={536} />
+              <Image
+                src={phoneImg}
+                alt="phone"
+                width={270}
+                height={536}
+                style={{
+                  filter: 'drop-shadow(0 6px 24px rgba(0,0,0,0.4))',
+                }}
+                className="relative object-contain"
+              />
             </div>
           </header>
 
           <section className={twJoin(gridWidthClass, 'grid-cols-2 place-items-center gap-y-12 py-10 md:grid-cols-4')}>
-            {BRAND_ICONS.map((logos) => (
+            {BRAND_LOGOS.map((logos) => (
               <Image src={logos.src} key={logos.name} alt={logos.name} />
             ))}
           </section>
@@ -134,7 +124,27 @@ export default function StripeHeaderRebuild() {
   )
 }
 
-const BRAND_ICONS: { name: string; src: StaticImageData }[] = [
+const ArrowIcon: FC = () => {
+  return (
+    <svg width="12" height="12" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect
+        x="2"
+        y="34"
+        width="56"
+        height="11"
+        fill="white"
+        className="opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+      />
+      <path
+        d="M27.5104 71L20 63.4896L43.9896 39.5L20 15.5104L27.5104 8L59.0104 39.5L27.5104 71Z"
+        fill="white"
+        className="-translate-x-2 transition-transform duration-200 group-hover:translate-x-3"
+      />
+    </svg>
+  )
+}
+
+const BRAND_LOGOS: { name: string; src: StaticImageData }[] = [
   { name: 'OpenAI', src: openAiLogo },
   { name: 'Amazon', src: amazonLogo },
   { name: 'Google', src: googleLogo },
