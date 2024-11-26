@@ -19,7 +19,7 @@ import GLSLCanvas from '@/components/glsl/GLSLCanvas'
 export default function StripeHeaderRebuild() {
   const gridWidthClass = 'grid w-full max-w-[1080px]'
   const headerGridClass = `${gridWidthClass} relative grid-cols-1 pb-24 pt-32 md:grid-cols-[max(50%,400px)_1fr]`
-  const h1Class = 'text-[min(88px,7vmax)] font-bold leading-[1.1] tracking-tighter text-[#3a3a3a]'
+  const h1Class = 'text-[min(88px,7vmax)] font-bold leading-[1.1] tracking-tighter text-[#2F2E31]'
 
   return (
     <>
@@ -74,7 +74,7 @@ export default function StripeHeaderRebuild() {
                 />
                 <button
                   type="submit"
-                  className="group absolute right-2 flex items-center gap-2.5 rounded-full bg-black py-1 pl-4 pr-2 font-semibold text-white hover:bg-mid">
+                  className="group absolute right-2 flex items-center gap-2.5 rounded-full bg-black py-1 pl-4 pr-2 font-semibold text-white hover:bg-black/70">
                   Start now
                   <ArrowIcon />
                 </button>
