@@ -21,8 +21,8 @@ export const useHomeSceneStore = create<SceneStore>((set, get) => ({
   activeSection: SceneSection.None,
   sectionsSeen: {
     [SceneSection.None]: true,
-    [SceneSection.Purpose]: true,
-    [SceneSection.Design]: true,
+    [SceneSection.Purpose]: false,
+    [SceneSection.Design]: false,
     [SceneSection.Engineering]: false,
   },
   setSectionsSeen: (activeSection) =>
