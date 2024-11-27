@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import Button from '@/components/Button'
+import Button from '@/components/buttons/Button'
 import { SectionId } from '@/components/HomeNav'
 import Modal from '@/components/Modal'
 

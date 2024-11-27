@@ -1,32 +1,23 @@
-'use client'
-import { Canvas } from '@react-three/fiber'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
 import logo from '@/assets/brand/pragmattic.svg'
+import Button from '@/components/buttons/Button'
+import HomeClient from '@/components/home/HomeClient'
 import { ExamplePathname } from '@/resources/navigation'
-import Button from '@/components/Button'
 
 export default function HomePage() {
   return (
     <>
-      {/* <Canvas
-        className="!fixed inset-0"
-        dpr={2}
-        gl={{
-          antialias: false,
-        }}>
-        <ambientLight intensity={2} />
-        <PointerCamera cameraProps={{ far: 20 }} />
-      </Canvas> */}
+      <HomeClient />
 
-      <main className="h-lvh w-full bg-black p-16 font-sans">
-        <h2 className="my-20 text-white">Something cool, coming soon!</h2>
-
-        <Button variant="outlined" href={ExamplePathname.ImageSequence}>
-          Check out the examples
-        </Button>
+      <main className="pointer-events-none relative z-10 h-lvh w-full px-5 py-16 font-sans">
+        <header className="w-fit rounded-2xl bg-black/10 p-6">
+          <h2 className="text-2xl font-bold text-white">🚧 Under Construction 🚧</h2>
+          <Button variant="filled" size="small" className="mt-6" href={ExamplePathname.ImageSequence}>
+            Check out the examples
+          </Button>
+        </header>
       </main>
     </>
   )

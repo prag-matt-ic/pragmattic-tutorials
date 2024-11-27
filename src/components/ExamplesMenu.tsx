@@ -53,7 +53,10 @@ const ExamplesMenu: FC<Props> = ({ isShowing, onClose }) => {
           onClick={onClose}
         />
         <nav className="absolute right-0 top-0 grid h-full w-[400px] max-w-[calc(100%-40px)] grid-cols-1 grid-rows-[auto_1fr] gap-4 overflow-hidden bg-black px-4 py-6 text-white shadow-2xl">
-          <Image src={pragmatticLogo} alt="Pragmattic" width={120} />
+          <Link href="/" onClick={onClose}>
+            <Image alt="Pragmattic" src={pragmatticLogo} height={20} className="h-5" />
+          </Link>
+
           <div className="w-full space-y-2 overflow-y-auto p-1">
             {Object.values(EXAMPLES).map(({ title, pathname, youtubeUrl, githubUrl }) => {
               const isActive = pathname === currentPathname

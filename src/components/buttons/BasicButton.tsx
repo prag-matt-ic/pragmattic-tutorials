@@ -47,7 +47,7 @@ const Button: FC<Props> = (props) => {
     <button
       {...rest}
       className={twMerge(
-        'flex select-none items-center justify-center gap-3 overflow-hidden whitespace-nowrap rounded-full font-sans font-medium leading-none tracking-wide transition-colors duration-300',
+        'pointer-events-auto flex select-none items-center justify-center gap-3 overflow-hidden whitespace-nowrap rounded-full font-sans font-medium leading-none tracking-wide transition-colors duration-300',
         SIZE_CLASSES[size],
         VARIANT_CLASSES[variant][colour],
         className,
