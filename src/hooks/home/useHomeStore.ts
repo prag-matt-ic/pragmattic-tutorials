@@ -1,28 +1,6 @@
 import { create } from 'zustand'
 
-export enum SectionId {
-  Welcome = 'welcome',
-  Services = 'services',
-  Philosophy = 'philosophy',
-  Testimonials = 'testimonials',
-  Contact = 'contact',
-}
-
-type HomeStore = {
-  isShowingLoading: boolean
-  setIsShowingLoading: (hasLoadedScene: boolean) => void
-  activeSectionId: SectionId
-  setActiveSectionId: (sectionId: SectionId) => void
-}
-
-export const useHomeStore = create<HomeStore>((set, get) => ({
-  isShowingLoading: true,
-  setIsShowingLoading: (isShowingLoading: boolean) => set({ isShowingLoading }),
-  activeSectionId: SectionId.Welcome,
-  setActiveSectionId: (activeSectionId: SectionId) => set({ activeSectionId: activeSectionId }),
-}))
-
-export enum HeaderSection {
+export enum SceneSection {
   None = 'none',
   Purpose = 'purpose',
   Design = 'design',
@@ -32,26 +10,26 @@ export enum HeaderSection {
 type SceneStore = {
   hasScrolledIntoView: boolean
   setHasScrolledIntoView: (hasScrolledIntoView: boolean) => void
-  activeSection: HeaderSection
-  hasSeenSections: Record<HeaderSection, boolean>
-  setActiveSection: (activeSection: HeaderSection) => void
+  activeSection: SceneSection
+  sectionsSeen: Record<SceneSection, boolean>
+  setSectionsSeen: (activeSection: SceneSection) => void
 }
 
 export const useHomeSceneStore = create<SceneStore>((set, get) => ({
   hasScrolledIntoView: false,
   setHasScrolledIntoView: (hasScrolledIntoView) => set({ hasScrolledIntoView }),
-  activeSection: HeaderSection.None,
-  hasSeenSections: {
-    [HeaderSection.None]: true,
-    [HeaderSection.Purpose]: false,
-    [HeaderSection.Design]: false,
-    [HeaderSection.Engineering]: false,
+  activeSection: SceneSection.None,
+  sectionsSeen: {
+    [SceneSection.None]: true,
+    [SceneSection.Purpose]: true,
+    [SceneSection.Design]: true,
+    [SceneSection.Engineering]: false,
   },
-  setActiveSection: (activeSection) =>
+  setSectionsSeen: (activeSection) =>
     set({
       activeSection,
-      hasSeenSections: {
-        ...get().hasSeenSections,
+      sectionsSeen: {
+        ...get().sectionsSeen,
         [activeSection]: true,
       },
     }),

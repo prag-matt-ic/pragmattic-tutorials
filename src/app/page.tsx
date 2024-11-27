@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import HomeCanvas from '@/components/home/HomeCanvas'
 import HomeHeader from '@/components/home/HomeHeader'
 
@@ -12,7 +10,7 @@ export default function HomePage() {
         <HomeHeader />
 
         <section className="fixed bottom-4 left-4 rounded-md bg-black/20 p-3">
-          <h3 className="text-xl font-bold text-white">🚧 Under Construction 🚧</h3>
+          <h3 className="font-bold uppercase text-white">🚧 Under Construction 🚧</h3>
         </section>
       </main>
     </>
