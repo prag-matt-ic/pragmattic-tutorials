@@ -30,12 +30,16 @@ export enum HeaderSection {
 }
 
 type SceneStore = {
+  hasScrolledIntoView: boolean
+  setHasScrolledIntoView: (hasScrolledIntoView: boolean) => void
   activeSection: HeaderSection
   hasSeenSections: Record<HeaderSection, boolean>
   setActiveSection: (activeSection: HeaderSection) => void
 }
 
 export const useHomeSceneStore = create<SceneStore>((set, get) => ({
+  hasScrolledIntoView: false,
+  setHasScrolledIntoView: (hasScrolledIntoView) => set({ hasScrolledIntoView }),
   activeSection: HeaderSection.None,
   hasSeenSections: {
     [HeaderSection.None]: true,

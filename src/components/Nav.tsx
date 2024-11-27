@@ -11,12 +11,12 @@ const Nav: FC = () => {
   const [isMenuShowing, setIsMenuShowing] = useState(false)
   return (
     <>
-      <nav className="fixed left-0 right-0 top-0 z-[500] flex items-center justify-between px-6">
+      <nav className="fixed left-0 right-0 top-0 z-[500] flex items-center justify-between pl-6">
         <Link href="/">
           <Image alt="Pragmattic" src={logo} height={20} className="h-11" />
         </Link>
 
-        <button className="p-2" onClick={() => setIsMenuShowing((prev) => !prev)}>
+        <button className="rounded-bl-lg bg-black p-2.5" onClick={() => setIsMenuShowing((prev) => !prev)}>
           <Image src={menuIcon} alt="menu" width={32} height={32} />
         </button>
       </nav>

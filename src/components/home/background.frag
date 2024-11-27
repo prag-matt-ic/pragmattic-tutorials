@@ -1,4 +1,4 @@
-// gradient.frag
+// Home Background Fragment shader
 
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 
@@ -7,17 +7,45 @@ uniform float uAspect;
 
 varying vec2 vUv;
 
-// Color palette function
-vec3 palette(in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d) {
-  return a + b * cos(6.28318 * (c * t + d));
-}
+// #2E2A37
+const vec4 MID = vec4(0.18, 0.16, 0.22, 1.0);
+// #2E2245
+const vec4 PURPLE = vec4(0.18, 0.13, 0.27, 1.0); 
+// #1E1B23
+const vec4 OFF_BLACK = vec4(0.12, 0.11, 0.13, 1.0);
+// #0A090C
+const vec4 BLACK = vec4(0.04, 0.04, 0.05, 1.0);
+// #0E5D3A
+const vec4 GREEN = vec4(0.05, 0.36, 0.23, 1.0);
+// #228AA6
+const vec4 BLUE = vec4(0.13, 0.54, 0.65, 1.0);
+
 
 void main() {
-  float colourInput = noise(vec3(vUv, uTime * 0.25));
+  float timeA = uTime * 0.2;
+  float timeB = uTime * 0.4;
+        
+  // Normalized noise values with different uv scales
+  float noiseA = noise(vec3(vUv * 0.6, timeA));
+  float noiseB = noise(vec3(vUv * 1.4, timeB));
+  float noiseC = noise(vec3(vUv * 3.0, timeA));
 
-  // Getting these values from this site: http://dev.thi.ng/gradients/
-  // [[0.500 0.500 0.500] [0.666 0.666 0.666] [1.000 1.000 1.000] [0.000 0.333 0.667]]
-  vec3 color = palette(colourInput, vec3(0.5), vec3(0.166), vec3(1.0), vec3(0.0, 0.333, 0.667));
+  // Creates 2 layers for above and below the wave
+  vec4 darkColour = mix(mix(MID, OFF_BLACK, noiseA), BLACK, noiseB);
+  vec4 greenColour = mix(BLUE, GREEN, noiseC);
 
-  gl_FragColor = vec4(color, 1.0);;
+  // vec2 uv = vUv;
+  // uv.y /= uAspect;
+
+  // vec2 center = vec2(0.5, 0.5 / uAspect);
+  // float radius = 0.33;
+  // float circle = distance(uv, center) / radius;
+
+  // float smoothCircle = smoothstep(0., 0.5, circle);
+
+  // vec4 finalColour = BLACK;
+
+  // finalColour = mix(greenColour, darkColour, smoothCircle);
+
+  gl_FragColor = darkColour;
 }

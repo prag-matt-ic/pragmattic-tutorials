@@ -32,6 +32,7 @@ const SkillPill: FC<Props> = ({ section }) => {
   const activeSection = useHomeSceneStore((s) => s.activeSection)
   const setActiveSection = useHomeSceneStore((s) => s.setActiveSection)
   const hasSeenSections = useHomeSceneStore((s) => s.hasSeenSections)
+  const hasScrolledIntoView = useHomeSceneStore((s) => s.hasScrolledIntoView)
 
   const isOpen = activeSection === section
 
@@ -109,7 +110,7 @@ const SkillPill: FC<Props> = ({ section }) => {
   }
 
   const showPill = (): boolean => {
-    // if (!hasCompletedScroll) return false
+    if (!hasScrolledIntoView) return false
     if (section === HeaderSection.Purpose) return true
     if (section === HeaderSection.Design && hasSeenSections[HeaderSection.Purpose]) return true
     if (section === HeaderSection.Engineering && hasSeenSections[HeaderSection.Design]) return true

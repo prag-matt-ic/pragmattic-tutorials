@@ -1,14 +1,15 @@
 'use client'
 import { PerspectiveCamera } from '@react-three/drei'
 import { type PerspectiveCameraProps, useFrame, useThree } from '@react-three/fiber'
-import React, { type FC, useEffect, useRef } from 'react'
+import React, { type FC, forwardRef, useEffect, useRef } from 'react'
+import { PerspectiveCamera as PType } from 'three'
 
 type Props = {
   intensity?: number
   cameraProps?: PerspectiveCameraProps
 }
 
-const PointerCamera: FC<Props> = ({ cameraProps = {}, intensity = 0.05 }) => {
+const PointerCamera = forwardRef<PType, Props>(({ cameraProps = {}, intensity = 0.05 }, ref) => {
   const { viewport, size } = useThree()
   let cameraPointer = useRef({ x: 0, y: 0 })
 
@@ -32,7 +33,19 @@ const PointerCamera: FC<Props> = ({ cameraProps = {}, intensity = 0.05 }) => {
     camera.lookAt(scene.position)
   })
 
-  return <PerspectiveCamera makeDefault={true} position={[0, 0, 5]} fov={60} far={20} near={0.001} {...cameraProps} />
-}
+  return (
+    <PerspectiveCamera
+      ref={ref}
+      makeDefault={true}
+      position={[0, 0, 5]}
+      fov={60}
+      far={20}
+      near={0.001}
+      {...cameraProps}
+    />
+  )
+})
+
+PointerCamera.displayName = 'PointerCamera'
 
 export default PointerCamera
