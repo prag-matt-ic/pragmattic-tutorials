@@ -6,9 +6,9 @@ import gsap from 'gsap'
 import SplitText from 'gsap/dist/SplitText'
 import { type FC, type ReactNode, useRef, useState } from 'react'
 import { Transition } from 'react-transition-group'
+import { twJoin } from 'tailwind-merge'
 
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
-import { twJoin } from 'tailwind-merge'
 
 type Props = {
   section: SceneSection
@@ -83,6 +83,7 @@ const SkillPill: FC<Props> = ({ section }) => {
 
   const onModalEnter = () => {
     if (!refs.floating.current) return
+    modalTextTween.current?.kill()
 
     const paragraph = refs.floating.current.querySelector('p')
     const splitParagraph = new SplitText(paragraph, {
@@ -90,7 +91,6 @@ const SkillPill: FC<Props> = ({ section }) => {
     })
     gsap.set(refs.floating.current, { opacity: 1 })
 
-    modalTextTween.current?.kill()
     modalTextTween.current = gsap.fromTo(
       splitParagraph.chars,
       { opacity: 0 },
@@ -99,9 +99,6 @@ const SkillPill: FC<Props> = ({ section }) => {
         duration: 0.4,
         stagger: 0.012,
         ease: 'power2.out',
-        onComplete: () => {
-          setTimeout(() => setIsAnimatingModalText(false), 1000)
-        },
       },
     )
   }
@@ -111,9 +108,8 @@ const SkillPill: FC<Props> = ({ section }) => {
     modalTextTween.current = gsap.to(refs.floating.current, {
       opacity: 0,
       duration: 0.3,
-      ease: 'power1.out',
+      ease: 'power1.in',
     })
-    setIsAnimatingModalText(false)
   }
 
   const showPill = (): boolean => {
@@ -129,7 +125,7 @@ const SkillPill: FC<Props> = ({ section }) => {
       <div className="h-12 w-48 -translate-x-1/2 -translate-y-1/2 items-center justify-center lg:flex">
         <Transition
           in={showPill()}
-          timeout={{ enter: 0, exit: 400 }}
+          timeout={{ enter: 0, exit: 350 }}
           mountOnEnter={true}
           unmountOnExit={true}
           onEnter={onButtonEnter}
@@ -149,7 +145,7 @@ const SkillPill: FC<Props> = ({ section }) => {
 
       {/* Floating Info modal */}
       <Transition
-        in={isAnimatingModalText || isOpen}
+        in={isOpen}
         timeout={{ enter: 0, exit: 350 }}
         mountOnEnter={true}
         unmountOnExit={true}

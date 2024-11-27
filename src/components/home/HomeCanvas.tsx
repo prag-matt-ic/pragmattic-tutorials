@@ -1,5 +1,6 @@
 'use client'
 import { useGSAP } from '@gsap/react'
+import { Stats } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
@@ -23,6 +24,7 @@ const HomeCanvas: FC = () => {
         powerPreference: 'high-performance',
       }}>
       <MainScene />
+      {/* <Stats /> */}
     </Canvas>
   )
 }

@@ -51,17 +51,18 @@ const Rings: FC = () => {
     () =>
       useHomeSceneStore.subscribe((s) => {
         activeSection.current = s.activeSection
-        // Speed up the tweens
-        if (designTorusTween.current && engineeringTorusTween.current) {
-          gsap.to(designTorusTween.current, {
-            timeScale: s.activeSection === SceneSection.Design ? 30 : 1,
-            duration: 3,
-          })
-          gsap.to(engineeringTorusTween.current, {
-            timeScale: s.activeSection === SceneSection.Engineering ? 30 : 1,
-            duration: 3,
-          })
-        }
+        // Speed up the rotation tweens
+        if (!designTorusTween.current || !engineeringTorusTween.current) return
+        gsap.to(designTorusTween.current, {
+          timeScale: s.activeSection === SceneSection.Design ? 20 : 1,
+          duration: 3,
+          ease: 'power2.out',
+        })
+        gsap.to(engineeringTorusTween.current, {
+          timeScale: s.activeSection === SceneSection.Engineering ? 20 : 1,
+          duration: 3,
+          ease: 'power2.out',
+        })
       }),
     [],
   )
@@ -77,7 +78,7 @@ const Rings: FC = () => {
 
     gsap.fromTo(
       group.current.position,
-      { y: -8, z: -15 },
+      { y: -10, z: -15 },
       {
         ease: 'power1.in',
         z: 0,
@@ -146,7 +147,7 @@ const Rings: FC = () => {
   })
 
   return (
-    <group ref={group} position={[0, -8, -15]}>
+    <group ref={group} position={[0, -10, -15]}>
       {/* TODO: Create custom shader material for the sphere and rings */}
       {/* Fade them in and out based on depth */}
       {/* Highlight them when the active section is hovered */}
@@ -188,7 +189,7 @@ const Rings: FC = () => {
         <SkillPill section={SceneSection.Design} />
       </Billboard>
 
-      <Billboard position={[0, -1.4, 1]}>
+      <Billboard position={[0, -1.6, 1]}>
         <SkillPill section={SceneSection.Engineering} />
       </Billboard>
     </group>
