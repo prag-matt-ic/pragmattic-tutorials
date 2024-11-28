@@ -2,9 +2,9 @@
 import { Plane } from '@react-three/drei'
 import { shaderMaterial } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame, useThree } from '@react-three/fiber'
-
 import React, { type FC, useRef } from 'react'
 import { ShaderMaterial } from 'three'
+
 import { useHomeSceneStore } from '@/hooks/home/useHomeStore'
 
 import bgFragment from './background.frag'
@@ -41,7 +41,6 @@ const HomeBackgroundPlane: FC = () => {
       <homeBackgroundShaderMaterial
         key={HomeBackgroundShaderMaterial.key}
         ref={shader}
-        // Uniforms
         uTime={0}
         uAspect={viewport.aspect}
       />

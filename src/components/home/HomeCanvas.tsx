@@ -23,25 +23,17 @@ const HomeCanvas: FC = () => {
         antialias: false,
         powerPreference: 'high-performance',
       }}>
-      <MainScene />
+      <ambientLight intensity={1} />
+      <PointerCamera cameraProps={{ far: 25, position: [0, 0, 5] }} intensity={0.04} />
+      {/* Add middleground parallax  */}
+      <HomeBackgroundPlane />
+      <Rings />
       {/* <Stats /> */}
     </Canvas>
   )
 }
 
 export default HomeCanvas
-
-const MainScene: FC = () => {
-  return (
-    <>
-      <PointerCamera cameraProps={{ far: 25, position: [0, 0, 5] }} intensity={0.04} />
-      <ambientLight intensity={1} />
-      <HomeBackgroundPlane />
-      <Rings />
-      {/* TODO: something fun when all of the 3 pillars have been hovered - particles effects? */}
-    </>
-  )
-}
 
 // type HomeEffectsUniforms = {
 //   uTime: number

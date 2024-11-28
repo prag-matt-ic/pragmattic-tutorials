@@ -16,6 +16,8 @@ import GLSLCanvas from '@/components/glsl/GLSLCanvas'
 // Rebuild of the Stripe home page header using Tailwind CSS and React (November 2024)
 // https://stripe.com/gb
 
+// TODO: fix on mobile
+
 export default function StripeHeaderRebuild() {
   const gridWidthClass = 'grid w-full max-w-[1080px]'
   const headerGridClass = `${gridWidthClass} relative grid-cols-1 pb-24 pt-32 md:grid-cols-[max(50%,400px)_1fr]`

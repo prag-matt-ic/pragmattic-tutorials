@@ -1,3 +1,4 @@
+'use client' // TODO: remove this in future
 import HomeCanvas from '@/components/home/HomeCanvas'
 import HomeHeader from '@/components/home/HomeHeader'
 
