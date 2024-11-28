@@ -5,6 +5,7 @@ import { useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
 import React, { type FC, useEffect, useRef } from 'react'
 import {
+  AdditiveBlending,
   BufferGeometry,
   Color,
   Group,
@@ -93,6 +94,8 @@ const Rings: FC = () => {
           intensity: s.activeSection === SceneSection.Purpose ? 5 : 0.8,
           duration: 0.5,
         })
+        if (!purposeMaterial.current) return
+        purposeMaterial.current.color.set(activeSection.current === SceneSection.Purpose ? GREEN_VEC3 : '#F6F6F6')
       }),
     [],
   )
@@ -163,25 +166,51 @@ const Rings: FC = () => {
   useFrame(({ clock }) => {
     if (!purposeMaterial.current || !designTorusShader.current || !engineeringTorusShader.current) return
 
-    designTorusShader.current.uniforms.uTime.value = clock.elapsedTime
+    const elapsedTime = clock.elapsedTime
+
+    designTorusShader.current.uniforms.uTime.value = elapsedTime
     designTorusShader.current.uniforms.uIsActive.value = activeSection.current === SceneSection.Design ? true : false
 
-    engineeringTorusShader.current.uniforms.uTime.value = clock.elapsedTime
+    engineeringTorusShader.current.uniforms.uTime.value = elapsedTime
     engineeringTorusShader.current.uniforms.uIsActive.value =
       activeSection.current === SceneSection.Engineering ? true : false
-
-    purposeMaterial.current.color.set(activeSection.current === SceneSection.Purpose ? GREEN_VEC3 : '#F6F6F6')
   })
 
   return (
     <group ref={group} position={[0, -10, -15]}>
-      {/* TODO: Create custom shader material for the sphere */}
       <Sphere ref={sphere} args={[0.2, 32, 32]}>
         <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.8} color="#FFF" />
+
+        {/* TODO: Create custom shader material for the sphere */}
         <meshBasicMaterial ref={purposeMaterial} color="#F6F6F6" />
       </Sphere>
 
       {/* TODO: place points on the Torus and animate them in and when the section is active */}
+      <points>
+        <torusGeometry args={[0.6, 0.1, 16, 120]} />
+        <pointsMaterial
+          size={0.02}
+          color="#7A718E"
+          sizeAttenuation={true}
+          transparent={true}
+          opacity={0.03}
+          depthTest={false}
+          blending={AdditiveBlending}
+        />
+      </points>
+
+      <points>
+        <torusGeometry args={[1, 0.1, 16, 160]} />
+        <pointsMaterial
+          size={0.02}
+          color="#7A718E"
+          sizeAttenuation={true}
+          transparent={true}
+          opacity={0.03}
+          depthTest={false}
+          blending={AdditiveBlending}
+        />
+      </points>
 
       {/* Design Torus */}
       <Torus ref={designTorus} args={[0.6, 0.1, 16, 80]}>
