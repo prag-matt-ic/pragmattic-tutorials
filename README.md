@@ -1,1 +1,1 @@
-https://pragmattic-tutorials.vercel.app/
+https://pragmattic.vercel.app/
