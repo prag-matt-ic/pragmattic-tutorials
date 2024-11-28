@@ -148,14 +148,13 @@ const Rings: FC = () => {
 
   return (
     <group ref={group} position={[0, -10, -15]}>
-      {/* TODO: Create custom shader material for the sphere and rings */}
-      {/* Fade them in and out based on depth */}
-      {/* Highlight them when the active section is hovered */}
-
+      {/* TODO: Create custom shader material for the sphere */}
       <Sphere ref={sphere} args={[0.2, 32, 32]}>
         <pointLight position={[0, 0, 0]} intensity={2} color="#FFF" />
         <meshBasicMaterial color="#F6F6F6" />
       </Sphere>
+
+      {/* TODO: place points on the Torus and animate them in and when the section is active */}
 
       {/* Design Torus */}
       <Torus ref={designTorus} args={[0.6, 0.1, 16, 80]}>

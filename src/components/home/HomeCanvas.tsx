@@ -29,6 +29,8 @@ const HomeCanvas: FC = () => {
       <HomeBackgroundPlane />
       <Rings />
       {/* <Stats /> */}
+
+      {/* TODO: test conditional Bloom on the sphere */}
     </Canvas>
   )
 }

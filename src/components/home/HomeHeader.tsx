@@ -45,7 +45,7 @@ const HomeHeader: FC = () => {
         Helping innovative thinkers bring big ideas to life
       </h1>
       <h2 className="absolute max-w-3xl scale-75 text-xl font-extrabold leading-[1.1] tracking-tight opacity-0 md:text-6xl xl:text-7xl">
-        through design and engineering
+        with purposeful design and engineering
       </h2>
     </header>
   )
