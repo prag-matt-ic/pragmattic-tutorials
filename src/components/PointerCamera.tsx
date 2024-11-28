@@ -1,7 +1,7 @@
 'use client'
 import { PerspectiveCamera } from '@react-three/drei'
 import { type PerspectiveCameraProps, useFrame, useThree } from '@react-three/fiber'
-import React, { type FC, forwardRef, useEffect, useRef } from 'react'
+import React, { forwardRef, useEffect, useRef } from 'react'
 import { PerspectiveCamera as PType } from 'three'
 
 type Props = {

@@ -4,10 +4,21 @@ import { Billboard, Sphere, Torus } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
 import React, { type FC, useEffect, useRef } from 'react'
-import { BufferGeometry, Color, Group, Mesh, MeshLambertMaterial, NormalBufferAttributes, ShaderMaterial } from 'three'
+import {
+  BufferGeometry,
+  Color,
+  Group,
+  Mesh,
+  MeshBasicMaterial,
+  MeshLambertMaterial,
+  NormalBufferAttributes,
+  PointLight,
+  ShaderMaterial,
+} from 'three'
 import CustomShaderMaterial from 'three-custom-shader-material'
 
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
+import { CYAN_VEC3, GREEN_VEC3, ORANGE_VEC3 } from '@/resources/colours'
 
 import SkillPill from './SkillPill'
 import fragmentShader from './torus.frag'
@@ -19,18 +30,25 @@ type UniformValues = {
   }
 }
 
+// const PURPOSE_UNIFORMS: UniformValues = {
+//   uTime: { value: 0 },
+//   uIsActive: { value: false },
+//   uColour: { value: new Color('#F6F6F6') },
+//   uActiveColour: { value: new Color('#37FFA8') }, // Green
+// }
+
 const DESIGN_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
   uIsActive: { value: false },
   uColour: { value: new Color('#AFAABB') },
-  uActiveColour: { value: new Color('#E5A019') }, // Orange
+  uActiveColour: { value: ORANGE_VEC3 },
 }
 
 const ENGINEERING_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
   uIsActive: { value: false },
   uColour: { value: new Color('#7A718E') },
-  uActiveColour: { value: new Color('#37F3FF') }, // Cyan
+  uActiveColour: { value: CYAN_VEC3 },
 }
 
 const Rings: FC = () => {
@@ -41,6 +59,13 @@ const Rings: FC = () => {
 
   const designTorusTween = useRef<GSAPTween>()
   const engineeringTorusTween = useRef<GSAPTween>()
+
+  // TODO: Transition the colour change smoothly in the shader
+  // const colourChangeStartTime = useRef<number>(0)
+  const pointLight = useRef<PointLight>(null)
+  const purposeMaterial = useRef<MeshBasicMaterial>(null)
+  const designTorusShader = useRef<ShaderMaterial>(null)
+  const engineeringTorusShader = useRef<ShaderMaterial>(null)
 
   const setHasScrolledIntoView = useHomeSceneStore((s) => s.setHasScrolledIntoView)
 
@@ -63,14 +88,14 @@ const Rings: FC = () => {
           duration: 3,
           ease: 'power2.out',
         })
+        if (!pointLight.current) return
+        gsap.to(pointLight.current, {
+          intensity: s.activeSection === SceneSection.Purpose ? 5 : 0.8,
+          duration: 0.5,
+        })
       }),
     [],
   )
-
-  // const startTime = useRef<number>(0)
-
-  const designTorusShader = useRef<ShaderMaterial>(null)
-  const engineeringTorusShader = useRef<ShaderMaterial>(null)
 
   // Translate the group in as the header text moves out
   useGSAP(() => {
@@ -136,7 +161,7 @@ const Rings: FC = () => {
   }, [activeSection])
 
   useFrame(({ clock }) => {
-    if (!designTorusShader.current || !engineeringTorusShader.current) return
+    if (!purposeMaterial.current || !designTorusShader.current || !engineeringTorusShader.current) return
 
     designTorusShader.current.uniforms.uTime.value = clock.elapsedTime
     designTorusShader.current.uniforms.uIsActive.value = activeSection.current === SceneSection.Design ? true : false
@@ -144,14 +169,16 @@ const Rings: FC = () => {
     engineeringTorusShader.current.uniforms.uTime.value = clock.elapsedTime
     engineeringTorusShader.current.uniforms.uIsActive.value =
       activeSection.current === SceneSection.Engineering ? true : false
+
+    purposeMaterial.current.color.set(activeSection.current === SceneSection.Purpose ? GREEN_VEC3 : '#F6F6F6')
   })
 
   return (
     <group ref={group} position={[0, -10, -15]}>
       {/* TODO: Create custom shader material for the sphere */}
       <Sphere ref={sphere} args={[0.2, 32, 32]}>
-        <pointLight position={[0, 0, 0]} intensity={2} color="#FFF" />
-        <meshBasicMaterial color="#F6F6F6" />
+        <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.8} color="#FFF" />
+        <meshBasicMaterial ref={purposeMaterial} color="#F6F6F6" />
       </Sphere>
 
       {/* TODO: place points on the Torus and animate them in and when the section is active */}

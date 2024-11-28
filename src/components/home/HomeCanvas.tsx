@@ -1,6 +1,5 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { Stats } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
@@ -18,17 +17,30 @@ const HomeCanvas: FC = () => {
   return (
     <Canvas
       className="!fixed inset-0"
-      dpr={window.devicePixelRatio}
       gl={{
         antialias: false,
         powerPreference: 'high-performance',
       }}>
+      {/* <PerformanceMonitor
+        onIncline={() => {
+          if (dpr < 2) setDpr(parseFloat((dpr + 0.3).toFixed(1)))
+        }}
+        onDecline={handleLowerDpr}
+        onFallback={handleLowerDpr}
+        flipflops={4}
+      /> */}
+      {/* <Selection> */}
       <ambientLight intensity={1} />
       <PointerCamera cameraProps={{ far: 25, position: [0, 0, 5] }} intensity={0.04} />
       {/* Add middleground parallax  */}
+
       <HomeBackgroundPlane />
+
       <Rings />
-      {/* <Stats /> */}
+      {/* <EffectComposer>
+          <SelectiveBloom />
+        </EffectComposer>
+      </Selection> */}
 
       {/* TODO: test conditional Bloom on the sphere */}
     </Canvas>

@@ -15,7 +15,7 @@
     "@mantine/hooks": "^7.10.2",
     "@react-three/drei": "^9.111.2",
     "@react-three/fiber": "^8.17.5",
-    "@react-three/postprocessing": "^2.16.2",
+    "@react-three/postprocessing": "^2.16.3",
     "@tailwindcss/typography": "^0.5.15",
     "@thi.ng/color": "^5.7.12",
     "date-fns": "^4.1.0",
@@ -45,7 +45,6 @@
     "tailwind-merge": "^2.3.0",
     "three": "^0.167.1",
     "three-custom-shader-material": "^5.4.0",
-    "yoga-layout": "^3.1.0",
     "zustand": "^4.5.5"
   },
   "devDependencies": {

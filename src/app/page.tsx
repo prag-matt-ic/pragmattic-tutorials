@@ -4,16 +4,15 @@ import HomeHeader from '@/components/home/HomeHeader'
 
 export default function HomePage() {
   return (
-    <>
+    <main className="w-ful h-[300vh] w-full">
       <HomeCanvas />
 
-      <main className="pointer-events-none relative z-10 h-[300vh] w-full">
+      <div className="pointer-events-none relative z-10">
         <HomeHeader />
-
         <section className="fixed bottom-4 left-4 rounded-md bg-black/20 p-3">
-          <h3 className="font-bold uppercase text-white">🚧 Under Construction 🚧</h3>
+          <h3 className="text-sm font-bold uppercase text-white/50">🚧 Under Construction 🚧</h3>
         </section>
-      </main>
-    </>
+      </div>
+    </main>
   )
 }

@@ -40,7 +40,7 @@ const HomeHeader: FC = () => {
   return (
     <header
       ref={container}
-      className="flex h-lvh w-full select-none flex-col items-center justify-center px-4 text-center text-white">
+      className="pointer-events-none flex h-lvh w-full select-none flex-col items-center justify-center px-4 text-center text-white">
       <h1 className="relative max-w-3xl text-2xl font-extrabold leading-tight tracking-tight md:text-6xl xl:text-7xl">
         Helping innovative thinkers bring big ideas to life
       </h1>
