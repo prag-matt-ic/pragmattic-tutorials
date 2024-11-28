@@ -1,11 +1,10 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { Billboard, Sphere, Torus } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
+import { Billboard, shaderMaterial, Sphere, Torus } from '@react-three/drei'
+import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
-import React, { type FC, useEffect, useRef } from 'react'
+import React, { type FC, useEffect, useMemo, useRef } from 'react'
 import {
-  AdditiveBlending,
   BufferGeometry,
   Color,
   Group,
@@ -177,35 +176,8 @@ const Rings: FC = () => {
         <meshBasicMaterial ref={purposeMaterial} color="#F6F6F6" />
       </Sphere>
 
-      {/* TODO: place points on the Torus and animate them in and when the section is active */}
-      <points>
-        <torusGeometry args={[0.6, 0.1, 16, 120]} />
-        <pointsMaterial
-          size={0.02}
-          color="#7A718E"
-          sizeAttenuation={true}
-          transparent={true}
-          opacity={0.03}
-          depthTest={false}
-          blending={AdditiveBlending}
-        />
-      </points>
-
-      <points>
-        <torusGeometry args={[1, 0.1, 16, 160]} />
-        <pointsMaterial
-          size={0.02}
-          color="#7A718E"
-          sizeAttenuation={true}
-          transparent={true}
-          opacity={0.03}
-          depthTest={false}
-          blending={AdditiveBlending}
-        />
-      </points>
-
       {/* Design Torus */}
-      <Torus ref={designTorus} args={[0.6, 0.1, 16, 80]}>
+      <Torus ref={designTorus} args={[0.6, 0.1, 16, 60]}>
         <CustomShaderMaterial
           ref={designTorusShader}
           baseMaterial={MeshLambertMaterial}
@@ -228,6 +200,9 @@ const Rings: FC = () => {
         />
       </Torus>
 
+      <TorusPoints radius={0.6} tube={0.1} radialSegments={16} tubularSegments={120} />
+      <TorusPoints radius={1} tube={0.1} radialSegments={16} tubularSegments={160} />
+
       <Billboard position={[-1.1, 1, 1]}>
         <SkillPill section={SceneSection.Purpose} />
       </Billboard>
@@ -244,3 +219,122 @@ const Rings: FC = () => {
 }
 
 export default Rings
+
+const pointsVertexShader = `
+  uniform float uTime;
+
+  void main() {
+
+    // Apply rotation around the Y-axis
+    float angle = uTime * 0.2;
+    mat3 rotationMatrix = mat3(
+      cos(angle), 0.0, sin(angle),
+      0.0, 1.0, 0.0,
+      -sin(angle), 0.0, cos(angle)
+    );
+
+    vec3 rotatedPosition = rotationMatrix * position;
+
+    vec4 modelPosition = modelMatrix * vec4(rotatedPosition, 1.0);
+    vec4 viewPosition = viewMatrix * modelPosition;
+    vec4 projectedPosition = projectionMatrix * viewPosition;
+
+    // Attenuation factor - further away the particle is from the camera, the smaller it will be
+    float attenuationFactor = (1.0 / projectedPosition.z);
+
+    // Point size is required for point rendering
+    float pointSize = clamp(1.0, 8.0, 8.0 * attenuationFactor);
+
+    gl_Position = projectedPosition;
+    gl_PointSize = pointSize;
+  }
+`
+
+const pointsFragmentShader = `
+  void main() {
+    vec2 normalizedPoint = gl_PointCoord - vec2(0.5);
+    
+    float dist = length(normalizedPoint);
+    
+    vec4 finalColour = vec4(1.0, 1.0, 1.0, (1.0 - dist) * 0.1);
+
+    gl_FragColor = finalColour;
+  }
+`
+
+type PointsUniforms = {
+  uTime: number
+}
+
+const POINTS_UNIFORMS: PointsUniforms = {
+  uTime: 0,
+}
+
+const TorusPointsShaderMaterial = shaderMaterial(POINTS_UNIFORMS, pointsVertexShader, pointsFragmentShader)
+
+extend({ TorusPointsShaderMaterial })
+
+type TorusPointsProps = {
+  radius: number
+  tube: number
+  radialSegments: number
+  tubularSegments: number
+}
+
+const TorusPoints: FC<TorusPointsProps> = ({ radialSegments, radius, tube, tubularSegments }) => {
+  const shaderMaterialRef = useRef<ShaderMaterial & Partial<PointsUniforms>>(null)
+
+  // Precompute the positions of the particles
+  const particlesPosition = useMemo(() => {
+    const positions = []
+    for (let j = 0; j < tubularSegments; j++) {
+      const u = (j / tubularSegments) * Math.PI * 2
+      for (let i = 0; i < radialSegments; i++) {
+        const v = (i / radialSegments) * Math.PI * 2
+
+        const x = (radius + tube * Math.cos(v)) * Math.cos(u)
+        const y = (radius + tube * Math.cos(v)) * Math.sin(u)
+        const z = tube * Math.sin(v)
+
+        positions.push(x, y, z)
+      }
+    }
+    return new Float32Array(positions)
+  }, [radius, tube, radialSegments, tubularSegments])
+
+  useFrame(({ clock }) => {
+    if (!shaderMaterialRef.current) return
+    shaderMaterialRef.current.uTime = clock.elapsedTime
+  })
+
+  return (
+    <points>
+      <torusGeometry args={[radius, tube, radialSegments, tubularSegments]} />
+      {/* <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          array={particlesPosition}
+          count={particlesPosition.length / 3}
+          itemSize={3}
+        />
+      </bufferGeometry> */}
+      <torusPointsShaderMaterial
+        attach="material"
+        ref={shaderMaterialRef}
+        key={TorusPointsShaderMaterial.key}
+        vertexShader={pointsVertexShader}
+        fragmentShader={pointsFragmentShader}
+        depthTest={false}
+        transparent={true}
+      />
+    </points>
+  )
+}
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      torusPointsShaderMaterial: ShaderMaterialProps & Partial<PointsUniforms>
+    }
+  }
+}
