@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 
 export enum SceneSection {
-  None = 'none',
   Purpose = 'purpose',
   Design = 'design',
   Engineering = 'engineering',
@@ -10,27 +9,31 @@ export enum SceneSection {
 type SceneStore = {
   hasScrolledIntoView: boolean
   setHasScrolledIntoView: (hasScrolledIntoView: boolean) => void
-  activeSection: SceneSection
+  activeSection: SceneSection | null
   sectionsSeen: Record<SceneSection, boolean>
-  setSectionsSeen: (activeSection: SceneSection) => void
+  setSectionsSeen: (activeSection: SceneSection | null) => void
 }
 
 export const useHomeSceneStore = create<SceneStore>((set, get) => ({
   hasScrolledIntoView: false,
   setHasScrolledIntoView: (hasScrolledIntoView) => set({ hasScrolledIntoView }),
-  activeSection: SceneSection.None,
+  activeSection: null,
   sectionsSeen: {
-    [SceneSection.None]: true,
-    [SceneSection.Purpose]: true,
-    [SceneSection.Design]: true,
-    [SceneSection.Engineering]: true,
+    [SceneSection.Purpose]: false,
+    [SceneSection.Design]: false,
+    [SceneSection.Engineering]: false,
   },
-  setSectionsSeen: (activeSection) =>
+  setSectionsSeen: (activeSection) => {
+    if (!activeSection) {
+      set({ activeSection: null })
+      return
+    }
     set({
       activeSection,
       sectionsSeen: {
         ...get().sectionsSeen,
         [activeSection]: true,
       },
-    }),
+    })
+  },
 }))

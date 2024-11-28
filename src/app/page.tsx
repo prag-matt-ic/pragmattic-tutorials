@@ -4,7 +4,7 @@ import HomeHeader from '@/components/home/HomeHeader'
 
 export default function HomePage() {
   return (
-    <main className="w-ful h-[300vh] w-full">
+    <main className="w-ful h-[300vh] w-full bg-black">
       <HomeCanvas />
 
       <div className="pointer-events-none relative z-10">

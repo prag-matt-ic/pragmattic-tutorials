@@ -31,13 +31,6 @@ type UniformValues = {
   }
 }
 
-// const PURPOSE_UNIFORMS: UniformValues = {
-//   uTime: { value: 0 },
-//   uIsActive: { value: false },
-//   uColour: { value: new Color('#F6F6F6') },
-//   uActiveColour: { value: new Color('#37FFA8') }, // Green
-// }
-
 const DESIGN_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
   uIsActive: { value: false },
@@ -91,7 +84,7 @@ const Rings: FC = () => {
         })
         if (!pointLight.current) return
         gsap.to(pointLight.current, {
-          intensity: s.activeSection === SceneSection.Purpose ? 5 : 0.8,
+          intensity: s.activeSection === SceneSection.Purpose ? 5 : 0.6,
           duration: 0.5,
         })
         if (!purposeMaterial.current) return
@@ -106,12 +99,11 @@ const Rings: FC = () => {
 
     gsap.fromTo(
       group.current.position,
-      { y: -10, z: -15 },
+      { y: -11, z: -13 },
       {
-        ease: 'power1.in',
+        ease: 'power1.inOut',
         z: 0,
         y: 0,
-        duration: 1,
         scrollTrigger: {
           start: 0,
           end: 'max',
@@ -177,9 +169,9 @@ const Rings: FC = () => {
   })
 
   return (
-    <group ref={group} position={[0, -10, -15]}>
+    <group ref={group} position={[0, -11, -13]}>
       <Sphere ref={sphere} args={[0.2, 32, 32]}>
-        <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.8} color="#FFF" />
+        <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.6} color="#FFF" />
 
         {/* TODO: Create custom shader material for the sphere */}
         <meshBasicMaterial ref={purposeMaterial} color="#F6F6F6" />

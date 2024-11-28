@@ -3,9 +3,9 @@ import { Plane } from '@react-three/drei'
 import { shaderMaterial } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame, useThree } from '@react-three/fiber'
 import React, { type FC, useRef } from 'react'
-import { ShaderMaterial } from 'three'
+import { Color, ShaderMaterial } from 'three'
 
-import { useHomeSceneStore } from '@/hooks/home/useHomeStore'
+import { BLACK_VEC3, LIGHT_VEC3, MID_VEC3, OFF_BLACK_VEC3 } from '@/resources/colours'
 
 import bgFragment from './background.frag'
 import bgVertex from './background.vert'
@@ -13,11 +13,19 @@ import bgVertex from './background.vert'
 type Uniforms = {
   uTime: number
   uAspect: number
+  uLightColour: Color
+  uMidColour: Color
+  uOffBlackColour: Color
+  uBlackColour: Color
 }
 
 const INITIAL_UNIFORMS: Uniforms = {
   uTime: 0,
   uAspect: 1,
+  uLightColour: LIGHT_VEC3,
+  uMidColour: MID_VEC3,
+  uOffBlackColour: OFF_BLACK_VEC3,
+  uBlackColour: BLACK_VEC3,
 }
 
 const HomeBackgroundShaderMaterial = shaderMaterial(INITIAL_UNIFORMS, bgVertex, bgFragment)
@@ -27,9 +35,6 @@ extend({ HomeBackgroundShaderMaterial })
 const HomeBackgroundPlane: FC = () => {
   const { viewport } = useThree()
   const shader = useRef<ShaderMaterial & Partial<Uniforms>>(null)
-  const activeSection = useHomeSceneStore((s) => s.activeSection)
-
-  // TODO: do something with the colours based on the active section
 
   useFrame(({ clock }) => {
     if (!shader.current) return
@@ -37,7 +42,7 @@ const HomeBackgroundPlane: FC = () => {
   })
 
   return (
-    <Plane args={[viewport.width * 5, viewport.height * 5, 1, 1]} position={[0, 0, -15]}>
+    <Plane args={[viewport.width * 5, viewport.height * 5, 1, 1]} position={[0, 0, -14]}>
       <homeBackgroundShaderMaterial
         key={HomeBackgroundShaderMaterial.key}
         ref={shader}
@@ -53,7 +58,7 @@ export default HomeBackgroundPlane
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      homeBackgroundShaderMaterial: ShaderMaterialProps & Uniforms
+      homeBackgroundShaderMaterial: ShaderMaterialProps & Partial<Uniforms>
     }
   }
 }

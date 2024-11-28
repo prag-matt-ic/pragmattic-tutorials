@@ -4,7 +4,7 @@ import { flip, offset, shift, useFloating, useHover, useInteractions } from '@fl
 import { Html } from '@react-three/drei'
 import gsap from 'gsap'
 import SplitText from 'gsap/dist/SplitText'
-import { type FC, type ReactNode, useRef, useState } from 'react'
+import { type FC, type ReactNode, useRef } from 'react'
 import { Transition } from 'react-transition-group'
 import { twJoin } from 'tailwind-merge'
 
@@ -15,21 +15,18 @@ type Props = {
 }
 
 const BUTTON_LABELS: Record<SceneSection, string> = {
-  [SceneSection.None]: '',
   [SceneSection.Purpose]: 'Purpose',
   [SceneSection.Design]: 'Design',
   [SceneSection.Engineering]: 'Engineering',
 } as const
 
 const BUTTON_CLASSES: Record<SceneSection, string> = {
-  [SceneSection.None]: '',
   [SceneSection.Purpose]: 'hover:border-green',
   [SceneSection.Design]: 'hover:border-orange',
   [SceneSection.Engineering]: 'hover:border-cyan',
 } as const
 
 const MODAL_CONTENT: Record<SceneSection, ReactNode> = {
-  [SceneSection.None]: null,
   [SceneSection.Purpose]: 'Using technology to make the world a better place',
   [SceneSection.Design]: 'Functional and aesthetic in equal parts',
   [SceneSection.Engineering]: 'Turning the vision into reality',
@@ -44,16 +41,14 @@ const SkillPill: FC<Props> = ({ section }) => {
   const isOpen = activeSection === section && hasScrolledIntoView
 
   let modalTextTween = useRef<GSAPTween>()
-  const [isAnimatingModalText, setIsAnimatingModalText] = useState(false)
 
   const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
     placement: 'top',
     onOpenChange: (open) => {
-      setActiveSection(open ? section : SceneSection.None)
-      setIsAnimatingModalText(true)
+      setActiveSection(open ? section : null)
     },
-    middleware: [shift({ padding: 16 }), offset({ mainAxis: 12 }), flip()],
+    middleware: [shift({ padding: 16 }), offset({ mainAxis: 24 }), flip()],
   })
   const hover = useHover(context, {})
   const { getReferenceProps, getFloatingProps } = useInteractions([hover])
@@ -96,8 +91,8 @@ const SkillPill: FC<Props> = ({ section }) => {
       { opacity: 0 },
       {
         opacity: 1,
-        duration: 0.4,
-        stagger: 0.012,
+        duration: 0.5,
+        stagger: 0.016,
         ease: 'power2.out',
       },
     )
@@ -157,7 +152,7 @@ const SkillPill: FC<Props> = ({ section }) => {
           style={floatingStyles}
           {...getFloatingProps()}
           className="pointer-events-none absolute z-[200] w-max opacity-0">
-          <p className="w-[calc(100vw-48px)] p-2 text-center text-xl font-bold leading-tight text-white md:w-[360px] md:p-3 md:text-2xl 2xl:w-[420px] 2xl:text-3xl">
+          <p className="w-[calc(100vw-64px)] p-2 text-center text-xl font-bold text-white md:w-[360px] md:p-0 md:text-2xl 2xl:w-[420px] 2xl:text-3xl">
             {MODAL_CONTENT[section]}
           </p>
         </div>

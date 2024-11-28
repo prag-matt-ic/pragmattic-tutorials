@@ -11,7 +11,6 @@ const HomeHeader: FC = () => {
 
   useGSAP(
     () => {
-      // TODO: Transition in
       gsap
         .timeline({
           scrollTrigger: {
@@ -41,10 +40,10 @@ const HomeHeader: FC = () => {
     <header
       ref={container}
       className="pointer-events-none flex h-lvh w-full select-none flex-col items-center justify-center px-4 text-center text-white">
-      <h1 className="relative max-w-3xl text-2xl font-extrabold leading-tight tracking-tight md:text-6xl xl:text-7xl">
+      <h1 className="relative max-w-3xl text-2xl font-extrabold !leading-[1.25] tracking-tight md:text-6xl xl:text-7xl">
         Helping innovative thinkers bring big ideas to life
       </h1>
-      <h2 className="absolute max-w-4xl scale-75 text-xl font-extrabold leading-[1.1] tracking-tight opacity-0 md:text-6xl xl:text-7xl">
+      <h2 className="absolute max-w-4xl scale-75 text-xl font-extrabold !leading-[1.25] tracking-tight opacity-0 md:text-6xl xl:text-7xl">
         with purposeful design and engineering
       </h2>
     </header>
