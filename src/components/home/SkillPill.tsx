@@ -40,7 +40,6 @@ const SkillPill: FC<Props> = ({ section }) => {
   const isFinalState = useHomeSceneStore((s) => s.isFinalState)
 
   const shouldPulseButton = !hasSeenSections.design && section === SceneSection.Design
-  console.log({ hasSeenSections, section, shouldPulseButton })
 
   const isOpen = hasScrolledIntoView && (activeSection === section || isFinalState)
 
@@ -134,7 +133,6 @@ const SkillPill: FC<Props> = ({ section }) => {
               'pointer-events-auto rounded-full border-4 border-white/20 bg-black/30 px-6 py-3 text-base font-bold italic text-white md:text-xl',
               BUTTON_CLASSES[section],
             )}
-            color="secondary"
             ref={refs.setReference}
             {...getReferenceProps()}>
             {BUTTON_LABELS[section]}

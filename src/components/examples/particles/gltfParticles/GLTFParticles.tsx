@@ -25,8 +25,6 @@ const GLTFParticles: FC = () => {
       }
     })
 
-    console.log({ model, meshCount })
-
     const positions = new Float32Array(count)
 
     model.scene.traverse((object) => {
