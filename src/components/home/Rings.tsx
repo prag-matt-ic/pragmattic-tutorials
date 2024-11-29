@@ -9,7 +9,6 @@ import {
   Color,
   Group,
   Mesh,
-  MeshBasicMaterial,
   MeshLambertMaterial,
   NormalBufferAttributes,
   PointLight,
@@ -18,7 +17,7 @@ import {
 import CustomShaderMaterial from 'three-custom-shader-material'
 
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
-import { CYAN_VEC3, GREEN_VEC3, ORANGE_VEC3 } from '@/resources/colours'
+import { CYAN_VEC3, GREEN_VEC3, LIGHT_VEC3, ORANGE_VEC3 } from '@/resources/colours'
 
 import SkillPill from './SkillPill'
 import fragmentShader from './torus.frag'
@@ -30,72 +29,111 @@ type UniformValues = {
   }
 }
 
+const PURPOSE_TORUS_RADIUS = 0.5 as const
+const PURPOSE_TORUS_TUBE = 0.1 as const
+
+const PURPOSE_UNIFORMS: UniformValues = {
+  uTime: { value: 0 },
+  uIsActive: { value: false },
+  uColour: { value: new Color('#BDB8C6') },
+  uActiveColour: { value: GREEN_VEC3 },
+  uColourChangeStartTime: { value: 0 },
+  uRadius: { value: PURPOSE_TORUS_RADIUS },
+  uTube: { value: PURPOSE_TORUS_TUBE },
+}
+
+const DESIGN_TORUS_RADIUS = 0.9 as const
+const DESIGN_TORUS_TUBE = 0.1 as const
+
 const DESIGN_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
   uIsActive: { value: false },
-  uColour: { value: new Color('#AFAABB') },
+  uColour: { value: new Color('#9A93A9') },
   uActiveColour: { value: ORANGE_VEC3 },
+  uColourChangeStartTime: { value: 0 },
+  uRadius: { value: DESIGN_TORUS_RADIUS },
+  uTube: { value: DESIGN_TORUS_TUBE },
 }
+
+const ENGINEERING_TORUS_RADIUS = 1.3 as const
+const ENGINEERING_TORUS_TUBE = 0.1 as const
 
 const ENGINEERING_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
   uIsActive: { value: false },
-  uColour: { value: new Color('#7A718E') },
+  uColour: { value: LIGHT_VEC3 },
   uActiveColour: { value: CYAN_VEC3 },
+  uColourChangeStartTime: { value: 0 },
+  uRadius: { value: ENGINEERING_TORUS_RADIUS },
+  uTube: { value: ENGINEERING_TORUS_TUBE },
 }
 
 const Rings: FC = () => {
   const group = useRef<Group>(null)
   const sphere = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
+
+  const purposeTorus = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
   const designTorus = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
   const engineeringTorus = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
 
+  const purposeTorusTween = useRef<GSAPTween>()
   const designTorusTween = useRef<GSAPTween>()
   const engineeringTorusTween = useRef<GSAPTween>()
 
-  // TODO: Transition the colour change smoothly in the shader
-  // const colourChangeStartTime = useRef<number>(0)
   const pointLight = useRef<PointLight>(null)
-  const purposeMaterial = useRef<MeshBasicMaterial>(null)
+  const purposeTorusShader = useRef<ShaderMaterial>(null)
   const designTorusShader = useRef<ShaderMaterial>(null)
   const engineeringTorusShader = useRef<ShaderMaterial>(null)
 
   const setHasScrolledIntoView = useHomeSceneStore((s) => s.setHasScrolledIntoView)
 
   // https://github.com/pmndrs/zustand?tab=readme-ov-file#transient-updates-for-often-occurring-state-changes
-  const activeSection = useRef(useHomeSceneStore.getState().activeSection)
+  const colourChangeStartTime = useRef<number>(1)
+  const activeSection = useRef<SceneSection | null>(null)
+  const previousActiveSection = useRef<SceneSection | null>(null)
   const isFinalState = useRef(useHomeSceneStore.getState().isFinalState)
+
+  const isShaderAnimating = useRef(false)
   // Connect to the store on mount, disconnect on unmount, catch state-changes in a reference
   useEffect(
     () =>
       useHomeSceneStore.subscribe((s) => {
+        previousActiveSection.current = s.prevActiveSection
+        colourChangeStartTime.current = 0
         activeSection.current = s.activeSection
+
+        const COLOUR_CHANGE_DURATION = 1200
+
+        setTimeout(() => {
+          isShaderAnimating.current = false
+        }, COLOUR_CHANGE_DURATION)
+
         isFinalState.current = s.isFinalState
 
-        if (!designTorusTween.current || !engineeringTorusTween.current) return
+        if (!purposeTorusTween.current || !designTorusTween.current || !engineeringTorusTween.current) return
         if (!pointLight.current) return
-        if (!purposeMaterial.current) return
 
         // Speed up the rotation tweens when the section is active or is final state
+        gsap.to(purposeTorusTween.current, {
+          timeScale: s.isFinalState || s.activeSection === SceneSection.Purpose ? 16 : 1,
+          duration: 2,
+          ease: 'power2.out',
+        })
         gsap.to(designTorusTween.current, {
           timeScale: s.isFinalState || s.activeSection === SceneSection.Design ? 16 : 1,
-          duration: 3,
+          duration: 2,
           ease: 'power2.out',
         })
         gsap.to(engineeringTorusTween.current, {
           timeScale: s.isFinalState || s.activeSection === SceneSection.Engineering ? 16 : 1,
-          duration: 3,
+          duration: 2,
           ease: 'power2.out',
         })
         // Increase the intensity of the point light when the section is active or is final state
-        gsap.to(pointLight.current, {
-          intensity: s.isFinalState || s.activeSection === SceneSection.Purpose ? 4 : 0.5,
-          duration: 0.5,
-        })
-
-        purposeMaterial.current.color.set(
-          s.isFinalState || s.activeSection === SceneSection.Purpose ? GREEN_VEC3 : '#F6F6F6',
-        )
+        // gsap.to(pointLight.current, {
+        //   intensity: s.isFinalState || s.activeSection === SceneSection.Purpose ? 3.0 : 1.0,
+        //   duration: 0.5,
+        // })
       }),
     [],
   )
@@ -130,9 +168,21 @@ const Rings: FC = () => {
     )
   }, [])
 
+  // Rotate the torus
   useGSAP(() => {
-    if (!designTorus.current || !engineeringTorus.current) return
-    // Rotate the torus
+    if (!purposeTorus.current || !designTorus.current || !engineeringTorus.current) return
+
+    purposeTorusTween.current = gsap.fromTo(
+      purposeTorus.current.rotation,
+      { y: 0, x: 0 },
+      {
+        ease: 'none',
+        y: -Math.PI * 4, // Rotate 720 degrees in radians
+        x: Math.PI * 2, // Rotate 360 degrees in radians
+        duration: 24,
+        repeat: -1,
+      },
+    )
 
     designTorusTween.current = gsap.fromTo(
       designTorus.current.rotation,
@@ -141,7 +191,7 @@ const Rings: FC = () => {
         ease: 'none',
         y: Math.PI * 4, // Rotate 720 degrees in radians
         x: -Math.PI * 2, // Rotate 360 degrees in radians
-        duration: 24,
+        duration: 40,
         repeat: -1,
       },
     )
@@ -156,38 +206,87 @@ const Rings: FC = () => {
         ease: 'none',
         y: -Math.PI * 4, // Rotate 720 degrees in radians
         x: Math.PI * 2, // Rotate 360 degrees in radians
-        duration: 32,
+        duration: 50,
         repeat: -1,
       },
     )
   }, [])
 
   useFrame(({ clock }) => {
-    if (!purposeMaterial.current || !designTorusShader.current || !engineeringTorusShader.current) return
+    if (!purposeTorusShader.current || !designTorusShader.current || !engineeringTorusShader.current) return
 
     const elapsedTime = clock.elapsedTime
-
+    purposeTorusShader.current.uniforms.uTime.value = elapsedTime
     designTorusShader.current.uniforms.uTime.value = elapsedTime
     engineeringTorusShader.current.uniforms.uTime.value = elapsedTime
+
+    // Exit out to allow for the current shader animation to finish
+    if (isShaderAnimating.current) return
+
+    purposeTorusShader.current.uniforms.uIsActive.value =
+      isFinalState.current || activeSection.current === SceneSection.Purpose ? true : false
 
     designTorusShader.current.uniforms.uIsActive.value =
       isFinalState.current || activeSection.current === SceneSection.Design ? true : false
 
     engineeringTorusShader.current.uniforms.uIsActive.value =
       isFinalState.current || activeSection.current === SceneSection.Engineering ? true : false
+
+    // Handle the colour change time
+    if (colourChangeStartTime.current === 0 && previousActiveSection.current !== activeSection.current) {
+      colourChangeStartTime.current = elapsedTime
+      isShaderAnimating.current = true
+
+      if (previousActiveSection.current === SceneSection.Purpose || activeSection.current === SceneSection.Purpose) {
+        purposeTorusShader.current.uniforms.uColourChangeStartTime.value = elapsedTime
+      } else if (
+        previousActiveSection.current === SceneSection.Design ||
+        activeSection.current === SceneSection.Design
+      ) {
+        designTorusShader.current.uniforms.uColourChangeStartTime.value = elapsedTime
+      } else if (
+        previousActiveSection.current === SceneSection.Engineering ||
+        activeSection.current === SceneSection.Engineering
+      ) {
+        engineeringTorusShader.current.uniforms.uColourChangeStartTime.value = elapsedTime
+      }
+    }
   })
 
   return (
     <group ref={group} position={[0, -11, -13]}>
-      <Sphere ref={sphere} args={[0.2, 32, 32]}>
-        <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.5} color="#FFF" />
-
-        {/* TODO: Create custom shader material for the sphere */}
-        <meshBasicMaterial ref={purposeMaterial} color="#F6F6F6" />
+      <Sphere ref={sphere} args={[0.04, 12, 12]}>
+        <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.8} color="#FFF" />
+        <meshBasicMaterial color="#F6F6F6" />
       </Sphere>
 
+      <TorusPoints radius={PURPOSE_TORUS_RADIUS} tube={PURPOSE_TORUS_TUBE} radialSegments={24} tubularSegments={60} />
+      <TorusPoints radius={DESIGN_TORUS_RADIUS} tube={DESIGN_TORUS_TUBE} radialSegments={24} tubularSegments={120} />
+      <TorusPoints
+        radius={ENGINEERING_TORUS_RADIUS}
+        tube={ENGINEERING_TORUS_TUBE}
+        radialSegments={24}
+        tubularSegments={180}
+      />
+
+      {/* Purpose Torus */}
+      <Torus ref={purposeTorus} args={[PURPOSE_TORUS_RADIUS, PURPOSE_TORUS_TUBE, 16, 60]} castShadow={true}>
+        <CustomShaderMaterial
+          ref={purposeTorusShader}
+          baseMaterial={MeshLambertMaterial}
+          transparent={true}
+          vertexShader={vertexShader}
+          fragmentShader={fragmentShader}
+          uniforms={PURPOSE_UNIFORMS}
+        />
+      </Torus>
+
       {/* Design Torus */}
-      <Torus ref={designTorus} args={[0.6, 0.1, 16, 60]}>
+      <Torus
+        ref={designTorus}
+        args={[DESIGN_TORUS_RADIUS, DESIGN_TORUS_TUBE, 16, 60]}
+        castShadow={true}
+        receiveShadow={true}>
         <CustomShaderMaterial
           ref={designTorusShader}
           baseMaterial={MeshLambertMaterial}
@@ -197,9 +296,11 @@ const Rings: FC = () => {
           uniforms={DESIGN_UNIFORMS}
         />
       </Torus>
-
       {/* Engineering Torus */}
-      <Torus ref={engineeringTorus} args={[1, 0.1, 16, 80]}>
+      <Torus
+        ref={engineeringTorus}
+        args={[ENGINEERING_TORUS_RADIUS, ENGINEERING_TORUS_TUBE, 16, 80]}
+        receiveShadow={true}>
         <CustomShaderMaterial
           ref={engineeringTorusShader}
           baseMaterial={MeshLambertMaterial}
@@ -210,17 +311,12 @@ const Rings: FC = () => {
         />
       </Torus>
 
-      <TorusPoints radius={0.6} tube={0.1} radialSegments={24} tubularSegments={120} />
-      <TorusPoints radius={1} tube={0.1} radialSegments={24} tubularSegments={180} />
-
       <Billboard position={[-1.1, 1, 1]}>
         <SkillPill section={SceneSection.Purpose} />
       </Billboard>
-
       <Billboard position={[1.1, 0, 2]}>
         <SkillPill section={SceneSection.Design} />
       </Billboard>
-
       <Billboard position={[0, -1.6, 1]}>
         <SkillPill section={SceneSection.Engineering} />
       </Billboard>
@@ -266,7 +362,7 @@ const pointsFragmentShader = `
     
     float dist = length(normalizedPoint);
     
-    vec4 finalColour = vec4(1.0, 1.0, 1.0, (1.0 - dist) * 0.1);
+    vec4 finalColour = vec4(1.0, 1.0, 1.0, (1.0 - dist) * 0.05);
 
     gl_FragColor = finalColour;
   }
@@ -302,14 +398,6 @@ const TorusPoints: FC<TorusPointsProps> = ({ radialSegments, radius, tube, tubul
   return (
     <points>
       <torusGeometry args={[radius, tube, radialSegments, tubularSegments]} />
-      {/* <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          array={particlesPosition}
-          count={particlesPosition.length / 3}
-          itemSize={3}
-        />
-      </bufferGeometry> */}
       <torusPointsShaderMaterial
         attach="material"
         ref={shaderMaterialRef}

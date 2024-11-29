@@ -34,12 +34,13 @@ const MODAL_CONTENT: Record<SceneSection, ReactNode> = {
 
 const SkillPill: FC<Props> = ({ section }) => {
   const activeSection = useHomeSceneStore((s) => s.activeSection)
-  const setActiveSection = useHomeSceneStore((s) => s.setSectionsSeen)
+  const setActiveSection = useHomeSceneStore((s) => s.setActiveSection)
   const hasSeenSections = useHomeSceneStore((s) => s.sectionsSeen)
   const hasScrolledIntoView = useHomeSceneStore((s) => s.hasScrolledIntoView)
   const isFinalState = useHomeSceneStore((s) => s.isFinalState)
 
-  const shouldPulseButton = hasSeenSections['design'] === false
+  const shouldPulseButton = !hasSeenSections.design && section === SceneSection.Design
+  console.log({ hasSeenSections, section, shouldPulseButton })
 
   const isOpen = hasScrolledIntoView && (activeSection === section || isFinalState)
 
@@ -132,8 +133,6 @@ const SkillPill: FC<Props> = ({ section }) => {
             className={twJoin(
               'pointer-events-auto rounded-full border-4 border-white/20 bg-black/30 px-6 py-3 text-base font-bold italic text-white md:text-xl',
               BUTTON_CLASSES[section],
-              // TODO: highlight the button
-              // shouldPulseButton && '',
             )}
             color="secondary"
             ref={refs.setReference}

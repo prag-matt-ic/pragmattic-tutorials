@@ -10,8 +10,9 @@ type SceneStore = {
   hasScrolledIntoView: boolean
   setHasScrolledIntoView: (hasScrolledIntoView: boolean) => void
   activeSection: SceneSection | null
+  prevActiveSection: SceneSection | null
+  setActiveSection: (activeSection: SceneSection | null) => void
   sectionsSeen: Record<SceneSection, boolean>
-  setSectionsSeen: (activeSection: SceneSection | null) => void
   isFinalState: boolean
 }
 
@@ -24,28 +25,35 @@ const INITIAL_SECTIONS_SEEN = {
 export const useHomeSceneStore = create<SceneStore>((set, get) => ({
   hasScrolledIntoView: false,
   setHasScrolledIntoView: (hasScrolledIntoView) => {
-    set({ hasScrolledIntoView, isFinalState: false, sectionsSeen: INITIAL_SECTIONS_SEEN, activeSection: null })
+    set({
+      hasScrolledIntoView,
+      isFinalState: false,
+      sectionsSeen: INITIAL_SECTIONS_SEEN,
+      activeSection: null,
+      prevActiveSection: null,
+    })
   },
   activeSection: null,
+  prevActiveSection: null,
   sectionsSeen: INITIAL_SECTIONS_SEEN,
-  setSectionsSeen: (activeSection) => {
-    if (!activeSection) {
-      set({ activeSection: null })
-      return
-    }
-    const newSectionsSeen = { ...get().sectionsSeen, [activeSection]: true }
-    // If all true, set final state
+  setActiveSection: (activeSection) => {
+    const previousActiveSection = get().activeSection
+    if (activeSection === previousActiveSection) return
+
+    const newSectionsSeen = !!activeSection ? { ...get().sectionsSeen, [activeSection]: true } : get().sectionsSeen
+
     set({
-      activeSection,
+      activeSection: activeSection || null,
+      prevActiveSection: previousActiveSection,
       sectionsSeen: newSectionsSeen,
     })
 
-    const isFinalState = Object.values(newSectionsSeen).every((section) => section)
-    if (isFinalState) {
-      setTimeout(() => {
-        set({ isFinalState: true })
-      }, 2000)
-    }
+    // const isFinalState = Object.values(newSectionsSeen).every((section) => section)
+    // if (isFinalState) {
+    //   setTimeout(() => {
+    //     set({ isFinalState: true })
+    //   }, 2000)
+    // }
   },
   isFinalState: false,
 }))
