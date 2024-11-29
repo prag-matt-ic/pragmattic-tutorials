@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react'
 import { Billboard, shaderMaterial, Sphere, Torus } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
-import React, { type FC, useEffect, useMemo, useRef } from 'react'
+import React, { type FC, useEffect, useRef } from 'react'
 import {
   BufferGeometry,
   Color,
@@ -64,30 +64,38 @@ const Rings: FC = () => {
 
   // https://github.com/pmndrs/zustand?tab=readme-ov-file#transient-updates-for-often-occurring-state-changes
   const activeSection = useRef(useHomeSceneStore.getState().activeSection)
+  const isFinalState = useRef(useHomeSceneStore.getState().isFinalState)
   // Connect to the store on mount, disconnect on unmount, catch state-changes in a reference
   useEffect(
     () =>
       useHomeSceneStore.subscribe((s) => {
         activeSection.current = s.activeSection
-        // Speed up the rotation tweens
+        isFinalState.current = s.isFinalState
+
         if (!designTorusTween.current || !engineeringTorusTween.current) return
+        if (!pointLight.current) return
+        if (!purposeMaterial.current) return
+
+        // Speed up the rotation tweens when the section is active or is final state
         gsap.to(designTorusTween.current, {
-          timeScale: s.activeSection === SceneSection.Design ? 20 : 1,
+          timeScale: s.isFinalState || s.activeSection === SceneSection.Design ? 16 : 1,
           duration: 3,
           ease: 'power2.out',
         })
         gsap.to(engineeringTorusTween.current, {
-          timeScale: s.activeSection === SceneSection.Engineering ? 20 : 1,
+          timeScale: s.isFinalState || s.activeSection === SceneSection.Engineering ? 16 : 1,
           duration: 3,
           ease: 'power2.out',
         })
-        if (!pointLight.current) return
+        // Increase the intensity of the point light when the section is active or is final state
         gsap.to(pointLight.current, {
-          intensity: s.activeSection === SceneSection.Purpose ? 5 : 0.6,
+          intensity: s.isFinalState || s.activeSection === SceneSection.Purpose ? 4 : 0.5,
           duration: 0.5,
         })
-        if (!purposeMaterial.current) return
-        purposeMaterial.current.color.set(activeSection.current === SceneSection.Purpose ? GREEN_VEC3 : '#F6F6F6')
+
+        purposeMaterial.current.color.set(
+          s.isFinalState || s.activeSection === SceneSection.Purpose ? GREEN_VEC3 : '#F6F6F6',
+        )
       }),
     [],
   )
@@ -152,7 +160,7 @@ const Rings: FC = () => {
         repeat: -1,
       },
     )
-  }, [activeSection])
+  }, [])
 
   useFrame(({ clock }) => {
     if (!purposeMaterial.current || !designTorusShader.current || !engineeringTorusShader.current) return
@@ -160,17 +168,19 @@ const Rings: FC = () => {
     const elapsedTime = clock.elapsedTime
 
     designTorusShader.current.uniforms.uTime.value = elapsedTime
-    designTorusShader.current.uniforms.uIsActive.value = activeSection.current === SceneSection.Design ? true : false
-
     engineeringTorusShader.current.uniforms.uTime.value = elapsedTime
+
+    designTorusShader.current.uniforms.uIsActive.value =
+      isFinalState.current || activeSection.current === SceneSection.Design ? true : false
+
     engineeringTorusShader.current.uniforms.uIsActive.value =
-      activeSection.current === SceneSection.Engineering ? true : false
+      isFinalState.current || activeSection.current === SceneSection.Engineering ? true : false
   })
 
   return (
     <group ref={group} position={[0, -11, -13]}>
       <Sphere ref={sphere} args={[0.2, 32, 32]}>
-        <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.6} color="#FFF" />
+        <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.5} color="#FFF" />
 
         {/* TODO: Create custom shader material for the sphere */}
         <meshBasicMaterial ref={purposeMaterial} color="#F6F6F6" />
@@ -200,8 +210,8 @@ const Rings: FC = () => {
         />
       </Torus>
 
-      <TorusPoints radius={0.6} tube={0.1} radialSegments={16} tubularSegments={120} />
-      <TorusPoints radius={1} tube={0.1} radialSegments={16} tubularSegments={160} />
+      <TorusPoints radius={0.6} tube={0.1} radialSegments={24} tubularSegments={120} />
+      <TorusPoints radius={1} tube={0.1} radialSegments={24} tubularSegments={180} />
 
       <Billboard position={[-1.1, 1, 1]}>
         <SkillPill section={SceneSection.Purpose} />
@@ -284,24 +294,6 @@ type TorusPointsProps = {
 const TorusPoints: FC<TorusPointsProps> = ({ radialSegments, radius, tube, tubularSegments }) => {
   const shaderMaterialRef = useRef<ShaderMaterial & Partial<PointsUniforms>>(null)
 
-  // Precompute the positions of the particles
-  const particlesPosition = useMemo(() => {
-    const positions = []
-    for (let j = 0; j < tubularSegments; j++) {
-      const u = (j / tubularSegments) * Math.PI * 2
-      for (let i = 0; i < radialSegments; i++) {
-        const v = (i / radialSegments) * Math.PI * 2
-
-        const x = (radius + tube * Math.cos(v)) * Math.cos(u)
-        const y = (radius + tube * Math.cos(v)) * Math.sin(u)
-        const z = tube * Math.sin(v)
-
-        positions.push(x, y, z)
-      }
-    }
-    return new Float32Array(positions)
-  }, [radius, tube, radialSegments, tubularSegments])
-
   useFrame(({ clock }) => {
     if (!shaderMaterialRef.current) return
     shaderMaterialRef.current.uTime = clock.elapsedTime
@@ -330,6 +322,24 @@ const TorusPoints: FC<TorusPointsProps> = ({ radialSegments, radius, tube, tubul
     </points>
   )
 }
+
+// Precompute the positions of the particles
+// const particlesPosition = useMemo(() => {
+//   const positions = []
+//   for (let j = 0; j < tubularSegments; j++) {
+//     const u = (j / tubularSegments) * Math.PI * 2
+//     for (let i = 0; i < radialSegments; i++) {
+//       const v = (i / radialSegments) * Math.PI * 2
+
+//       const x = (radius + tube * Math.cos(v)) * Math.cos(u)
+//       const y = (radius + tube * Math.cos(v)) * Math.sin(u)
+//       const z = tube * Math.sin(v)
+
+//       positions.push(x, y, z)
+//     }
+//   }
+//   return new Float32Array(positions)
+// }, [radius, tube, radialSegments, tubularSegments])
 
 declare global {
   namespace JSX {

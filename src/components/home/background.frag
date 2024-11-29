@@ -20,18 +20,18 @@ void main() {
   float noiseB = noise(vec3(vUv * 0.5, timeB)) * 0.5 + 0.5;
 
   // Creates 2 layers for above and below the wave
-  vec3 darkColour = mix(mix(uLightColour, uMidColour, noiseB), uOffBlackColour, noiseA);
+  vec3 darkColour = mix(mix(uMidColour, uOffBlackColour, noiseB), uLightColour, noiseA);
 
   float vignette = distance(vUv, vec2(0.5));
   // Create a vignette to off_black colour around the edges
-  float outerStep = 0.5 + noiseB * 0.2;
-  float vig = smoothstep(0.2, outerStep, vignette);
+  float outerStep = 0.4 + noiseB * 0.2;
+  float vig = smoothstep(0.3, outerStep, vignette);
 
   // high frequency noise for the vignette
-  float noiseV = noise(vec3(vUv * 512.0, uTime * 8.0)); 
-  vec3 noiseColour = mix(uBlackColour, uMidColour, noiseV);
+  // float noiseV = noise(vec3(vUv * 512.0, uTime * 8.0)); 
+  // vec3 noiseColour = mix(uBlackColour, uLightColour, noiseV);
 
-  vec3 finalColour = mix(darkColour, noiseColour, vig);
+  vec3 finalColour = mix(darkColour, uBlackColour, vig);
 
   gl_FragColor = vec4(finalColour, 1.0);
 }

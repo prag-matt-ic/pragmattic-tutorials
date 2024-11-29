@@ -21,15 +21,15 @@ const BUTTON_LABELS: Record<SceneSection, string> = {
 } as const
 
 const BUTTON_CLASSES: Record<SceneSection, string> = {
-  [SceneSection.Purpose]: 'hover:border-green',
-  [SceneSection.Design]: 'hover:border-orange',
-  [SceneSection.Engineering]: 'hover:border-cyan',
+  [SceneSection.Purpose]: 'hover:border-green active:border-green',
+  [SceneSection.Design]: 'hover:border-orange active:border-orange',
+  [SceneSection.Engineering]: 'hover:border-cyan active:border-cyan',
 } as const
 
 const MODAL_CONTENT: Record<SceneSection, ReactNode> = {
-  [SceneSection.Purpose]: 'Using technology to make the world a better place',
-  [SceneSection.Design]: 'Functional and aesthetic in equal parts',
-  [SceneSection.Engineering]: 'Turning the vision into reality',
+  [SceneSection.Purpose]: 'Using technology to improve human performance',
+  [SceneSection.Design]: 'Balanced function and aesthetics',
+  [SceneSection.Engineering]: 'Turn your vision into reality',
 } as const
 
 const SkillPill: FC<Props> = ({ section }) => {
@@ -37,8 +37,11 @@ const SkillPill: FC<Props> = ({ section }) => {
   const setActiveSection = useHomeSceneStore((s) => s.setSectionsSeen)
   const hasSeenSections = useHomeSceneStore((s) => s.sectionsSeen)
   const hasScrolledIntoView = useHomeSceneStore((s) => s.hasScrolledIntoView)
+  const isFinalState = useHomeSceneStore((s) => s.isFinalState)
 
-  const isOpen = activeSection === section && hasScrolledIntoView
+  const shouldPulseButton = hasSeenSections['design'] === false
+
+  const isOpen = hasScrolledIntoView && (activeSection === section || isFinalState)
 
   let modalTextTween = useRef<GSAPTween>()
 
@@ -127,8 +130,10 @@ const SkillPill: FC<Props> = ({ section }) => {
           onExit={onButtonExit}>
           <button
             className={twJoin(
-              'pointer-events-auto rounded-full border-2 border-white/20 bg-black/20 px-6 py-3 text-base font-bold italic text-white md:text-xl',
+              'pointer-events-auto rounded-full border-4 border-white/20 bg-black/30 px-6 py-3 text-base font-bold italic text-white md:text-xl',
               BUTTON_CLASSES[section],
+              // TODO: highlight the button
+              // shouldPulseButton && '',
             )}
             color="secondary"
             ref={refs.setReference}
@@ -152,7 +157,7 @@ const SkillPill: FC<Props> = ({ section }) => {
           style={floatingStyles}
           {...getFloatingProps()}
           className="pointer-events-none absolute z-[200] w-max opacity-0">
-          <p className="w-[calc(100vw-64px)] p-2 text-center text-xl font-bold text-white md:w-[360px] md:p-0 md:text-2xl 2xl:w-[420px] 2xl:text-3xl">
+          <p className="w-[calc(100vw-64px)] p-2 text-center text-xl font-bold text-white md:w-[360px] md:p-0 md:text-2xl 2xl:w-[480px] 2xl:text-3xl">
             {MODAL_CONTENT[section]}
           </p>
         </div>
