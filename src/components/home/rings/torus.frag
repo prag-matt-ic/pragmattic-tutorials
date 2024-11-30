@@ -13,14 +13,20 @@ uniform float uTube;
 
 varying vec2 vUv;
 
-const float TRANSITION_DURATION = 1.5;
+const float TRANSITION_DURATION = 1.2;
+const float ACTIVE_TRANSITION_DELAY = 0.3;
+const float INACTIVE_TRANSITION_DELAY = 0.0;
 
 void main() {
+
+    float delay = uIsActive ? ACTIVE_TRANSITION_DELAY : INACTIVE_TRANSITION_DELAY;
+    float adjustedTime = uTime - uTransitionStartTime - delay;
+
     // Calculate the transition progress
     float transitionProgress = smoothstep(
         0.0, 
         TRANSITION_DURATION, 
-        uTime - uTransitionStartTime
+        adjustedTime
     );
 
     float progress = uIsActive ? transitionProgress: 1.0 - transitionProgress;

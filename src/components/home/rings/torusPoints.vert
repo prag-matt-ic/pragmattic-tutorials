@@ -5,29 +5,29 @@
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 
 // TODO: Add dispersion when active.
-// attribute vec3 dispersedPosition;
+attribute vec3 dispersedPosition;
 
 uniform float uTime;
 uniform float uTransitionStartTime;
 uniform float uRotateSpeed;
+uniform bool uIsActive;
 
-varying vec2 vUv;
+const float POSITION_TRANSITION_DURATION = 0.5;
+const float ACTIVE_TRANSITION_DELAY = 0.0;
+const float INACTIVE_TRANSITION_DELAY = 1.0;
 
-const float TRANSITION_DURATION = 1.0;
-const float MIN_POINT_SIZE = 2.0;
-const float MAX_POINT_SIZE = 16.0;
+const float MIN_POINT_SIZE = 3.0;
+const float MAX_POINT_SIZE = 18.0;
 
 void main() {
-    // vec3 particlePosition = position;
+    float delay = uIsActive ? ACTIVE_TRANSITION_DELAY : INACTIVE_TRANSITION_DELAY;
+    float adjustedTime = uTime - uTransitionStartTime - delay;
 
-    float transitionProgress = smoothstep(
-        0.0, 
-        TRANSITION_DURATION, 
-        uTime - uTransitionStartTime
-    );
+    float transitionProgress = smoothstep(0.0, POSITION_TRANSITION_DURATION, adjustedTime);
 
-    // TODO: Interpolate between the original and dispersed positions
-    vec3 particlePosition = position;// mix(position, dispersedPosition, transitionProgress);
+    float progress = uIsActive ? 1.0 - transitionProgress : transitionProgress;
+    
+    vec3 particlePosition = mix(position, dispersedPosition, progress);
 
     particlePosition = rotateTorus(particlePosition, uTime, uRotateSpeed);
     particlePosition = noiseTorus(particlePosition, uTime);

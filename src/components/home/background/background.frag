@@ -12,7 +12,7 @@ uniform vec3 uBlackColour;
 varying vec2 vUv;
 
 void main() {
-  float timeA = uTime * 0.1;
+  float timeA = uTime * 0.3;
   float timeB = uTime * 0.2;
         
   // Normalized noise values with different uv scales
@@ -24,7 +24,7 @@ void main() {
 
   float vignette = distance(vUv, vec2(0.5));
   // Create a vignette to off_black colour around the edges
-  float outerStep = 0.4 + noiseB * 0.2;
+  float outerStep = 0.6 + noiseB * 0.2;
   float vig = smoothstep(0.3, outerStep, vignette);
 
   // high frequency noise for the vignette
