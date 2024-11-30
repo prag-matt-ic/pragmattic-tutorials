@@ -8,8 +8,8 @@ import React, { type FC } from 'react'
 
 import PointerCamera from '@/components/PointerCamera'
 
-import HomeBackgroundPlane from './HomeBackgroundPlane'
-import Rings from './Rings'
+import HomeBackgroundPlane from './background/HomeBackgroundPlane'
+import Rings from './rings/Rings'
 
 gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger)
 

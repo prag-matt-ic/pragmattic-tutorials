@@ -17,9 +17,9 @@ type SceneStore = {
 }
 
 const INITIAL_SECTIONS_SEEN = {
-  [SceneSection.Purpose]: false,
-  [SceneSection.Design]: false,
-  [SceneSection.Engineering]: false,
+  [SceneSection.Purpose]: true,
+  [SceneSection.Design]: true,
+  [SceneSection.Engineering]: true,
 }
 
 export const useHomeSceneStore = create<SceneStore>((set, get) => ({

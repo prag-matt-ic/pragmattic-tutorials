@@ -154,7 +154,7 @@ const SkillPill: FC<Props> = ({ section }) => {
           style={floatingStyles}
           {...getFloatingProps()}
           className="pointer-events-none absolute z-[200] w-max opacity-0">
-          <p className="w-[calc(100vw-64px)] p-2 text-center text-xl font-bold text-white md:w-[360px] md:p-0 md:text-2xl 2xl:w-[480px] 2xl:text-3xl">
+          <p className="w-[calc(100vw-64px)] p-2 text-center text-xl font-bold !leading-[1.5] text-white md:w-[360px] md:p-0 md:text-2xl 2xl:w-[480px] 2xl:text-3xl">
             {MODAL_CONTENT[section]}
           </p>
         </div>

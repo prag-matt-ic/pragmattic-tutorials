@@ -1,8 +1,11 @@
 // Torus Vertex shader
+#pragma glslify: rotateTorus = require('./rotation.glsl')
+#pragma glslify: noiseTorus = require('./noise.glsl')
 
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 
 uniform float uTime;
+uniform float uRotateSpeed;
 
 varying vec2 vUv;
 
@@ -12,10 +15,9 @@ void main() {
     // Mutate the position using noise
     vec3 projectedPosition = position;
 
-    // Noise value between -1 and 1
-    float noiseFactor = noise(vec3(projectedPosition.x * 0.3, projectedPosition.y * 0.3, projectedPosition.z * 0.4) + (uTime * 0.22));
+    projectedPosition = rotateTorus(projectedPosition, uTime, uRotateSpeed);
 
-    projectedPosition.z += noiseFactor * 0.15;
+    projectedPosition = noiseTorus(projectedPosition, uTime);
 
     // Set the position for the CustomShaderMaterial
     csm_Position = projectedPosition;
