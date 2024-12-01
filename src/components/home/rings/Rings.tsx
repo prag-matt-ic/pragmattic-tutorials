@@ -1,12 +1,11 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { Billboard, shaderMaterial, Sphere, Torus } from '@react-three/drei'
+import { Billboard, shaderMaterial, Torus } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
-import React, { type FC, useEffect, useMemo, useRef, useState } from 'react'
+import React, { type FC, useEffect, useRef } from 'react'
 import {
   AdditiveBlending,
-  BufferAttribute,
   BufferGeometry,
   Color,
   Group,
@@ -15,7 +14,6 @@ import {
   NormalBufferAttributes,
   PointLight,
   ShaderMaterial,
-  TorusGeometry,
 } from 'three'
 import CustomShaderMaterial from 'three-custom-shader-material'
 
@@ -87,7 +85,6 @@ const LIGHT_INTENSITY: Record<SceneSection, number> = {
 
 const Rings: FC = () => {
   const group = useRef<Group>(null)
-  const sphere = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
 
   const purposeTorus = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
   const designTorus = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
@@ -108,8 +105,7 @@ const Rings: FC = () => {
   const colourChangeStartTime = useRef<number>(1)
   const activeSection = useRef<SceneSection | null>(null)
   const previousActiveSection = useRef<SceneSection | null>(null)
-  // const isFinalState = useRef(useHomeSceneStore.getState().isFinalState)
-
+  const scrollProgress = useRef<number>(0)
   // const purposeRotateSpeedMultiplier = useRef({ value: 1.0 })
   // const designRotateSpeedMultiplier = useRef({ value: 1.0 })
   // const engineeringRotateSpeedMultiplier = useRef({ value: 1.0 })
@@ -144,16 +140,18 @@ const Rings: FC = () => {
 
     gsap.fromTo(
       group.current.position,
-      { y: -11, z: -13 },
+      { z: -2 },
       {
         ease: 'power1.inOut',
         z: 0,
-        y: 0,
         scrollTrigger: {
           start: 0,
           end: 'max',
           scrub: true,
           fastScrollEnd: true,
+          onUpdate: ({ progress }) => {
+            scrollProgress.current = progress
+          },
           onEnterBack: () => {
             setHasScrolledIntoView(false)
           },
@@ -173,6 +171,7 @@ const Rings: FC = () => {
     if (!purposePointsShader.current || !designPointsShader.current || !engineeringPointsShader.current) return
 
     const elapsedTime = clock.elapsedTime
+
     // Set the time uniform
     purposeTorusShader.current.uniforms.uTime.value = elapsedTime
     designTorusShader.current.uniforms.uTime.value = elapsedTime
@@ -181,6 +180,10 @@ const Rings: FC = () => {
     purposePointsShader.current.uTime = elapsedTime
     designPointsShader.current.uTime = elapsedTime
     engineeringPointsShader.current.uTime = elapsedTime
+
+    purposePointsShader.current.uScrollProgress = scrollProgress.current
+    designPointsShader.current.uScrollProgress = scrollProgress.current
+    engineeringPointsShader.current.uScrollProgress = scrollProgress.current
 
     // Exit out to allow for the current shader animation to finish
     if (isShaderAnimating.current) return
@@ -221,11 +224,11 @@ const Rings: FC = () => {
   })
 
   return (
-    <group ref={group} position={[0, -11, -13]}>
-      <Sphere ref={sphere} args={[0.04, 12, 12]}>
-        <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.8} color="#FFF" />
-        <meshBasicMaterial color="#F6F6F6" />
-      </Sphere>
+    <group ref={group} position={[0, 0, -3]}>
+      {/* <Sphere ref={sphere} args={[0.03, 8, 8]}> */}
+      <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.8} color="#FFF" />
+      {/* <meshBasicMaterial color="#F6F6F6" /> */}
+      {/* </Sphere> */}
 
       {/* Purpose Torus */}
       <Torus ref={purposeTorus} args={[PURPOSE_TORUS_RADIUS, PURPOSE_TORUS_TUBE, 16, 60]}>
@@ -267,14 +270,20 @@ const Rings: FC = () => {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            array={purposePointsPositions.positions}
-            count={purposePointsPositions.positions.length / 3}
+            array={purposePointsPositions.activePositions}
+            count={purposePointsPositions.activePositions.length / 3}
             itemSize={3}
           />
           <bufferAttribute
-            attach="attributes-dispersedPosition"
-            array={purposePointsPositions.dispersedPositions}
-            count={purposePointsPositions.dispersedPositions.length / 3}
+            attach="attributes-inactivePosition"
+            array={purposePointsPositions.inactivePositions}
+            count={purposePointsPositions.inactivePositions.length / 3}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-scatteredPosition"
+            array={purposePointsPositions.scatteredPositions}
+            count={purposePointsPositions.scatteredPositions.length / 3}
             itemSize={3}
           />
         </bufferGeometry>
@@ -295,14 +304,20 @@ const Rings: FC = () => {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            array={designPointsPositions.positions}
-            count={designPointsPositions.positions.length / 3}
+            array={designPointsPositions.activePositions}
+            count={designPointsPositions.activePositions.length / 3}
             itemSize={3}
           />
           <bufferAttribute
-            attach="attributes-dispersedPosition"
-            array={designPointsPositions.dispersedPositions}
-            count={designPointsPositions.dispersedPositions.length / 3}
+            attach="attributes-inactivePosition"
+            array={designPointsPositions.inactivePositions}
+            count={designPointsPositions.inactivePositions.length / 3}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-scatteredPosition"
+            array={designPointsPositions.scatteredPositions}
+            count={designPointsPositions.scatteredPositions.length / 3}
             itemSize={3}
           />
         </bufferGeometry>
@@ -323,14 +338,20 @@ const Rings: FC = () => {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            array={engineeringPointsPositions.positions}
-            count={engineeringPointsPositions.positions.length / 3}
+            array={engineeringPointsPositions.activePositions}
+            count={engineeringPointsPositions.activePositions.length / 3}
             itemSize={3}
           />
           <bufferAttribute
-            attach="attributes-dispersedPosition"
-            array={engineeringPointsPositions.dispersedPositions}
-            count={engineeringPointsPositions.dispersedPositions.length / 3}
+            attach="attributes-inactivePosition"
+            array={engineeringPointsPositions.inactivePositions}
+            count={engineeringPointsPositions.inactivePositions.length / 3}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-scatteredPosition"
+            array={engineeringPointsPositions.scatteredPositions}
+            count={engineeringPointsPositions.scatteredPositions.length / 3}
             itemSize={3}
           />
         </bufferGeometry>
@@ -368,6 +389,7 @@ type PointsUniforms = {
   uIsActive: boolean
   uRotateSpeed: number
   uColour: Color
+  uScrollProgress: number
 }
 
 const POINTS_UNIFORMS: PointsUniforms = {
@@ -376,6 +398,7 @@ const POINTS_UNIFORMS: PointsUniforms = {
   uIsActive: false,
   uRotateSpeed: 0.3,
   uColour: new Color('#9A93A9'),
+  uScrollProgress: 0,
 }
 
 const TorusPointsShaderMaterial = shaderMaterial(POINTS_UNIFORMS, pointsVertexShader, pointsFragmentShader)
@@ -422,13 +445,14 @@ function getTorusParticlePositions({
   radialSegments: number
   tubularSegments: number
 }): {
-  positions: Float32Array
-  dispersedPositions: Float32Array
+  activePositions: Float32Array
+  inactivePositions: Float32Array
+  scatteredPositions: Float32Array
 } {
-  const positions = []
-  const dispersedPositions = []
+  const activePositions = []
+  const inactivePositions = []
+  const scatteredPositions = []
 
-  // Adjust the loops to match Three.js's vertex generation
   for (let j = 0; j <= tubularSegments; j++) {
     const u = (j / tubularSegments) * Math.PI * 2
     for (let i = 0; i <= radialSegments; i++) {
@@ -438,69 +462,27 @@ function getTorusParticlePositions({
       const y = (radius + tube * Math.cos(v)) * Math.sin(u)
       const z = tube * Math.sin(v)
 
-      positions.push(x, y, z)
+      activePositions.push(x, y, z)
 
       // Spread the particles out
-      dispersedPositions.push(
-        x + (Math.random() - 0.5) * 0.15,
-        y + (Math.random() - 0.5) * 0.15,
-        z + (Math.random() - 0.5) * 0.15,
+      inactivePositions.push(
+        x + (Math.random() - 0.5) * 0.12,
+        y + (Math.random() - 0.5) * 0.12,
+        z + (Math.random() - 0.5) * 0.12,
+      )
+
+      // Scatter the particles
+      scatteredPositions.push(
+        x + (Math.random() - 0.5) * 3.0,
+        y + (Math.random() - 0.5) * 3.0,
+        z + (Math.random() - 0.5) * 3.0,
       )
     }
   }
 
   return {
-    positions: new Float32Array(positions),
-    dispersedPositions: new Float32Array(dispersedPositions),
+    activePositions: new Float32Array(activePositions),
+    inactivePositions: new Float32Array(inactivePositions),
+    scatteredPositions: new Float32Array(scatteredPositions),
   }
 }
-
-// const [purposeDispersedPositions, setPurposeDispersedPositions] = useState<Float32Array | null>(null)
-
-// useEffect(() => {
-//   if (!purposePointsTorus.current) return
-
-//   const generateDispersedPositionsForTorus = (torus: TorusGeometry): Float32Array => {
-//     const positionAttribute = torus.attributes.position
-//     const torusVerticesCount = positionAttribute.count
-
-//     // Create a new Float32Array to hold the dispersed positions
-//     const dispersedPositions = new Float32Array(torusVerticesCount * 3)
-
-//     for (let i = 0; i < torusVerticesCount; i++) {
-//       const x = positionAttribute.getX(i)
-//       const y = positionAttribute.getY(i)
-//       const z = positionAttribute.getZ(i)
-
-//       // Disperse the position (e.g., random displacement)
-//       dispersedPositions[i * 3] = x + (Math.random() - 0.5) * 2 // Adjust the multiplier as needed
-//       dispersedPositions[i * 3 + 1] = y + (Math.random() - 0.5) * 2
-//       dispersedPositions[i * 3 + 2] = z + (Math.random() - 0.5) * 2
-//     }
-
-//     console.log('torus attributes count:', torus.attributes.position.count)
-//     console.log('newDispersedPositions count:', dispersedPositions.length / 3)
-//     return dispersedPositions
-//   }
-
-//   const purpose = generateDispersedPositionsForTorus(purposePointsTorus.current)
-//   setDispersedPositions(purpose)
-// }, [])
-
-// Precompute the positions of the particles
-// const particlesPosition = useMemo(() => {
-//   const positions = []
-//   for (let j = 0; j < tubularSegments; j++) {
-//     const u = (j / tubularSegments) * Math.PI * 2
-//     for (let i = 0; i < radialSegments; i++) {
-//       const v = (i / radialSegments) * Math.PI * 2
-
-//       const x = (radius + tube * Math.cos(v)) * Math.cos(u)
-//       const y = (radius + tube * Math.cos(v)) * Math.sin(u)
-//       const z = tube * Math.sin(v)
-
-//       positions.push(x, y, z)
-//     }
-//   }
-//   return new Float32Array(positions)
-// }, [radius, tube, radialSegments, tubularSegments])

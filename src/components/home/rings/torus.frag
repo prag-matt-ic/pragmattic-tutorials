@@ -48,8 +48,8 @@ void main() {
     vec4 finalColor = vec4(colour, 1.0);
 
     // Reduce opacity with distance
-    float dist = length(vViewPosition);
-    finalColor.a = 1.0 - smoothstep(6.0, 10.0, dist);
+    // float dist = length(vViewPosition);
+    // finalColor.a = 1.0 - smoothstep(6.0, 10.0, dist);
 
     finalColor.a *= progress;
 

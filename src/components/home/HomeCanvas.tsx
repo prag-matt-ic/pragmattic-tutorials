@@ -1,10 +1,11 @@
 'use client'
 import { useGSAP } from '@gsap/react'
+import { PerformanceMonitor, type PerformanceMonitorApi } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import SplitText from 'gsap/dist/SplitText'
-import React, { type FC } from 'react'
+import React, { type FC, useState } from 'react'
 
 import PointerCamera from '@/components/PointerCamera'
 
@@ -13,36 +14,38 @@ import Rings from './rings/Rings'
 
 gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger)
 
+const MIN_DPR = 0.8
+const MAX_DPR = 2
+
 const HomeCanvas: FC = () => {
+  const [dpr, setDpr] = useState(1)
+
+  const onPerformanceInline = (api: PerformanceMonitorApi) => {
+    if (dpr < MAX_DPR) setDpr((prev) => prev + 0.2)
+  }
+
+  const onPerformanceDecline = (api: PerformanceMonitorApi) => {
+    if (dpr > MIN_DPR) setDpr((prev) => prev - 0.2)
+  }
+
   return (
     <Canvas
       className="!fixed inset-0"
+      dpr={dpr}
       gl={{
         antialias: false,
         powerPreference: 'high-performance',
       }}>
-      {/* <PerformanceMonitor
-        onIncline={() => {
-          if (dpr < 2) setDpr(parseFloat((dpr + 0.3).toFixed(1)))
-        }}
-        onDecline={handleLowerDpr}
-        onFallback={handleLowerDpr}
+      <PerformanceMonitor
+        onIncline={onPerformanceInline}
+        onDecline={onPerformanceDecline}
+        onFallback={onPerformanceDecline}
         flipflops={4}
-      /> */}
-      {/* <Selection> */}
+      />
       <ambientLight intensity={1} />
       <PointerCamera cameraProps={{ far: 25, position: [0, 0, 5] }} intensity={0.04} />
-      {/* Add middleground parallax  */}
-
       <HomeBackgroundPlane />
-
       <Rings />
-      {/* <EffectComposer>
-          <SelectiveBloom />
-        </EffectComposer>
-      </Selection> */}
-
-      {/* TODO: test conditional Bloom on the sphere */}
     </Canvas>
   )
 }

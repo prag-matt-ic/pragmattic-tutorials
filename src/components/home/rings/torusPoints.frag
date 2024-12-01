@@ -6,6 +6,8 @@ uniform float uTransitionStartTime;
 uniform bool uIsActive;
 uniform vec3 uColour;
 
+varying vec3 vViewPosition;
+
 const float TRANSITION_DURATION = 1.2;
 
   void main() {
@@ -25,6 +27,10 @@ const float TRANSITION_DURATION = 1.2;
     float inactiveAlpha = 0.6;
     
     float alpha = mix(activeAlpha, inactiveAlpha, progress);
+
+    // Reduce opacity with distance
+    // float vdist = length(vViewPosition);
+    // float fadeOutAlpha = 1.0 - smoothstep(8.0, 11.0, dist);
     
     vec4 finalColour = vec4(uColour, circleAlpha * alpha);
 
