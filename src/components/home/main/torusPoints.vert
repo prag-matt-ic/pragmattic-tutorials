@@ -17,7 +17,7 @@ varying vec3 vViewPosition;
 
 const float POSITION_TRANSITION_DURATION = 0.5;
 const float ACTIVE_TRANSITION_DELAY = 0.0;
-const float INACTIVE_TRANSITION_DELAY = 1.0;
+const float INACTIVE_TRANSITION_DELAY = 1.2;
 const float MIN_PT_SIZE = 3.0;
 const float MAX_PT_SIZE = 18.0;
 

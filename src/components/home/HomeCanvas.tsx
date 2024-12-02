@@ -10,7 +10,7 @@ import React, { type FC, useState } from 'react'
 import PointerCamera from '@/components/PointerCamera'
 
 import HomeBackgroundPlane from './background/HomeBackgroundPlane'
-import Rings from './rings/Rings'
+import HomeMain from './main/HomeMain'
 
 gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger)
 
@@ -45,7 +45,7 @@ const HomeCanvas: FC = () => {
       <ambientLight intensity={1} />
       <PointerCamera cameraProps={{ far: 25, position: [0, 0, 5] }} intensity={0.04} />
       <HomeBackgroundPlane />
-      <Rings />
+      <HomeMain />
     </Canvas>
   )
 }

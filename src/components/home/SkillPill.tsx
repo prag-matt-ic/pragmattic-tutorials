@@ -14,32 +14,26 @@ type Props = {
   section: SceneSection
 }
 
-const BUTTON_LABELS: Record<SceneSection, string> = {
-  [SceneSection.Purpose]: 'Purpose',
-  [SceneSection.Design]: 'Design',
-  [SceneSection.Engineering]: 'Engineering',
+const HEADING_CLASSES: Record<SceneSection, string> = {
+  [SceneSection.Purpose]: 'text-green',
+  [SceneSection.Design]: 'text-orange',
+  [SceneSection.Engineering]: 'text-cyan',
 } as const
 
-const BUTTON_CLASSES: Record<SceneSection, string> = {
-  [SceneSection.Purpose]: 'hover:border-green active:border-green',
-  [SceneSection.Design]: 'hover:border-orange active:border-orange',
-  [SceneSection.Engineering]: 'hover:border-cyan active:border-cyan',
-} as const
-
-const MODAL_CONTENT: Record<SceneSection, ReactNode> = {
+const TEXT_CONTENT: Record<SceneSection, ReactNode> = {
   [SceneSection.Purpose]: 'Using technology to improve human performance',
   [SceneSection.Design]: 'Balanced function and aesthetics',
   [SceneSection.Engineering]: 'Turn your vision into reality',
 } as const
 
-const SkillPill: FC<Props> = ({ section }) => {
+const FloatingInfo: FC<Props> = ({ section }) => {
   const activeSection = useHomeSceneStore((s) => s.activeSection)
   const setActiveSection = useHomeSceneStore((s) => s.setActiveSection)
-  const hasSeenSections = useHomeSceneStore((s) => s.sectionsSeen)
+  // const hasSeenSections = useHomeSceneStore((s) => s.sectionsSeen)
   const hasScrolledIntoView = useHomeSceneStore((s) => s.hasScrolledIntoView)
   const isFinalState = useHomeSceneStore((s) => s.isFinalState)
 
-  const shouldPulseButton = !hasSeenSections.design && section === SceneSection.Design
+  // const shouldPulseButton = !hasSeenSections.design && section === SceneSection.Design
 
   const isOpen = hasScrolledIntoView && (activeSection === section || isFinalState)
 
@@ -53,31 +47,31 @@ const SkillPill: FC<Props> = ({ section }) => {
     },
     middleware: [shift({ padding: 16 }), offset({ mainAxis: 24 }), flip()],
   })
-  const hover = useHover(context, {})
-  const { getReferenceProps, getFloatingProps } = useInteractions([hover])
+  // const hover = useHover(context, {})
+  // const { getReferenceProps, getFloatingProps } = useInteractions([hover])
 
-  const onButtonEnter = () => {
-    gsap.fromTo(
-      refs.reference.current,
-      { opacity: 0, scale: 0.3 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.6,
-        delay: 0.5,
-        ease: 'power2.out',
-      },
-    )
-  }
+  // const onButtonEnter = () => {
+  //   gsap.fromTo(
+  //     refs.reference.current,
+  //     { opacity: 0, scale: 0.3 },
+  //     {
+  //       opacity: 1,
+  //       scale: 1,
+  //       duration: 0.6,
+  //       delay: 0.5,
+  //       ease: 'power2.out',
+  //     },
+  //   )
+  // }
 
-  const onButtonExit = () => {
-    gsap.to(refs.reference.current, {
-      opacity: 0,
-      scale: 0.3,
-      duration: 0.4,
-      ease: 'power2.out',
-    })
-  }
+  // const onButtonExit = () => {
+  //   gsap.to(refs.reference.current, {
+  //     opacity: 0,
+  //     scale: 0.3,
+  //     duration: 0.4,
+  //     ease: 'power2.out',
+  //   })
+  // }
 
   const onModalEnter = () => {
     if (!refs.floating.current) return
@@ -87,7 +81,14 @@ const SkillPill: FC<Props> = ({ section }) => {
     const splitParagraph = new SplitText(paragraph, {
       charsClass: 'opacity-0',
     })
+
     gsap.set(refs.floating.current, { opacity: 1 })
+
+    gsap.to('h3', {
+      opacity: 1,
+      duration: 1,
+      ease: 'power2.out',
+    })
 
     modalTextTween.current = gsap.fromTo(
       splitParagraph.chars,
@@ -110,17 +111,61 @@ const SkillPill: FC<Props> = ({ section }) => {
     })
   }
 
-  const showPill = (): boolean => {
-    if (!hasScrolledIntoView) return false
-    if (section === SceneSection.Purpose) return true
-    if (section === SceneSection.Design && hasSeenSections[SceneSection.Purpose]) return true
-    if (section === SceneSection.Engineering && hasSeenSections[SceneSection.Design]) return true
-    return false
-  }
-
   return (
     <Html className="pointer-events-none select-none">
-      <div className="h-12 w-48 -translate-x-1/2 -translate-y-1/2 items-center justify-center lg:flex">
+      <div ref={refs.setReference} className="size-5 -translate-x-1/2 -translate-y-1/2" />
+      <Transition
+        in={isOpen}
+        timeout={{ enter: 0, exit: 350 }}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        onEnter={onModalEnter}
+        onExit={onModalExit}
+        nodeRef={refs.floating}>
+        <div
+          ref={refs.setFloating}
+          style={floatingStyles}
+          className="pointer-events-none absolute z-[200] w-[calc(100vw-64px)] space-y-2 opacity-0 md:w-[360px] 2xl:w-[480px]">
+          <h3
+            className={twJoin(
+              HEADING_CLASSES[section],
+              'w-full text-xl font-medium uppercase tracking-wide opacity-0',
+            )}>
+            {section}
+          </h3>
+          <p className="w-full p-2 text-xl font-bold !leading-[1.5] text-white md:p-0 md:text-2xl 2xl:text-3xl">
+            {TEXT_CONTENT[section]}
+          </p>
+        </div>
+      </Transition>
+    </Html>
+  )
+}
+
+export default FloatingInfo
+
+// const BUTTON_LABELS: Record<SceneSection, string> = {
+//   [SceneSection.Purpose]: 'Purpose',
+//   [SceneSection.Design]: 'Design',
+//   [SceneSection.Engineering]: 'Engineering',
+// } as const
+
+// const BUTTON_CLASSES: Record<SceneSection, string> = {
+//   [SceneSection.Purpose]: 'hover:border-green active:border-green',
+//   [SceneSection.Design]: 'hover:border-orange active:border-orange',
+//   [SceneSection.Engineering]: 'hover:border-cyan active:border-cyan',
+// } as const
+
+// const showPill = (): boolean => {
+//   if (!hasScrolledIntoView) return false
+//   if (section === SceneSection.Purpose) return true
+//   if (section === SceneSection.Design && hasSeenSections[SceneSection.Purpose]) return true
+//   if (section === SceneSection.Engineering && hasSeenSections[SceneSection.Design]) return true
+//   return false
+// }
+
+{
+  /* <div className="h-12 w-48 -translate-x-1/2 -translate-y-1/2 items-center justify-center lg:flex">
         <Transition
           in={showPill()}
           timeout={{ enter: 0, exit: 350 }}
@@ -138,29 +183,5 @@ const SkillPill: FC<Props> = ({ section }) => {
             {BUTTON_LABELS[section]}
           </button>
         </Transition>
-      </div>
-
-      {/* Floating Info modal */}
-      <Transition
-        in={isOpen}
-        timeout={{ enter: 0, exit: 350 }}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        onEnter={onModalEnter}
-        onExit={onModalExit}
-        nodeRef={refs.floating}>
-        <div
-          ref={refs.setFloating}
-          style={floatingStyles}
-          {...getFloatingProps()}
-          className="pointer-events-none absolute z-[200] w-max opacity-0">
-          <p className="w-[calc(100vw-64px)] p-2 text-center text-xl font-bold !leading-[1.5] text-white md:w-[360px] md:p-0 md:text-2xl 2xl:w-[480px] 2xl:text-3xl">
-            {MODAL_CONTENT[section]}
-          </p>
-        </div>
-      </Transition>
-    </Html>
-  )
+      </div> */
 }
-
-export default SkillPill

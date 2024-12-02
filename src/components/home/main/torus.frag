@@ -13,8 +13,8 @@ uniform float uTube;
 
 varying vec2 vUv;
 
-const float TRANSITION_DURATION = 1.2;
-const float ACTIVE_TRANSITION_DELAY = 0.3;
+const float TRANSITION_DURATION = 1.4;
+const float ACTIVE_TRANSITION_DELAY = 0.35;
 const float INACTIVE_TRANSITION_DELAY = 0.0;
 
 void main() {
@@ -22,7 +22,6 @@ void main() {
     float delay = uIsActive ? ACTIVE_TRANSITION_DELAY : INACTIVE_TRANSITION_DELAY;
     float adjustedTime = uTime - uTransitionStartTime - delay;
 
-    // Calculate the transition progress
     float transitionProgress = smoothstep(
         0.0, 
         TRANSITION_DURATION, 
@@ -37,7 +36,7 @@ void main() {
         
     float xNoise = noise(vec3(vViewPosition.xy * 16.0, uTime)) * 0.5 + 0.5 * 0.08;
 
-    // view position.x = 0 is the center of the torus
+    // view position.y = 0 is the center of the torus
     float mixFactor = smoothstep(startValue, endValue, vViewPosition.y - (xNoise * (1.0 - transitionProgress)));
         
     // Blend between the two colors
