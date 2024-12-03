@@ -18,7 +18,7 @@ const MIN_DPR = 0.8
 const MAX_DPR = 2
 
 const HomeCanvas: FC = () => {
-  const [dpr, setDpr] = useState(1)
+  const [dpr, setDpr] = useState(1.6)
 
   const onPerformanceInline = (api: PerformanceMonitorApi) => {
     if (dpr < MAX_DPR) setDpr((prev) => prev + 0.2)

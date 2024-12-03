@@ -13,7 +13,7 @@ export default function HomePage() {
         <section id="design-section" className="h-[150vh] w-full"></section>
         <section id="engineering-section" className="h-[150vh] w-full"></section>
         <section className="fixed bottom-4 left-4 rounded-md bg-black/20 p-3">
-          <h3 className="text-sm font-bold uppercase text-white/50">🚧 Under Construction 🚧</h3>
+          <h3 className="text-sm font-bold uppercase text-white">🚧 Under Construction 🚧</h3>
         </section>
       </div>
     </main>

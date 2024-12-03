@@ -39,6 +39,7 @@ const HomeMain: FC = () => {
 
   const setHasScrolledIntoView = useHomeSceneStore((s) => s.setHasScrolledIntoView)
   const introScrollProgress = useRef<number>(0)
+  const getScrollProgress = (): number => introScrollProgress.current
 
   // Translate the group in as the header text moves out
   useGSAP(() => {
@@ -73,8 +74,6 @@ const HomeMain: FC = () => {
       },
     )
   }, [])
-
-  const getScrollProgress = () => introScrollProgress.current
 
   return (
     <>
@@ -262,7 +261,7 @@ const PURPOSE_UNIFORMS: UniformValues = {
   uIsActive: { value: false },
   uColour: { value: new Color('#BDB8C6') },
   uActiveColour: { value: GREEN_VEC3 },
-  uTransitionStartTime: { value: 0 },
+  uTransitionStartTime: { value: -10 },
   uRadius: { value: PURPOSE_TORUS_RADIUS },
   uTube: { value: PURPOSE_TORUS_TUBE },
 }
@@ -273,7 +272,7 @@ const DESIGN_UNIFORMS: UniformValues = {
   uIsActive: { value: false },
   uColour: { value: new Color('#9A93A9') },
   uActiveColour: { value: ORANGE_VEC3 },
-  uTransitionStartTime: { value: 0 },
+  uTransitionStartTime: { value: -10 },
   uRadius: { value: DESIGN_TORUS_RADIUS },
   uTube: { value: DESIGN_TORUS_TUBE },
 }
@@ -284,7 +283,7 @@ const ENGINEERING_UNIFORMS: UniformValues = {
   uIsActive: { value: false },
   uColour: { value: LIGHT_VEC3 },
   uActiveColour: { value: CYAN_VEC3 },
-  uTransitionStartTime: { value: 0 },
+  uTransitionStartTime: { value: -10 },
   uRadius: { value: ENGINEERING_TORUS_RADIUS },
   uTube: { value: ENGINEERING_TORUS_TUBE },
 }
@@ -306,7 +305,7 @@ type PointsUniforms = {
 
 const POINTS_UNIFORMS: PointsUniforms = {
   uTime: 0,
-  uTransitionStartTime: 0,
+  uTransitionStartTime: -10,
   uIsActive: false,
   uRotateSpeed: 0.3,
   uColour: new Color('#9A93A9'),
