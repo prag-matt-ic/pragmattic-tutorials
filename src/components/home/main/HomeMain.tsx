@@ -37,7 +37,7 @@ const HomeMain: FC = () => {
   const torusGroup = useRef<Group>(null)
   const pointLight = useRef<PointLight>(null)
 
-  const setHasScrolledIntoView = useHomeSceneStore((s) => s.setHasScrolledIntoView)
+  const setHasScrolledIntoView = useHomeSceneStore((s) => s.setHasCompletedIntroScroll)
   const introScrollProgress = useRef<number>(0)
   const getScrollProgress = (): number => introScrollProgress.current
 
@@ -48,7 +48,7 @@ const HomeMain: FC = () => {
     // Intro scroll animation
     gsap.fromTo(
       torusGroup.current.position,
-      { z: -2 },
+      { z: 1 },
       {
         ease: 'none',
         z: 0,
@@ -105,12 +105,15 @@ type Props = {
   getScrollProgress: () => number
 }
 
+const START_TIME_NIL = -10
+const MAX_TRANSITION_DURATION = 1500
+
 const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
   const torusMesh = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
   const shaderMaterial = useRef<ShaderMaterial>(null)
   const pointsShaderMaterial = useRef<ShaderMaterial & PointsUniforms>(null)
 
-  const transitionStartTime = useRef<number>(1)
+  const transitionStartTime = useRef<number>(START_TIME_NIL)
   const isActive = useRef<boolean>(false)
   const isPrevActive = useRef<boolean>(false)
   const isAnimating = useRef(false)
@@ -121,15 +124,13 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
   useEffect(
     () =>
       useHomeSceneStore.subscribe((s) => {
-        transitionStartTime.current = 0
+        transitionStartTime.current = START_TIME_NIL
         isPrevActive.current = s.prevActiveSection === section
         isActive.current = s.activeSection === section
 
-        const TRANSITION_DURATION = 1500
-
         setTimeout(() => {
           isAnimating.current = false
-        }, TRANSITION_DURATION)
+        }, MAX_TRANSITION_DURATION)
       }),
     [section],
   )
@@ -146,6 +147,12 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
         },
         onEnterBack: () => {
           setActiveSection(section)
+        },
+        onLeave: () => {
+          setActiveSection(null)
+        },
+        onLeaveBack: () => {
+          setActiveSection(null)
         },
       })
     },
@@ -168,8 +175,9 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
     shaderMaterial.current.uniforms.uIsActive.value = isActive.current
     pointsShaderMaterial.current.uIsActive = isActive.current
 
-    // Handle the colour change time
-    const shouldStartTransition = transitionStartTime.current === 0 && isPrevActive.current !== isActive.current
+    // Handle active transition time
+    const shouldStartTransition =
+      transitionStartTime.current === START_TIME_NIL && isPrevActive.current !== isActive.current
     if (!shouldStartTransition) return
 
     isAnimating.current = true
@@ -181,7 +189,7 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
   return (
     <>
       {/* TODO: Review args  */}
-      <Torus ref={torusMesh} args={[...TORUS_ARGS[section], 16, 80]}>
+      <Torus ref={torusMesh} args={[...TORUS_ARGS[section], 16, 64]}>
         <CustomShaderMaterial
           ref={shaderMaterial}
           baseMaterial={MeshLambertMaterial}
@@ -230,14 +238,14 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
 
 type UniformValues = {
   [key: string]: {
-    value: any
+    value: unknown
   }
 }
 
 const ROTATE_SPEEDS: Record<SceneSection, number> = {
-  [SceneSection.Purpose]: 0.4,
-  [SceneSection.Design]: 0.3,
-  [SceneSection.Engineering]: 0.2,
+  [SceneSection.Purpose]: 0.2,
+  [SceneSection.Design]: 0.15,
+  [SceneSection.Engineering]: 0.1,
 } as const
 
 const PURPOSE_TORUS_RADIUS = 0.5 as const
@@ -341,7 +349,7 @@ const POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusParticleP
     radius: ENGINEERING_TORUS_RADIUS,
     tube: ENGINEERING_TORUS_TUBE,
     radialSegments: 24,
-    tubularSegments: 180,
+    tubularSegments: 160,
   }),
 } as const
 
@@ -383,11 +391,7 @@ function getTorusParticlePositions({
       )
 
       // Scatter the particles
-      scatteredPositions.push(
-        x + (Math.random() - 0.5) * 3.0,
-        y + (Math.random() - 0.5) * 3.0,
-        z + (Math.random() - 0.5) * 3.0,
-      )
+      scatteredPositions.push((Math.random() - 0.5) * 8.0, (Math.random() - 0.5) * 8.0, (Math.random() - 0.5) * 3.0)
     }
   }
 

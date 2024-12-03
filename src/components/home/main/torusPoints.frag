@@ -1,3 +1,4 @@
+// Torus Points Fragment shader
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 
 uniform float uTime;
@@ -13,7 +14,7 @@ const float TRANSITION_DURATION = 1.2;
   void main() {
     vec2 normalizedPoint = gl_PointCoord - vec2(0.5);
     float dist = length(normalizedPoint);
-    float circleAlpha = 1.0 - dist;
+    float circleAlpha = 0.5 - dist;
 
     float transitionProgress = smoothstep(
         0.0, 
@@ -24,7 +25,7 @@ const float TRANSITION_DURATION = 1.2;
     float progress = uIsActive ? 1.0 - transitionProgress : transitionProgress;
     
     float activeAlpha = 0.0;
-    float inactiveAlpha = 0.6;
+    float inactiveAlpha = 0.8;
     
     float alpha = mix(activeAlpha, inactiveAlpha, progress);
 

@@ -1,4 +1,4 @@
-// Ring Fragment shader
+// Torus Fragment shader
 
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 

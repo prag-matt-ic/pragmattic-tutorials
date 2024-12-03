@@ -18,8 +18,8 @@ varying vec3 vViewPosition;
 const float POSITION_TRANSITION_DURATION = 0.5;
 const float ACTIVE_TRANSITION_DELAY = 0.0;
 const float INACTIVE_TRANSITION_DELAY = 1.2;
-const float MIN_PT_SIZE = 3.0;
-const float MAX_PT_SIZE = 18.0;
+const float MIN_PT_SIZE = 8.0;
+const float MAX_PT_SIZE = 40.0;
 
 void main() {
     float delay = uIsActive ? ACTIVE_TRANSITION_DELAY : INACTIVE_TRANSITION_DELAY;
@@ -29,9 +29,10 @@ void main() {
 
     float progress = uIsActive ? 1.0 - transitionProgress : transitionProgress;
     
-    // vec3 particlePosition = mix(position, inactivePosition, progress);
     vec3 particlePosition = mix(scatteredPosition, inactivePosition, uScrollProgress);
     particlePosition = mix(position, particlePosition, progress);
+
+    // float rotateTime = bool(step(1.0, uScrollProgress)) ? uTime : 0.0;
 
     particlePosition = rotateTorus(particlePosition, uTime, uRotateSpeed);
     particlePosition = noiseTorus(particlePosition, uTime);
@@ -42,7 +43,6 @@ void main() {
 
     vViewPosition = viewPosition.xyz;
 
-    // Attenuation factor - further away the particle is from the camera, the smaller it will be
     float attenuationFactor = 1.0 / projectedPosition.z;
     float pointSize = clamp(MIN_PT_SIZE, MAX_PT_SIZE, MAX_PT_SIZE * attenuationFactor);
 

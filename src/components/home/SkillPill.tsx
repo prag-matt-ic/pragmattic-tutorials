@@ -29,13 +29,8 @@ const TEXT_CONTENT: Record<SceneSection, ReactNode> = {
 const FloatingInfo: FC<Props> = ({ section }) => {
   const activeSection = useHomeSceneStore((s) => s.activeSection)
   const setActiveSection = useHomeSceneStore((s) => s.setActiveSection)
-  // const hasSeenSections = useHomeSceneStore((s) => s.sectionsSeen)
-  const hasScrolledIntoView = useHomeSceneStore((s) => s.hasScrolledIntoView)
-  const isFinalState = useHomeSceneStore((s) => s.isFinalState)
-
-  // const shouldPulseButton = !hasSeenSections.design && section === SceneSection.Design
-
-  const isOpen = hasScrolledIntoView && (activeSection === section || isFinalState)
+  const hasScrolledIntoView = useHomeSceneStore((s) => s.hasCompletedIntroScroll)
+  const isOpen = hasScrolledIntoView && activeSection === section
 
   let modalTextTween = useRef<GSAPTween>()
 
