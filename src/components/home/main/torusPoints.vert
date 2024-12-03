@@ -32,8 +32,6 @@ void main() {
     vec3 particlePosition = mix(scatteredPosition, inactivePosition, uScrollProgress);
     particlePosition = mix(position, particlePosition, progress);
 
-    // float rotateTime = bool(step(1.0, uScrollProgress)) ? uTime : 0.0;
-
     particlePosition = rotateTorus(particlePosition, uTime, uRotateSpeed);
     particlePosition = noiseTorus(particlePosition, uTime);
 

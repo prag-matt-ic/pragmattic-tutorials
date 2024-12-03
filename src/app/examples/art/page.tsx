@@ -4,7 +4,7 @@ import { Leva } from 'leva'
 import React from 'react'
 
 import ArtShader from '@/components/examples/art/ArtShader'
-import ScrollDownArrow from '@/components/ScrollDown'
+import ScrollDownArrow from '@/components/examples/ScrollDown'
 
 const SCREENS = 30
 

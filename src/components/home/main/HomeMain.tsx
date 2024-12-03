@@ -3,7 +3,6 @@ import { useGSAP } from '@gsap/react'
 import { Billboard, shaderMaterial, Torus } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
-import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import React, { type FC, useEffect, useRef } from 'react'
 import {
   AdditiveBlending,
@@ -21,7 +20,7 @@ import CustomShaderMaterial from 'three-custom-shader-material'
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
 import { CYAN_VEC3, GREEN_VEC3, LIGHT_VEC3, ORANGE_VEC3 } from '@/resources/colours'
 
-import FloatingInfo from '../SkillPill'
+import FloatingInfo from '../FloatingInfo'
 import fragmentShader from './torus.frag'
 import vertexShader from './torus.vert'
 import pointsFragmentShader from './torusPoints.frag'
@@ -53,9 +52,8 @@ const HomeMain: FC = () => {
         ease: 'none',
         z: 0,
         scrollTrigger: {
-          trigger: '#home-header',
           start: 0,
-          end: 1400,
+          end: 1000,
           scrub: true,
           fastScrollEnd: true,
           onUpdate: ({ progress }) => {
@@ -84,13 +82,13 @@ const HomeMain: FC = () => {
         <TorusWithPoints section={SceneSection.Engineering} getScrollProgress={getScrollProgress} />
       </group>
       <group>
-        <Billboard position={[-1.1, 1, 1]}>
+        <Billboard position={[-1.1, 0.7, 1]}>
           <FloatingInfo section={SceneSection.Purpose} />
         </Billboard>
         <Billboard position={[1.6, 0, 2]}>
           <FloatingInfo section={SceneSection.Design} />
         </Billboard>
-        <Billboard position={[0, -1.7, 1]}>
+        <Billboard position={[-0.5, -2, 1]}>
           <FloatingInfo section={SceneSection.Engineering} />
         </Billboard>
       </group>
@@ -118,8 +116,6 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
   const isPrevActive = useRef<boolean>(false)
   const isAnimating = useRef(false)
 
-  const setActiveSection = useHomeSceneStore((s) => s.setActiveSection)
-
   // Connect to the store on mount, disconnect on unmount, catch state-changes in a reference
   useEffect(
     () =>
@@ -133,30 +129,6 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
         }, MAX_TRANSITION_DURATION)
       }),
     [section],
-  )
-
-  // make active when the corresonding HTML section enters the view
-  useGSAP(
-    () => {
-      ScrollTrigger.create({
-        trigger: `#${section}-section`,
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: () => {
-          setActiveSection(section)
-        },
-        onEnterBack: () => {
-          setActiveSection(section)
-        },
-        onLeave: () => {
-          setActiveSection(null)
-        },
-        onLeaveBack: () => {
-          setActiveSection(null)
-        },
-      })
-    },
-    { dependencies: [section] },
   )
 
   useFrame(({ clock }) => {

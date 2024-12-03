@@ -3,8 +3,8 @@
 import { useState } from 'react'
 
 import Button from '@/components/buttons/Button'
-import { SectionId } from '@/components/HomeNav'
-import Modal from '@/components/Modal'
+import { SectionId } from '@/components/examples/HomeNav'
+import Modal from '@/components/examples/Modal'
 
 export default function ButtonsExample() {
   const [isModalShowing, setIsModalShowing] = useState(false)

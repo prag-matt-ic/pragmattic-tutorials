@@ -23,7 +23,7 @@ const HEADING_CLASSES: Record<SceneSection, string> = {
 const TEXT_CONTENT: Record<SceneSection, ReactNode> = {
   [SceneSection.Purpose]: 'Using technology to improve human performance',
   [SceneSection.Design]: 'Balanced function and aesthetics',
-  [SceneSection.Engineering]: 'Turn your vision into reality',
+  [SceneSection.Engineering]: 'Turn your vision into reality using modern web technologies',
 } as const
 
 const FloatingInfo: FC<Props> = ({ section }) => {
@@ -42,31 +42,6 @@ const FloatingInfo: FC<Props> = ({ section }) => {
     },
     middleware: [shift({ padding: 16 }), offset({ mainAxis: 24 }), flip()],
   })
-  // const hover = useHover(context, {})
-  // const { getReferenceProps, getFloatingProps } = useInteractions([hover])
-
-  // const onButtonEnter = () => {
-  //   gsap.fromTo(
-  //     refs.reference.current,
-  //     { opacity: 0, scale: 0.3 },
-  //     {
-  //       opacity: 1,
-  //       scale: 1,
-  //       duration: 0.6,
-  //       delay: 0.5,
-  //       ease: 'power2.out',
-  //     },
-  //   )
-  // }
-
-  // const onButtonExit = () => {
-  //   gsap.to(refs.reference.current, {
-  //     opacity: 0,
-  //     scale: 0.3,
-  //     duration: 0.4,
-  //     ease: 'power2.out',
-  //   })
-  // }
 
   const onModalEnter = () => {
     if (!refs.floating.current) return
@@ -120,15 +95,15 @@ const FloatingInfo: FC<Props> = ({ section }) => {
         <div
           ref={refs.setFloating}
           style={floatingStyles}
-          className="pointer-events-none absolute z-[200] w-[calc(100vw-64px)] space-y-2 opacity-0 md:w-[360px] 2xl:w-[480px]">
+          className="pointer-events-none absolute z-[200] w-[calc(100vw-64px)] space-y-1 opacity-0 md:w-[420px] 2xl:w-[560px]">
           <h3
             className={twJoin(
               HEADING_CLASSES[section],
-              'w-full text-xl font-medium uppercase tracking-wide opacity-0',
+              'w-full text-xl font-black capitalize italic tracking-wide opacity-0 xl:text-2xl',
             )}>
             {section}
           </h3>
-          <p className="w-full p-2 text-xl font-bold !leading-[1.5] text-white md:p-0 md:text-2xl 2xl:text-3xl">
+          <p className="w-full p-2 text-xl font-bold !leading-[1.4] text-white md:p-0 md:text-2xl lg:text-3xl 2xl:text-4xl">
             {TEXT_CONTENT[section]}
           </p>
         </div>
@@ -138,6 +113,32 @@ const FloatingInfo: FC<Props> = ({ section }) => {
 }
 
 export default FloatingInfo
+
+// const hover = useHover(context, {})
+// const { getReferenceProps, getFloatingProps } = useInteractions([hover])
+
+// const onButtonEnter = () => {
+//   gsap.fromTo(
+//     refs.reference.current,
+//     { opacity: 0, scale: 0.3 },
+//     {
+//       opacity: 1,
+//       scale: 1,
+//       duration: 0.6,
+//       delay: 0.5,
+//       ease: 'power2.out',
+//     },
+//   )
+// }
+
+// const onButtonExit = () => {
+//   gsap.to(refs.reference.current, {
+//     opacity: 0,
+//     scale: 0.3,
+//     duration: 0.4,
+//     ease: 'power2.out',
+//   })
+// }
 
 // const BUTTON_LABELS: Record<SceneSection, string> = {
 //   [SceneSection.Purpose]: 'Purpose',

@@ -4,7 +4,7 @@ import { Leva } from 'leva'
 import React from 'react'
 
 import ScrollingBackgroundGradient from '@/components/examples/scrollingBackgroundGradient/ScrollingBackgroundGradient'
-import ScrollDownArrow from '@/components/ScrollDown'
+import ScrollDownArrow from '@/components/examples/ScrollDown'
 
 // Steps:
 // 1. Create a fullscreen shader background using a <ScreenQuad> component

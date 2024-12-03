@@ -10,7 +10,7 @@ import BasicParticles from '@/components/examples/particles/basicParticles/Basic
 import MeshSamplerParticles from '@/components/examples/particles/gltfParticles/MeshSamplerParticles'
 import Stars from '@/components/examples/particles/stars/Stars'
 import PointerCamera from '@/components/PointerCamera'
-import ScrollDownArrow from '@/components/ScrollDown'
+import ScrollDownArrow from '@/components/examples/ScrollDown'
 
 // Building modern day scroll controlled star wars intro with React Three Fiber and GSAP
 // Inspiration: https://codepen.io/nucro/pen/yYWdPp

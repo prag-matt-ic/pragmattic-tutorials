@@ -1,5 +1,5 @@
 import BackgroundCanvas from '@/components/backgroundCanvas/BackgroundCanvas'
-import Marquee from '@/components/Marquee'
+import Marquee from '@/components/examples/Marquee'
 
 export default function MarqueeExample() {
   return (

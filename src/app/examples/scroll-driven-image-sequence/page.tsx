@@ -1,5 +1,5 @@
 import BackgroundCanvas from '@/components/backgroundCanvas/BackgroundCanvas'
-import ImageSequenceHeader from '@/components/ImageSequenceHeader'
+import ImageSequenceHeader from '@/components/examples/ImageSequenceHeader'
 
 export default function ImageSequenceExample() {
   return (
