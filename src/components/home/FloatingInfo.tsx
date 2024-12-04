@@ -95,7 +95,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
         <div
           ref={refs.setFloating}
           style={floatingStyles}
-          className="pointer-events-none absolute z-[200] w-[calc(100vw-64px)] space-y-1 opacity-0 md:w-[420px] 2xl:w-[560px]">
+          className="pointer-events-none absolute z-[200] w-[calc(100vw-64px)] space-y-2 opacity-0 md:w-[420px] 2xl:w-[560px]">
           <h3
             className={twJoin(
               HEADING_CLASSES[section],
@@ -103,7 +103,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
             )}>
             {section}
           </h3>
-          <p className="w-full p-2 text-xl font-bold !leading-[1.4] text-white md:p-0 md:text-2xl lg:text-3xl 2xl:text-4xl">
+          <p className="w-full p-2 text-xl font-bold !leading-[1.3] text-white md:p-0 md:text-2xl lg:text-3xl 2xl:text-4xl">
             {TEXT_CONTENT[section]}
           </p>
         </div>

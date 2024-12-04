@@ -4,7 +4,7 @@ import HomeScrollManager from '@/components/home/HomeScrollManager'
 
 export default function HomePage() {
   return (
-    <main className="w-full overflow-x-hidden bg-black">
+    <main className="w-full overflow-x-hidden bg-black text-white">
       <HomeCanvas />
 
       <HomeHeader />
@@ -25,16 +25,20 @@ export default function HomePage() {
       <div className={PADDING_SECTION_CLASSES} />
 
       {/* Main navigation section */}
-      <footer className="relative h-lvh w-full bg-black/40 backdrop-blur-md">
-        <div></div>
+      <footer className="relative grid h-lvh w-full grid-cols-1 grid-rows-[1fr_auto] border-t-2 border-t-black bg-black/30 backdrop-blur-lg">
+        <div className="py-32 horizontal-padding">
+          <section className="z-50 w-fit rounded-md bg-black/30 p-12">
+            <h3 className="font-bold uppercase">🚧 Site under construction 🚧</h3>
+            <p className="mt-2 text-light">Check back again soon for more content!</p>
+          </section>
+        </div>
+
+        <div className="w-full bg-[#000000] py-4 horizontal-padding">
+          <span className="text-sm text-white/40">Copyright 2024 - Pragmattic Ltd</span>
+        </div>
       </footer>
 
       <HomeScrollManager />
-
-      {/* TEMP */}
-      <section className="fixed bottom-4 left-4 z-50 rounded-md bg-black/20 p-3">
-        <h3 className="text-sm font-bold uppercase text-white">🚧 Under Construction 🚧</h3>
-      </section>
     </main>
   )
 }

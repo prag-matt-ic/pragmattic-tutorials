@@ -1,6 +1,6 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { Billboard, shaderMaterial, Sphere, Torus } from '@react-three/drei'
+import { Billboard, shaderMaterial, Torus } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
 import React, { type FC, useEffect, useRef } from 'react'
@@ -12,7 +12,7 @@ import {
   MathUtils,
   Mesh,
   MeshLambertMaterial,
-  NormalBufferAttributes,
+  type NormalBufferAttributes,
   PointLight,
   ShaderMaterial,
 } from 'three'
@@ -56,7 +56,6 @@ const HomeMain: FC = () => {
           start: 0,
           end: 1000,
           scrub: true,
-          fastScrollEnd: true,
           onUpdate: ({ progress }) => {
             introScrollProgress.current = progress
           },
@@ -78,9 +77,8 @@ const HomeMain: FC = () => {
     <>
       <group ref={torusGroup} position={[0, 0, 1]}>
         {/* <Sphere args={[0.1, 32, 32]} position={[1.0, 1.6, 0.5]}> */}
-        <pointLight ref={pointLight} position={[1.0, 1.6, 0.5]} intensity={5.0} color="#FFF" />
+        <pointLight ref={pointLight} position={[1.0, 1.7, 0.5]} intensity={5.0} color="#FFF" />
         {/* </Sphere> */}
-
         <TorusWithPoints section={SceneSection.Purpose} getScrollProgress={getScrollProgress} />
         <TorusWithPoints section={SceneSection.Design} getScrollProgress={getScrollProgress} />
         <TorusWithPoints section={SceneSection.Engineering} getScrollProgress={getScrollProgress} />
@@ -108,7 +106,6 @@ type Props = {
 }
 
 const START_TIME_NIL = -10
-const MAX_TRANSITION_DURATION = 1500
 
 const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
   const torusMesh = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
@@ -125,12 +122,12 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
     () =>
       useHomeSceneStore.subscribe((s) => {
         transitionStartTime.current = START_TIME_NIL
-        isPrevActive.current = s.prevActiveSection === section
         isActive.current = s.activeSection === section
-
-        setTimeout(() => {
-          isAnimating.current = false
-        }, MAX_TRANSITION_DURATION)
+        isPrevActive.current = s.prevActiveSection === section
+        // if (!!timeout.current) clearTimeout(timeout.current)
+        // timeout.current = setTimeout(() => {
+        //   isAnimating.current = false
+        // }, MAX_TRANSITION_DURATION)
       }),
     [section],
   )
@@ -145,7 +142,7 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
     pointsShaderMaterial.current.uScrollProgress = getScrollProgress()
 
     // Exit out to allow for the current shader animation to finish
-    if (isAnimating.current) return
+    // if (isAnimating.current) return
 
     // Set active states
     shaderMaterial.current.uniforms.uIsActive.value = isActive.current

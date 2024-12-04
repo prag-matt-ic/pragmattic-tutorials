@@ -78,7 +78,7 @@ const Cursor: FC = () => {
 
   return (
     <div ref={pointer} className="pointer-events-none absolute flex items-center justify-center">
-      <div id="pointer-ring" className="size-5 rounded-full border border-white" />
+      <div id="pointer-ring" className="size-4 rounded-full border-2 border-light opacity-60" />
       <div id="pointer-label" className="absolute size-10 text-center text-4xl opacity-0">
         {label}
       </div>
