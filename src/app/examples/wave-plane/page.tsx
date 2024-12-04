@@ -5,9 +5,9 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import { Leva } from 'leva'
 
+import ScrollDownArrow from '@/components/examples/ScrollDown'
 import WavePlane from '@/components/examples/wavePlane/WavePlane'
 import PointerCamera from '@/components/PointerCamera'
-import ScrollDownArrow from '@/components/examples/ScrollDown'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 

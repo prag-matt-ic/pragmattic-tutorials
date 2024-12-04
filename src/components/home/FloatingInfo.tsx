@@ -1,6 +1,6 @@
 'use client'
 
-import { flip, offset, shift, useFloating, useHover, useInteractions } from '@floating-ui/react'
+import { flip, offset, shift, useFloating } from '@floating-ui/react'
 import { Html } from '@react-three/drei'
 import gsap from 'gsap'
 import SplitText from 'gsap/dist/SplitText'
@@ -40,7 +40,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
     onOpenChange: (open) => {
       setActiveSection(open ? section : null)
     },
-    middleware: [shift({ padding: 16 }), offset({ mainAxis: 24 }), flip()],
+    middleware: [shift({ padding: 24 }), offset({ mainAxis: 24 }), flip()],
   })
 
   const onModalEnter = () => {
@@ -95,7 +95,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
         <div
           ref={refs.setFloating}
           style={floatingStyles}
-          className="pointer-events-none absolute z-[200] w-[calc(100vw-64px)] space-y-2 opacity-0 md:w-[420px] 2xl:w-[560px]">
+          className="pointer-events-none absolute w-[calc(100vw-80px)] space-y-2 opacity-0 md:w-[420px] 2xl:w-[560px]">
           <h3
             className={twJoin(
               HEADING_CLASSES[section],
@@ -103,7 +103,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
             )}>
             {section}
           </h3>
-          <p className="w-full p-2 text-xl font-bold !leading-[1.3] text-white md:p-0 md:text-2xl lg:text-3xl 2xl:text-4xl">
+          <p className="w-full text-lg font-bold text-white md:text-2xl lg:text-3xl 2xl:text-4xl">
             {TEXT_CONTENT[section]}
           </p>
         </div>
@@ -113,71 +113,3 @@ const FloatingInfo: FC<Props> = ({ section }) => {
 }
 
 export default FloatingInfo
-
-// const hover = useHover(context, {})
-// const { getReferenceProps, getFloatingProps } = useInteractions([hover])
-
-// const onButtonEnter = () => {
-//   gsap.fromTo(
-//     refs.reference.current,
-//     { opacity: 0, scale: 0.3 },
-//     {
-//       opacity: 1,
-//       scale: 1,
-//       duration: 0.6,
-//       delay: 0.5,
-//       ease: 'power2.out',
-//     },
-//   )
-// }
-
-// const onButtonExit = () => {
-//   gsap.to(refs.reference.current, {
-//     opacity: 0,
-//     scale: 0.3,
-//     duration: 0.4,
-//     ease: 'power2.out',
-//   })
-// }
-
-// const BUTTON_LABELS: Record<SceneSection, string> = {
-//   [SceneSection.Purpose]: 'Purpose',
-//   [SceneSection.Design]: 'Design',
-//   [SceneSection.Engineering]: 'Engineering',
-// } as const
-
-// const BUTTON_CLASSES: Record<SceneSection, string> = {
-//   [SceneSection.Purpose]: 'hover:border-green active:border-green',
-//   [SceneSection.Design]: 'hover:border-orange active:border-orange',
-//   [SceneSection.Engineering]: 'hover:border-cyan active:border-cyan',
-// } as const
-
-// const showPill = (): boolean => {
-//   if (!hasScrolledIntoView) return false
-//   if (section === SceneSection.Purpose) return true
-//   if (section === SceneSection.Design && hasSeenSections[SceneSection.Purpose]) return true
-//   if (section === SceneSection.Engineering && hasSeenSections[SceneSection.Design]) return true
-//   return false
-// }
-
-{
-  /* <div className="h-12 w-48 -translate-x-1/2 -translate-y-1/2 items-center justify-center lg:flex">
-        <Transition
-          in={showPill()}
-          timeout={{ enter: 0, exit: 350 }}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          onEnter={onButtonEnter}
-          onExit={onButtonExit}>
-          <button
-            className={twJoin(
-              'pointer-events-auto rounded-full border-4 border-white/20 bg-black/30 px-6 py-3 text-base font-bold italic text-white md:text-xl',
-              BUTTON_CLASSES[section],
-            )}
-            ref={refs.setReference}
-            {...getReferenceProps()}>
-            {BUTTON_LABELS[section]}
-          </button>
-        </Transition>
-      </div> */
-}

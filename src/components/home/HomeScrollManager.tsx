@@ -43,16 +43,19 @@ const HomeScrollManager: FC = () => {
 
   useGSAP(() => {
     // Update scroll progress indicator
-    const scrollBarHeight = document.getElementById('scroll-bar')?.getBoundingClientRect()?.height
-    if (!scrollBarHeight) return
-    gsap.to('#scroll-indicator', {
-      y: scrollBarHeight,
-      ease: 'none',
-      scrollTrigger: {
-        start: 0,
-        end: 'max',
-        scrub: true,
-      },
+    const matchMedia = gsap.matchMedia()
+    matchMedia.add('(min-width: 640px)', () => {
+      const scrollBarHeight = document.getElementById('scroll-bar')?.getBoundingClientRect()?.height
+      if (!scrollBarHeight) return
+      gsap.to('#scroll-indicator', {
+        y: scrollBarHeight,
+        ease: 'none',
+        scrollTrigger: {
+          start: 0,
+          end: 'max',
+          scrub: true,
+        },
+      })
     })
   }, [])
 
@@ -61,7 +64,7 @@ const HomeScrollManager: FC = () => {
   }
 
   return (
-    <nav className="fixed bottom-0 left-6 top-0 z-[100] flex items-center justify-center">
+    <nav className="fixed bottom-0 left-4 top-0 z-[100] hidden items-center justify-center sm:flex">
       <div id="scroll-bar" className="relative w-1.5 bg-light/40">
         {/* Height 40px corresponds to a 1000px height section. */}
         <div className="h-[40px] w-full shrink-0" />

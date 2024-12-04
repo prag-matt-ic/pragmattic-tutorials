@@ -3,8 +3,8 @@ import { Canvas } from '@react-three/fiber'
 import { Leva } from 'leva'
 import React from 'react'
 
-import ScrollingBackgroundGradient from '@/components/examples/scrollingBackgroundGradient/ScrollingBackgroundGradient'
 import ScrollDownArrow from '@/components/examples/ScrollDown'
+import ScrollingBackgroundGradient from '@/components/examples/scrollingBackgroundGradient/ScrollingBackgroundGradient'
 
 // Steps:
 // 1. Create a fullscreen shader background using a <ScreenQuad> component
