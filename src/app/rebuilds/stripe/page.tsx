@@ -50,7 +50,7 @@ export default function StripeHeaderRebuild() {
         <div className="relative flex w-full flex-col items-center px-5">
           <header className={headerGridClass}>
             {/* Text section */}
-            <div className="space-y-8 px-4">
+            <div className="space-y-8 sm:px-4">
               <div className="flex h-6 w-fit items-center gap-2 whitespace-nowrap rounded-full bg-black/30 py-0.5 pl-3 pr-2 text-xs font-semibold text-white backdrop-blur">
                 Sessions 2025<span className="block pb-1 text-[20px]">•</span>
                 <a className="group flex cursor-pointer items-center gap-2 hover:opacity-60">
@@ -68,7 +68,7 @@ export default function StripeHeaderRebuild() {
                 embed financial services, power custom revenue models, and build a more profitable business.
               </p>
 
-              <form className="relative flex w-96 items-center">
+              <form className="max-w-w-96 relative flex w-full items-center">
                 <input
                   type="email"
                   className="relative h-12 w-full rounded-full border border-black/10 bg-[#f6f9fb] py-2 pl-4 pr-32 outline-offset-2 focus:outline-[#4d5ae0]"
