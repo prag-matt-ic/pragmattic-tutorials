@@ -1,16 +1,15 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { OrbitControls, Stats } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import React, { type FC, useRef } from 'react'
 
-import BasicParticles from '@/components/examples/particles/basicParticles/BasicParticles'
-import MeshSamplerParticles from '@/components/examples/particles/gltfParticles/MeshSamplerParticles'
+// import BasicParticles from '@/components/examples/particles/basicParticles/BasicParticles'
+// import MeshSamplerParticles from '@/components/examples/particles/gltfParticles/MeshSamplerParticles'
 import Stars from '@/components/examples/particles/stars/Stars'
-import PointerCamera from '@/components/PointerCamera'
 import ScrollDownArrow from '@/components/examples/ScrollDown'
+import PointerCamera from '@/components/PointerCamera'
 
 // Building modern day scroll controlled star wars intro with React Three Fiber and GSAP
 // Inspiration: https://codepen.io/nucro/pen/yYWdPp
@@ -43,7 +42,6 @@ export default function StarsPage() {
           powerPreference: 'high-performance',
         }}>
         {/* <BasicParticles /> */}
-
         {/* <MeshSamplerParticles /> */}
         <Stars />
         <PointerCamera cameraProps={{ far: 20 }} />
@@ -53,7 +51,7 @@ export default function StarsPage() {
 
       {/* HTML content */}
       <TextSection />
-      {/* <ScrollDownArrow /> */}
+      <ScrollDownArrow />
     </main>
   )
 }

@@ -25,8 +25,8 @@ const ScrollDownArrow: FC<Props> = ({ className }) => {
     <div
       id="scroll-down"
       className={twMerge('pointer-events-none fixed bottom-0 z-50 flex items-center gap-3 p-6 text-white', className)}>
-      <Image src={downArrow} alt="scroll down" className="w-4 animate-bounce" />
-      <span className="text-sm font-semibold tracking-wide">Scroll</span>
+      <Image src={downArrow} alt="scroll down" className="w-6 animate-bounce" />
+      <span className="text-2xl font-semibold tracking-wide">Scroll</span>
     </div>
   )
 }

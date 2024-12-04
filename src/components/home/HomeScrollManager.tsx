@@ -62,14 +62,14 @@ const HomeScrollManager: FC = () => {
 
   return (
     <nav className="fixed bottom-0 left-6 top-0 z-[100] flex items-center justify-center">
-      <div id="scroll-bar" className="relative w-1.5 bg-white/20">
+      <div id="scroll-bar" className="relative w-1.5 bg-light/40">
         {/* Height 40px corresponds to a 1000px height section. */}
         <div className="h-[40px] w-full shrink-0" />
         <div className="h-[40px] w-full shrink-0" />
         <button
           className={twJoin(
             'h-[40px] w-full shrink-0 bg-green transition-opacity duration-200 hover:opacity-100',
-            activeSection === SceneSection.Purpose ? 'opacity-100' : 'opacity-30',
+            activeSection === SceneSection.Purpose ? 'opacity-100' : 'opacity-20',
           )}
           onClick={() => onLinkClick(SceneSection.Purpose)}
         />
@@ -77,7 +77,7 @@ const HomeScrollManager: FC = () => {
         <button
           className={twJoin(
             'h-[40px] w-full shrink-0 bg-orange transition-opacity duration-200 hover:opacity-100',
-            activeSection === SceneSection.Design ? 'opacity-100' : 'opacity-30',
+            activeSection === SceneSection.Design ? 'opacity-100' : 'opacity-20',
           )}
           onClick={() => onLinkClick(SceneSection.Design)}
         />
@@ -85,7 +85,7 @@ const HomeScrollManager: FC = () => {
         <button
           className={twJoin(
             'h-[40px] w-full shrink-0 bg-cyan transition-opacity duration-200 hover:opacity-100',
-            activeSection === SceneSection.Engineering ? 'opacity-100' : 'opacity-30',
+            activeSection === SceneSection.Engineering ? 'opacity-100' : 'opacity-20',
           )}
           onClick={() => onLinkClick(SceneSection.Engineering)}
         />
