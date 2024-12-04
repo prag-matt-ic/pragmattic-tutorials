@@ -24,10 +24,10 @@ export default function HomePage() {
       <div className={PADDING_SECTION_CLASSES} />
       <div className={PADDING_SECTION_CLASSES} />
 
-      <footer className="relative h-lvh w-full bg-black/50 backdrop-blur-md">
+      {/* Main navigation section */}
+      <footer className="relative h-lvh w-full bg-black/40 backdrop-blur-md">
         <div></div>
       </footer>
-      {/* </div> */}
 
       <HomeScrollManager />
 
@@ -40,4 +40,4 @@ export default function HomePage() {
 }
 
 const SCENE_SECTION_CLASSES = 'relative z-10 pointer-events-none h-[1000px] w-full'
-const PADDING_SECTION_CLASSES = 'relative z-10 pointer-events-none h-[500px] w-full'
+const PADDING_SECTION_CLASSES = 'relative z-10 pointer-events-none h-[1000px] w-full'

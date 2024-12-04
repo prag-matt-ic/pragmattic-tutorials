@@ -9,6 +9,7 @@ import { BLACK_VEC3, LIGHT_VEC3, MID_VEC3, OFF_BLACK_VEC3 } from '@/resources/co
 
 import bgFragment from './background.frag'
 import bgVertex from './background.vert'
+import { useHomeSceneStore } from '@/hooks/home/useHomeStore'
 
 type Uniforms = {
   uTime: number
@@ -35,6 +36,7 @@ extend({ HomeBackgroundShaderMaterial })
 const HomeBackgroundPlane: FC = () => {
   const { viewport } = useThree()
   const shader = useRef<ShaderMaterial & Partial<Uniforms>>(null)
+  // const activeSection = useHomeSceneStore((state) => state.activeSection)
 
   useFrame(({ clock }) => {
     if (!shader.current) return
@@ -42,7 +44,7 @@ const HomeBackgroundPlane: FC = () => {
   })
 
   return (
-    <Plane args={[viewport.width * 5, viewport.height * 5, 1, 1]} position={[0, 0, -14]}>
+    <Plane args={[viewport.width * 2.5, viewport.height * 2.5, 1, 1]} position={[0, 0, -4]}>
       <homeBackgroundShaderMaterial
         key={HomeBackgroundShaderMaterial.key}
         ref={shader}

@@ -1,6 +1,6 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { Billboard, shaderMaterial, Torus } from '@react-three/drei'
+import { Billboard, shaderMaterial, Sphere, Torus } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
 import gsap from 'gsap'
 import React, { type FC, useEffect, useRef } from 'react'
@@ -9,6 +9,7 @@ import {
   BufferGeometry,
   Color,
   Group,
+  MathUtils,
   Mesh,
   MeshLambertMaterial,
   NormalBufferAttributes,
@@ -76,7 +77,10 @@ const HomeMain: FC = () => {
   return (
     <>
       <group ref={torusGroup} position={[0, 0, 1]}>
-        <pointLight ref={pointLight} position={[0, 0, 0]} intensity={0.8} color="#FFF" />
+        {/* <Sphere args={[0.1, 32, 32]} position={[1.0, 1.6, 0.5]}> */}
+        <pointLight ref={pointLight} position={[1.0, 1.6, 0.5]} intensity={5.0} color="#FFF" />
+        {/* </Sphere> */}
+
         <TorusWithPoints section={SceneSection.Purpose} getScrollProgress={getScrollProgress} />
         <TorusWithPoints section={SceneSection.Design} getScrollProgress={getScrollProgress} />
         <TorusWithPoints section={SceneSection.Engineering} getScrollProgress={getScrollProgress} />
@@ -160,8 +164,7 @@ const TorusWithPoints: FC<Props> = ({ section, getScrollProgress }) => {
 
   return (
     <>
-      {/* TODO: Review args  */}
-      <Torus ref={torusMesh} args={[...TORUS_ARGS[section], 16, 64]}>
+      <Torus ref={torusMesh} args={[...TORUS_ARGS[section]]}>
         <CustomShaderMaterial
           ref={shaderMaterial}
           baseMaterial={MeshLambertMaterial}
@@ -223,16 +226,16 @@ const ROTATE_SPEEDS: Record<SceneSection, number> = {
 const PURPOSE_TORUS_RADIUS = 0.5 as const
 const PURPOSE_TORUS_TUBE = 0.1 as const
 
-const DESIGN_TORUS_RADIUS = 0.9 as const
+const DESIGN_TORUS_RADIUS = 1.0 as const
 const DESIGN_TORUS_TUBE = 0.1 as const
 
-const ENGINEERING_TORUS_RADIUS = 1.3 as const
+const ENGINEERING_TORUS_RADIUS = 1.5 as const
 const ENGINEERING_TORUS_TUBE = 0.1 as const
 
-const TORUS_ARGS: Record<SceneSection, [number, number]> = {
-  [SceneSection.Purpose]: [PURPOSE_TORUS_RADIUS, PURPOSE_TORUS_TUBE],
-  [SceneSection.Design]: [DESIGN_TORUS_RADIUS, DESIGN_TORUS_TUBE],
-  [SceneSection.Engineering]: [ENGINEERING_TORUS_RADIUS, ENGINEERING_TORUS_TUBE],
+const TORUS_ARGS: Record<SceneSection, [number, number, number, number]> = {
+  [SceneSection.Purpose]: [PURPOSE_TORUS_RADIUS, PURPOSE_TORUS_TUBE, 16, 32],
+  [SceneSection.Design]: [DESIGN_TORUS_RADIUS, DESIGN_TORUS_TUBE, 16, 64],
+  [SceneSection.Engineering]: [ENGINEERING_TORUS_RADIUS, ENGINEERING_TORUS_TUBE, 16, 128],
 }
 
 const PURPOSE_UNIFORMS: UniformValues = {
@@ -241,7 +244,7 @@ const PURPOSE_UNIFORMS: UniformValues = {
   uIsActive: { value: false },
   uColour: { value: new Color('#BDB8C6') },
   uActiveColour: { value: GREEN_VEC3 },
-  uTransitionStartTime: { value: -10 },
+  uTransitionStartTime: { value: START_TIME_NIL },
   uRadius: { value: PURPOSE_TORUS_RADIUS },
   uTube: { value: PURPOSE_TORUS_TUBE },
 }
@@ -252,7 +255,7 @@ const DESIGN_UNIFORMS: UniformValues = {
   uIsActive: { value: false },
   uColour: { value: new Color('#9A93A9') },
   uActiveColour: { value: ORANGE_VEC3 },
-  uTransitionStartTime: { value: -10 },
+  uTransitionStartTime: { value: START_TIME_NIL },
   uRadius: { value: DESIGN_TORUS_RADIUS },
   uTube: { value: DESIGN_TORUS_TUBE },
 }
@@ -263,7 +266,7 @@ const ENGINEERING_UNIFORMS: UniformValues = {
   uIsActive: { value: false },
   uColour: { value: LIGHT_VEC3 },
   uActiveColour: { value: CYAN_VEC3 },
-  uTransitionStartTime: { value: -10 },
+  uTransitionStartTime: { value: START_TIME_NIL },
   uRadius: { value: ENGINEERING_TORUS_RADIUS },
   uTube: { value: ENGINEERING_TORUS_TUBE },
 }
@@ -308,20 +311,20 @@ const POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusParticleP
   [SceneSection.Purpose]: getTorusParticlePositions({
     radius: PURPOSE_TORUS_RADIUS,
     tube: PURPOSE_TORUS_TUBE,
-    radialSegments: 24,
-    tubularSegments: 80,
+    radialSegments: 16,
+    tubularSegments: 64,
   }),
   [SceneSection.Design]: getTorusParticlePositions({
     radius: DESIGN_TORUS_RADIUS,
     tube: DESIGN_TORUS_TUBE,
-    radialSegments: 24,
-    tubularSegments: 120,
+    radialSegments: 16,
+    tubularSegments: 64 * 2,
   }),
   [SceneSection.Engineering]: getTorusParticlePositions({
     radius: ENGINEERING_TORUS_RADIUS,
     tube: ENGINEERING_TORUS_TUBE,
-    radialSegments: 24,
-    tubularSegments: 160,
+    radialSegments: 15,
+    tubularSegments: 64 * 3,
   }),
 } as const
 
@@ -356,14 +359,17 @@ function getTorusParticlePositions({
       activePositions.push(x, y, z)
 
       // Spread the particles out
-      inactivePositions.push(
-        x + (Math.random() - 0.5) * 0.12,
-        y + (Math.random() - 0.5) * 0.12,
-        z + (Math.random() - 0.5) * 0.12,
-      )
+      inactivePositions.push(x + Math.random() * 0.12, y + Math.random() * 0.12, z + Math.random() * 0.08)
 
-      // Scatter the particles
-      scatteredPositions.push((Math.random() - 0.5) * 8.0, (Math.random() - 0.5) * 8.0, (Math.random() - 0.5) * 3.0)
+      // Create random positions around a sphere
+      const distance = 1.8
+      const theta = MathUtils.randFloatSpread(360)
+      const phi = MathUtils.randFloatSpread(360)
+      scatteredPositions.push(
+        distance * Math.sin(theta) * Math.cos(phi),
+        distance * Math.sin(theta) * Math.sin(phi),
+        distance * Math.cos(theta) + Math.random() * 0.5 - 0.25,
+      )
     }
   }
 

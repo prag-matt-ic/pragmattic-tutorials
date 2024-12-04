@@ -13,13 +13,13 @@ uniform float uRotateSpeed;
 uniform bool uIsActive;
 uniform float uScrollProgress;
 
-varying vec3 vViewPosition;
+// varying vec3 vViewPosition;
 
 const float POSITION_TRANSITION_DURATION = 0.5;
 const float ACTIVE_TRANSITION_DELAY = 0.0;
 const float INACTIVE_TRANSITION_DELAY = 1.2;
-const float MIN_PT_SIZE = 8.0;
-const float MAX_PT_SIZE = 40.0;
+const float MIN_PT_SIZE = 4.0;
+const float MAX_PT_SIZE = 64.0;
 
 void main() {
     float delay = uIsActive ? ACTIVE_TRANSITION_DELAY : INACTIVE_TRANSITION_DELAY;
@@ -39,7 +39,7 @@ void main() {
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix * viewPosition;
 
-    vViewPosition = viewPosition.xyz;
+    // vViewPosition = viewPosition.xyz;
 
     float attenuationFactor = 1.0 / projectedPosition.z;
     float pointSize = clamp(MIN_PT_SIZE, MAX_PT_SIZE, MAX_PT_SIZE * attenuationFactor);

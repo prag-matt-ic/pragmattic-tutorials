@@ -19,19 +19,23 @@ void main() {
   float noiseA = noise(vec3(vUv, timeA)) * 0.5 + 0.5;
   float noiseB = noise(vec3(vUv * 0.5, timeB)) * 0.5 + 0.5;
 
-  // Creates 2 layers for above and below the wave
-  vec3 darkColour = mix(mix(uMidColour, uOffBlackColour, noiseB), uLightColour, noiseA);
+  // mix of 3 colours based on noise values
+  vec3 colour = mix(mix(uMidColour, uOffBlackColour, noiseB), uLightColour, noiseA);
 
-  float vignette = distance(vUv, vec2(0.5));
-  // Create a vignette to off_black colour around the edges
-  float outerStep = 0.6 + noiseB * 0.2;
-  float vig = smoothstep(0.3, outerStep, vignette);
+  // vignette with a dynamic falloff
+  vec2 uv = vUv * 2.0 - 1.0;
+  uv.x *= uAspect;
+  float vignette = distance(uv, vec2(0.0));
+  float outerStep = 1.3 - (noiseB * 0.3);
+  float vig = smoothstep(0.6, outerStep, vignette);
 
-  // high frequency noise for the vignette
-  // float noiseV = noise(vec3(vUv * 512.0, uTime * 8.0)); 
-  // vec3 noiseColour = mix(uBlackColour, uLightColour, noiseV);
+  colour = mix(colour, uBlackColour, vig);
 
-  vec3 finalColour = mix(darkColour, uBlackColour, vig);
+  // high frequency noise for a grainy effect
+  float noiseV = noise(vec3(vUv * 512.0, uTime)); 
+  vec3 noiseColour = mix(uBlackColour, uLightColour, noiseV);
 
-  gl_FragColor = vec4(finalColour, 1.0);
+  colour = mix(colour, noiseColour, 0.16);
+
+  gl_FragColor = vec4(colour, 1.0);
 }

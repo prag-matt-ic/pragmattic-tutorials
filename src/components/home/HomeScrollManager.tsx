@@ -63,35 +63,34 @@ const HomeScrollManager: FC = () => {
   return (
     <nav className="fixed bottom-0 left-6 top-0 z-[100] flex items-center justify-center">
       <div id="scroll-bar" className="relative w-1.5 bg-white/20">
-        {/* Height 48px corresponds to a 1000px height section. */}
-        {/* 24px corresponds to 500px height section */}
-        <div className="h-[48px] w-full shrink-0" />
-        <div className="h-[24px] w-full shrink-0" />
+        {/* Height 40px corresponds to a 1000px height section. */}
+        <div className="h-[40px] w-full shrink-0" />
+        <div className="h-[40px] w-full shrink-0" />
         <button
           className={twJoin(
-            'h-[48px] w-full shrink-0 bg-green transition-opacity duration-200 hover:opacity-100',
+            'h-[40px] w-full shrink-0 bg-green transition-opacity duration-200 hover:opacity-100',
             activeSection === SceneSection.Purpose ? 'opacity-100' : 'opacity-30',
           )}
           onClick={() => onLinkClick(SceneSection.Purpose)}
         />
-        <div className="h-[24px] w-full shrink-0" />
+        <div className="h-[40px] w-full shrink-0" />
         <button
           className={twJoin(
-            'h-[48px] w-full shrink-0 bg-orange transition-opacity duration-200 hover:opacity-100',
+            'h-[40px] w-full shrink-0 bg-orange transition-opacity duration-200 hover:opacity-100',
             activeSection === SceneSection.Design ? 'opacity-100' : 'opacity-30',
           )}
           onClick={() => onLinkClick(SceneSection.Design)}
         />
-        <div className="h-[24px] w-full shrink-0" />
+        <div className="h-[40px] w-full shrink-0" />
         <button
           className={twJoin(
-            'h-[48px] w-full shrink-0 bg-cyan transition-opacity duration-200 hover:opacity-100',
+            'h-[40px] w-full shrink-0 bg-cyan transition-opacity duration-200 hover:opacity-100',
             activeSection === SceneSection.Engineering ? 'opacity-100' : 'opacity-30',
           )}
           onClick={() => onLinkClick(SceneSection.Engineering)}
         />
-        <div className="h-[24px] w-full shrink-0" />
-        <div className="h-[24px] w-full shrink-0" />
+        <div className="h-[40px] w-full shrink-0" />
+        <div className="h-[40px] w-full shrink-0" />
 
         <div id="scroll-indicator" className="absolute left-1 top-0 size-5">
           <Image src={positionArrow} alt="arrow" className="size-5 -translate-y-1/2" />

@@ -42,7 +42,7 @@ const HomeCanvas: FC = () => {
         flipflops={4}
       />
       <ambientLight intensity={1} />
-      <PointerCamera cameraProps={{ far: 25, position: [0, 0, 5] }} intensity={0.04} />
+      <PointerCamera cameraProps={{ far: 20, position: [0, 0, 5] }} intensity={0.04} />
       <HomeBackgroundPlane />
       <HomeMain />
     </Canvas>
