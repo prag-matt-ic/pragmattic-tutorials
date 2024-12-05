@@ -27,12 +27,6 @@ import vertexShader from './torus.vert'
 import pointsFragmentShader from './torusPoints.frag'
 import pointsVertexShader from './torusPoints.vert'
 
-const LIGHT_INTENSITY: Record<SceneSection, number> = {
-  [SceneSection.Purpose]: 0.8,
-  [SceneSection.Design]: 1.4,
-  [SceneSection.Engineering]: 2.4,
-}
-
 const HomeMain: FC = () => {
   const torusGroup = useRef<Group>(null)
   const pointLight = useRef<PointLight>(null)
@@ -356,7 +350,11 @@ function getTorusParticlePositions({
       activePositions.push(x, y, z)
 
       // Spread the particles out
-      inactivePositions.push(x + Math.random() * 0.12, y + Math.random() * 0.12, z + Math.random() * 0.08)
+      inactivePositions.push(
+        x + (Math.random() - 0.25) * 0.12,
+        y + (Math.random() - 0.25) * 0.12,
+        z + (Math.random() - 0.25) * 0.08,
+      )
 
       // Create random positions around a sphere
       const distance = 1.8

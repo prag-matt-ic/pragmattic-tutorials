@@ -1,6 +1,7 @@
 'use client'
 
 import { flip, offset, shift, useFloating } from '@floating-ui/react'
+import { useGSAP } from '@gsap/react'
 import { Html } from '@react-three/drei'
 import gsap from 'gsap'
 import SplitText from 'gsap/dist/SplitText'
@@ -31,7 +32,9 @@ const FloatingInfo: FC<Props> = ({ section }) => {
   const hasCompletedIntroScroll = useHomeSceneStore((s) => s.hasCompletedIntroScroll)
   const isOpen = hasCompletedIntroScroll && activeSection === section
 
-  let modalTextTween = useRef<GSAPTween>()
+  const modalTextTween = useRef<GSAPTween>()
+  const container = useRef<HTMLDivElement>(null)
+  const { contextSafe } = useGSAP({ scope: container })
 
   const { refs, floatingStyles } = useFloating({
     open: isOpen,
@@ -39,12 +42,11 @@ const FloatingInfo: FC<Props> = ({ section }) => {
     middleware: [shift({ padding: 24 }), offset({ mainAxis: 24 }), flip()],
   })
 
-  const onModalEnter = () => {
+  const onModalEnter = contextSafe(() => {
     if (!refs.floating.current) return
     modalTextTween.current?.kill()
 
-    const paragraph = refs.floating.current.querySelector('p')
-    const splitParagraph = new SplitText(paragraph, {
+    const splitParagraph = new SplitText('p', {
       charsClass: 'opacity-0',
     })
 
@@ -66,7 +68,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
         ease: 'power2.out',
       },
     )
-  }
+  })
 
   const onModalExit = () => {
     modalTextTween.current?.kill()
@@ -78,7 +80,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
   }
 
   return (
-    <Html className="pointer-events-none select-none">
+    <Html ref={container} className="pointer-events-none select-none">
       <div ref={refs.setReference} className="size-5 -translate-x-1/2 -translate-y-1/2" />
       <Transition
         in={isOpen}
@@ -99,9 +101,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
             )}>
             {section}
           </h3>
-          <p className="w-full text-lg font-bold text-white md:text-2xl lg:text-3xl 2xl:text-4xl">
-            {TEXT_CONTENT[section]}
-          </p>
+          <p className="w-full text-lg font-bold md:text-2xl lg:text-3xl 2xl:text-4xl">{TEXT_CONTENT[section]}</p>
         </div>
       </Transition>
     </Html>

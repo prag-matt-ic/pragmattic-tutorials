@@ -1,5 +1,6 @@
 // Torus Fragment shader
 
+#pragma glslify: ease = require('glsl-easings/cubic-in') 
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 
 uniform float uTime;
@@ -13,9 +14,10 @@ uniform float uTube;
 
 varying vec2 vUv;
 
-const float INACTIVE_TRANSITION_DURATION = 0.8;
 const float ACTIVE_TRANSITION_DURATION = 2.0;
-const float ACTIVE_TRANSITION_DELAY = 0.3;
+const float ACTIVE_TRANSITION_DELAY = 0.2;
+
+const float INACTIVE_TRANSITION_DURATION = 1.0;
 const float INACTIVE_TRANSITION_DELAY = 0.0;
 
 void main() {
@@ -30,7 +32,7 @@ void main() {
         adjustedTime
     );
 
-    float progress = uIsActive ? transitionProgress: 1.0 - transitionProgress;
+    float progress = ease(uIsActive ? transitionProgress: 1.0 - transitionProgress);
 
     // Animate the colour change vertically
     float size = uRadius + uTube;

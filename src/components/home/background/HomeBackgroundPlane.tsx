@@ -5,11 +5,11 @@ import { extend, type ShaderMaterialProps, useFrame, useThree } from '@react-thr
 import React, { type FC, useRef } from 'react'
 import { Color, ShaderMaterial } from 'three'
 
+import { useHomeSceneStore } from '@/hooks/home/useHomeStore'
 import { BLACK_VEC3, LIGHT_VEC3, MID_VEC3, OFF_BLACK_VEC3 } from '@/resources/colours'
 
 import bgFragment from './background.frag'
 import bgVertex from './background.vert'
-import { useHomeSceneStore } from '@/hooks/home/useHomeStore'
 
 type Uniforms = {
   uTime: number
