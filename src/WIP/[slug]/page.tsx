@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { type ButtonHTMLAttributes, type FC, type PropsWithChildren } from 'react'
 import Markdown from 'react-markdown'
 
+// TODO: USE MDX instead or markdown
 import BlogHeader from '@/components/blog/header/Header'
 // import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
 // import { dark } from 'react-syntax-highlighter/dist/esm/styles/prism'

@@ -28,18 +28,14 @@ const TEXT_CONTENT: Record<SceneSection, ReactNode> = {
 
 const FloatingInfo: FC<Props> = ({ section }) => {
   const activeSection = useHomeSceneStore((s) => s.activeSection)
-  const setActiveSection = useHomeSceneStore((s) => s.setActiveSection)
-  const hasScrolledIntoView = useHomeSceneStore((s) => s.hasCompletedIntroScroll)
-  const isOpen = hasScrolledIntoView && activeSection === section
+  const hasCompletedIntroScroll = useHomeSceneStore((s) => s.hasCompletedIntroScroll)
+  const isOpen = hasCompletedIntroScroll && activeSection === section
 
   let modalTextTween = useRef<GSAPTween>()
 
-  const { refs, floatingStyles, context } = useFloating({
+  const { refs, floatingStyles } = useFloating({
     open: isOpen,
     placement: 'top',
-    onOpenChange: (open) => {
-      setActiveSection(open ? section : null)
-    },
     middleware: [shift({ padding: 24 }), offset({ mainAxis: 24 }), flip()],
   })
 
