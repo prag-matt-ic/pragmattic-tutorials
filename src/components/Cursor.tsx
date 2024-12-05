@@ -14,11 +14,10 @@ import useCursorStore from '@/hooks/useCursorStore'
 const CustomCursor: FC = () => {
   const os: OS = useOs()
   const showCustomCursor = os !== 'ios' && os !== 'android' && os !== 'undetermined'
-
   if (!showCustomCursor) return null
 
   return (
-    <div id="cursor-container" className="pointer-events-none fixed inset-0 z-[500] select-none">
+    <div className="pointer-events-none fixed inset-0 z-[500] select-none">
       <Cursor />
     </div>
   )

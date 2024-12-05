@@ -25,7 +25,7 @@ export default function HomePage() {
       <div className={PADDING_SECTION_CLASSES} />
 
       {/* Main navigation section */}
-      <footer className="relative grid h-lvh w-full grid-cols-1 grid-rows-[1fr_auto] border-t-2 border-t-black bg-black/30 backdrop-blur-lg">
+      <footer className="relative grid h-lvh w-full grid-cols-1 grid-rows-[1fr_auto] border-t-2 border-t-black bg-black/20">
         <div className="py-32 horizontal-padding">
           <section className="z-50 w-fit rounded-md bg-black/30 p-12">
             <h3 className="font-bold uppercase">🚧 Site under construction 🚧</h3>
