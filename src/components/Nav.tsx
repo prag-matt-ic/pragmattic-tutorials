@@ -1,26 +1,30 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { type FC, useState } from 'react'
+import { twJoin } from 'tailwind-merge'
 
 import logo from '@/assets/brand/pragmattic.svg'
 import menuIcon from '@/assets/icons/menu.svg'
-import ExamplesMenu from '@/components/ExamplesMenu'
+import Menu from '@/components/Menu'
 
 const Nav: FC = () => {
+  const pathname = usePathname()
   const [isMenuShowing, setIsMenuShowing] = useState(false)
+  const hideLogo = pathname.includes('rebuild')
   return (
     <>
       <nav className="fixed left-0 right-0 top-0 z-[500] flex items-center justify-between pl-6">
         <Link href="/">
-          <Image alt="Pragmattic" src={logo} height={20} className="h-11" />
+          <Image alt="Pragmattic" src={logo} height={20} className={twJoin('h-11', hideLogo && 'opacity-0')} />
         </Link>
 
         <button className="rounded-bl-lg bg-black p-2.5" onClick={() => setIsMenuShowing((prev) => !prev)}>
           <Image src={menuIcon} alt="menu" width={32} height={32} />
         </button>
       </nav>
-      <ExamplesMenu isShowing={isMenuShowing} onClose={() => setIsMenuShowing(false)} />
+      <Menu isShowing={isMenuShowing} onClose={() => setIsMenuShowing(false)} />
     </>
   )
 }

@@ -20,7 +20,7 @@ type Props = {
 
 gsap.registerPlugin(useGSAP)
 
-const ExamplesMenu: FC<Props> = ({ isShowing, onClose }) => {
+const Menu: FC<Props> = ({ isShowing, onClose }) => {
   const currentPathname = usePathname()
   const container = useRef<HTMLDivElement>(null)
   const { contextSafe } = useGSAP({ scope: container })
@@ -92,4 +92,4 @@ const ExamplesMenu: FC<Props> = ({ isShowing, onClose }) => {
   )
 }
 
-export default ExamplesMenu
+export default Menu

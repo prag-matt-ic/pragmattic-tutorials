@@ -14,6 +14,7 @@ export enum ExamplePathname {
   WavePlane = '/examples/wave-plane',
   // Rebuilds
   StripeHeader = '/rebuilds/stripe',
+  VercelHeader = '/rebuilds/vercel',
 }
 
 type Example = {
@@ -72,5 +73,13 @@ export const EXAMPLES: Record<ExamplePathname, Example> = {
   [ExamplePathname.StripeHeader]: {
     title: 'Stripe Header Rebuild',
     pathname: ExamplePathname.StripeHeader,
+    youtubeUrl: 'https://youtu.be/fhQuxZJ3YgQ',
+    githubUrl: 'https://github.com/prag-matt-ic/pragmattic-tutorials/blob/main/src/app/rebuilds/stripe/page.tsx',
+  },
+  [ExamplePathname.VercelHeader]: {
+    title: 'Vercel Header Rebuild',
+    pathname: ExamplePathname.VercelHeader,
+    // youtubeUrl: 'https://youtu.be/3w1Xt1Sv0p4',
+    githubUrl: 'https://github.com/prag-matt-ic/pragmattic-tutorials/blob/main/src/app/rebuilds/vercel/page.tsx',
   },
 } as const
