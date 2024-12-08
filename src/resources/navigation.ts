@@ -79,7 +79,7 @@ export const EXAMPLES: Record<ExamplePathname, Example> = {
   [ExamplePathname.VercelHeader]: {
     title: 'Vercel Header Rebuild',
     pathname: ExamplePathname.VercelHeader,
-    // youtubeUrl: 'https://youtu.be/3w1Xt1Sv0p4',
+    youtubeUrl: 'https://youtu.be/M9ifse-uhIs',
     githubUrl: 'https://github.com/prag-matt-ic/pragmattic-tutorials/blob/main/src/app/rebuilds/vercel/page.tsx',
   },
 } as const
