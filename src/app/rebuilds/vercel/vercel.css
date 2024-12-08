@@ -14,3 +14,29 @@ main {
     --cellsize: calc(min(1080px, 100vw - 32px) / 12);
   }
 }
+
+.gradient {
+  background: conic-gradient(
+    from 180deg at 50% 62%,
+    transparent 0deg,
+    var(--blue) 72deg,
+    var(--cyan) 144deg,
+    var(--yellow) 216deg,
+    var(--red) 288deg,
+    transparent 1turn
+  );
+}
+
+@media (min-width: 768px) {
+  .gradient {
+    background: conic-gradient(
+      from 180deg at 50% 70%,
+      transparent 0deg,
+      var(--blue) 72deg,
+      var(--cyan) 144deg,
+      var(--yellow) 216deg,
+      var(--red) 288deg,
+      transparent 1turn
+    );
+  }
+}

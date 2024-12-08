@@ -24,17 +24,12 @@ export default function VercelHeaderRebuild() {
             className="absolute bottom-0 size-full overflow-hidden pt-[calc(var(--cellsize)*2)] md:pt-[var(--cellsize)]">
             <VercelCanvas />
             <div
-              className="absolute isolate size-full mix-blend-hard-light"
-              // TODO: Adjust gradient offset and colours for mobile
-              style={{
-                background:
-                  'conic-gradient(from 180deg at 50% 70%, transparent 0deg, var(--blue) 72deg, var(--cyan) 144deg, var(--yellow) 216deg, var(--red) 288deg, transparent 1turn)',
-              }}
+              className={twJoin('absolute isolate size-full scale-150 mix-blend-hard-light md:scale-100', 'gradient')}
             />
             <div
-              className="absolute size-full"
+              className="absolute mt-16 size-full scale-150 md:mt-0 md:scale-100"
               style={{
-                background: 'radial-gradient(150% 150% at 50% 140%, transparent 0, transparent 50%, #000 76%)',
+                background: 'radial-gradient(150% 150% at 50% 140%, transparent 0, transparent 50%, #000 75%)',
               }}
             />
             <BackgoundLines />
@@ -49,7 +44,17 @@ export default function VercelHeaderRebuild() {
             className="pointer-events-none relative col-span-full row-span-full grid grid-cols-subgrid grid-rows-subgrid md:hidden">
             <div className="col-span-full row-span-1" />
             {Array.from({ length: 32 }).map((_, i) => (
-              <div key={i} className="border-r border-t border-[var(--border)]" />
+              <div
+                key={i}
+                className={twJoin(
+                  'border-r border-t border-[var(--border)]',
+                  // MF: added later
+                  // Hide right border if last column (prevent double border)
+                  (i + 1) % 8 === 0 && 'border-r-0',
+                  // Hide bottom border if last row
+                  i > 23 && 'border-b-0',
+                )}
+              />
             ))}
           </div>
           {/* Medium size grid */}
@@ -68,13 +73,17 @@ export default function VercelHeaderRebuild() {
                   i > 36 && i < 46 && 'border-0',
                   i === 46 && 'border-b-0',
                   i > 48 && i < 58 && 'border-r-0',
+                  // hide right border if last column
+                  (i + 1) % 12 === 0 && 'border-r-0',
+                  // hide bottom border if last row
+                  i > 83 && 'border-b-0',
                 )}
               />
             ))}
           </div>
 
           {/* Main heading block */}
-          <div className="border-3 relative z-10 col-span-full col-start-1 row-span-1 row-start-1 flex flex-col items-center justify-center gap-2 border-green p-5 md:col-span-10 md:col-start-2 md:row-span-4 md:row-start-2 md:gap-4">
+          <div className="border-3 relative z-10 col-span-full col-start-1 row-span-1 row-start-1 flex flex-col items-center justify-center gap-2 border-green bg-[#000] p-5 md:col-span-10 md:col-start-2 md:row-span-4 md:row-start-2 md:gap-4 md:bg-transparent">
             <h1 className="max-w-[80%] text-balance text-center text-[clamp(24px,3.75vw,48px)] font-bold tracking-tighter md:max-w-none xs-h:text-[22px]">
               Your complete platform for the web.
             </h1>
@@ -104,14 +113,14 @@ type ButtonProps = PropsWithChildren<{
 
 const VARIANT_CLASSES: Record<ButtonProps['variant'], string> = {
   light: 'bg-[rgb(237,237,237)] text-[rgb(10,10,10)] border-[rgb(10,10,10)] hover:bg-[rgb(220,220,220)]',
-  dark: 'bg-[rgb(10,10,10)] text-[rgb(237,237,237)] border-0 hover:bg-[#000] shadow-[0px_0px_2px_rgba(255,255,255,0.2)]',
+  dark: 'bg-[rgb(10,10,10)] text-[rgb(237,237,237)] border-0 hover:bg-[#000] shadow-[0px_0px_2px_rgba(255,255,255,0.4)]',
 }
 
 const Button: FC<ButtonProps> = ({ children, variant, className }) => {
   return (
     <button
       className={twMerge(
-        'flex cursor-pointer items-center justify-center gap-x-2.5 rounded-full px-4 py-2 text-sm font-semibold md:w-48 md:py-3 md:text-base',
+        'relative flex cursor-pointer items-center justify-center gap-x-2.5 rounded-full px-4 py-2 text-sm font-semibold md:w-48 md:py-3 md:text-base',
         VARIANT_CLASSES[variant],
         className,
       )}>
