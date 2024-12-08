@@ -15,16 +15,22 @@ type Props = {
   section: SceneSection
 }
 
-const HEADING_CLASSES: Record<SceneSection, string> = {
+const OVERLINE_CLASSES: Record<SceneSection, string> = {
   [SceneSection.Purpose]: 'text-green',
   [SceneSection.Design]: 'text-orange',
   [SceneSection.Engineering]: 'text-cyan',
 } as const
 
-const TEXT_CONTENT: Record<SceneSection, ReactNode> = {
+const HEADINGS: Record<SceneSection, ReactNode> = {
   [SceneSection.Purpose]: 'Using technology to improve human performance',
   [SceneSection.Design]: 'Balanced function and aesthetics',
-  [SceneSection.Engineering]: 'Turn your vision into reality using modern web technologies',
+  [SceneSection.Engineering]: 'Turn your vision into reality',
+} as const
+
+const PARAGRAPHS: Record<SceneSection, ReactNode> = {
+  [SceneSection.Purpose]: 'Purpose at the core of all that we do. Mission-driven businesses outperform the rest.',
+  [SceneSection.Design]: null,
+  [SceneSection.Engineering]: null,
 } as const
 
 const FloatingInfo: FC<Props> = ({ section }) => {
@@ -46,13 +52,13 @@ const FloatingInfo: FC<Props> = ({ section }) => {
     if (!refs.floating.current) return
     modalTextTween.current?.kill()
 
-    const splitParagraph = new SplitText('p', {
+    const splitParagraph = new SplitText('h3, p', {
       charsClass: 'opacity-0',
     })
 
     gsap.set(refs.floating.current, { opacity: 1 })
 
-    gsap.to('h3', {
+    gsap.to('.span', {
       opacity: 1,
       duration: 1,
       ease: 'power2.out',
@@ -93,15 +99,16 @@ const FloatingInfo: FC<Props> = ({ section }) => {
         <div
           ref={refs.setFloating}
           style={floatingStyles}
-          className="pointer-events-none absolute w-[calc(100vw-80px)] space-y-2 opacity-0 md:w-[420px] 2xl:w-[560px]">
-          <h3
+          className="pointer-events-none absolute w-[calc(100vw-80px)] space-y-2.5 opacity-0 md:w-[420px] 2xl:w-[560px]">
+          <span
             className={twJoin(
-              HEADING_CLASSES[section],
-              'w-full text-xl font-black capitalize italic tracking-wide opacity-0 xl:text-2xl',
+              OVERLINE_CLASSES[section],
+              'span block w-full text-xl font-black capitalize italic tracking-wide opacity-0 xl:text-2xl',
             )}>
             {section}
-          </h3>
-          <p className="w-full text-lg font-bold md:text-2xl lg:text-3xl 2xl:text-4xl">{TEXT_CONTENT[section]}</p>
+          </span>
+          <h3 className="w-full text-lg font-bold md:text-2xl lg:text-3xl 2xl:text-4xl">{HEADINGS[section]}</h3>
+          <p className="w-full max-w-xl text-lg text-white/60">{PARAGRAPHS[section]}</p>
         </div>
       </Transition>
     </Html>
