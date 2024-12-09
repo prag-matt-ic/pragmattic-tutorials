@@ -33,7 +33,7 @@ export default function HomePage() {
           </section>
         </div>
 
-        <div className="w-full bg-[#000000] py-4 horizontal-padding">
+        <div className="w-full bg-[#000] py-4 horizontal-padding">
           <span className="text-sm text-white/40">Copyright 2024 - Pragmattic Ltd</span>
         </div>
       </footer>
