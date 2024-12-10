@@ -12,11 +12,9 @@ attribute vec3 inactivePosition;
 attribute vec3 scatteredPosition;
 
 uniform float uTime;
-uniform float uTransitionStartTime;
 uniform float uRotateSpeed;
-uniform bool uIsActive;
 uniform float uScrollProgress;
-
+uniform float uActiveProgress;
 // varying vec3 vViewPosition;
 
 const float INTRO_DURATION = 3.0;
@@ -30,22 +28,14 @@ const float MAX_PT_SIZE = 64.0;
 
 void main() {
     // If the time is less than the intro duration, then mix between INTRO_POSITION and scatteredPosition
-
     float introProgress = smoothstep(0.0, INTRO_DURATION, uTime);
     introProgress = easeElastic(introProgress);
 
-    float delay = uIsActive ? ACTIVE_TRANSITION_DELAY : INACTIVE_TRANSITION_DELAY;
-    float adjustedTime = uTime - uTransitionStartTime - delay;
-
-    float transitionProgress = smoothstep(0.0, TRANSITION_DURATION, adjustedTime);
-    float progress = uIsActive ? 1.0 - transitionProgress : transitionProgress;
-    progress = easeSine(progress);
-
-    // Update positions
     vec3 introPosition = mix(INTRO_POSITION, scatteredPosition, introProgress);
-    
+
+    // vec3 particlePosition =introPosition;
     vec3 particlePosition = mix(introPosition, inactivePosition, uScrollProgress);
-    particlePosition = mix(position, particlePosition, progress);
+    particlePosition = mix(particlePosition, position, uActiveProgress);
 
     particlePosition = rotateTorus(particlePosition, uTime, uRotateSpeed);
     particlePosition = noiseTorus(particlePosition, uTime);

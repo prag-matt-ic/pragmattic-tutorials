@@ -2,13 +2,10 @@
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 
 uniform float uTime;
-uniform float uTransitionStartTime;
-
-uniform bool uIsActive;
+uniform float uActiveProgress;
 uniform vec3 uColour;
 
 const float INTRO_DURATION = 1.6;
-const float TRANSITION_DURATION = 1.2;
 
   void main() {
     // Calculate the distance from the center of the point (normalized to [0, 1])
@@ -25,19 +22,11 @@ const float TRANSITION_DURATION = 1.2;
         uTime
     );
 
-    float transitionProgress = smoothstep(
-        0.0, 
-        TRANSITION_DURATION, 
-        uTime - uTransitionStartTime
-    );
-
-    float progress = uIsActive ? 1.0 - transitionProgress : transitionProgress;
-    
     // float introAlpha = introProgress;
     float normalAlpha = 0.7; // points fade in when inactive (normal state)
-    float activeAlpha = 0.; // points fade out when active
+    float activeAlpha = 0.0; // points fade out when active
     
-    float alpha = mix(activeAlpha, mix(0.0, normalAlpha, introProgress), progress);
+    float alpha = mix(mix(0.0, normalAlpha, introProgress), activeAlpha, uActiveProgress);
 
     // // Reduce opacity with distance
     // float vdist = distance(vViewPosition, vec3(0.0));

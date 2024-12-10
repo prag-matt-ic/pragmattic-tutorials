@@ -3,12 +3,8 @@
 #pragma glslify: rotateTorus = require('./rotation.glsl')
 #pragma glslify: noiseTorus = require('./noise.glsl')
 
-#pragma glslify: noise = require('glsl-noise/simplex/3d')
-
 uniform float uTime;
-uniform float uTransitionStartTime;
 uniform float uRotateSpeed;
-uniform bool uIsActive;
 
 varying vec2 vUv;
 
