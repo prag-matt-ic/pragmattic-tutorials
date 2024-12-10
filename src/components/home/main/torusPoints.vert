@@ -19,10 +19,6 @@ uniform float uActiveProgress;
 
 const float INTRO_DURATION = 3.0;
 const vec3 INTRO_POSITION = vec3(0.0, 0.0, 3.0);
-
-const float TRANSITION_DURATION = 0.5;
-const float ACTIVE_TRANSITION_DELAY = 0.0;
-const float INACTIVE_TRANSITION_DELAY = 1.2;
 const float MIN_PT_SIZE = 4.0;
 const float MAX_PT_SIZE = 64.0;
 

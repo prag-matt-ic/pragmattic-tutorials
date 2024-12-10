@@ -1,0 +1,103 @@
+import { MathUtils } from 'three'
+
+import { SceneSection } from '@/hooks/home/useHomeStore'
+
+const ROTATE_SPEEDS: Record<SceneSection, number> = {
+  [SceneSection.Purpose]: 0.2,
+  [SceneSection.Design]: 0.15,
+  [SceneSection.Engineering]: 0.1,
+} as const
+
+const PURPOSE_TORUS_RADIUS = 0.5 as const
+const PURPOSE_TORUS_TUBE = 0.1 as const
+
+const DESIGN_TORUS_RADIUS = 1.0 as const
+const DESIGN_TORUS_TUBE = 0.1 as const
+
+const ENGINEERING_TORUS_RADIUS = 1.5 as const
+const ENGINEERING_TORUS_TUBE = 0.1 as const
+
+const TORUS_ARGS: Record<SceneSection, [number, number, number, number]> = {
+  [SceneSection.Purpose]: [PURPOSE_TORUS_RADIUS, PURPOSE_TORUS_TUBE, 16, 32],
+  [SceneSection.Design]: [DESIGN_TORUS_RADIUS, DESIGN_TORUS_TUBE, 16, 64],
+  [SceneSection.Engineering]: [ENGINEERING_TORUS_RADIUS, ENGINEERING_TORUS_TUBE, 16, 128],
+}
+
+function getTorusParticlePositions({
+  radius,
+  tube,
+  radialSegments,
+  tubularSegments,
+}: {
+  radius: number
+  tube: number
+  radialSegments: number
+  tubularSegments: number
+}): {
+  activePositions: Float32Array
+  inactivePositions: Float32Array
+  scatteredPositions: Float32Array
+} {
+  const activePositions = []
+  const inactivePositions = []
+  const scatteredPositions = []
+
+  for (let j = 0; j <= tubularSegments; j++) {
+    const u = (j / tubularSegments) * Math.PI * 2
+    for (let i = 0; i <= radialSegments; i++) {
+      const v = (i / radialSegments) * Math.PI * 2
+
+      const x = (radius + tube * Math.cos(v)) * Math.cos(u)
+      const y = (radius + tube * Math.cos(v)) * Math.sin(u)
+      const z = tube * Math.sin(v)
+
+      activePositions.push(x, y, z)
+
+      // Spread the particles out
+      inactivePositions.push(
+        x + (Math.random() - 0.25) * 0.12,
+        y + (Math.random() - 0.25) * 0.12,
+        z + (Math.random() - 0.25) * 0.08,
+      )
+
+      // Create random positions around a sphere
+      const distance = 2.0
+      const theta = MathUtils.randFloatSpread(360)
+      const phi = MathUtils.randFloatSpread(360)
+      scatteredPositions.push(
+        distance * Math.sin(theta) * Math.cos(phi),
+        distance * Math.sin(theta) * Math.sin(phi),
+        distance * Math.cos(theta) + Math.random() * 0.5 - 0.25,
+      )
+    }
+  }
+
+  return {
+    activePositions: new Float32Array(activePositions),
+    inactivePositions: new Float32Array(inactivePositions),
+    scatteredPositions: new Float32Array(scatteredPositions),
+  }
+}
+
+const POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusParticlePositions>> = {
+  [SceneSection.Purpose]: getTorusParticlePositions({
+    radius: PURPOSE_TORUS_RADIUS + 0.1,
+    tube: PURPOSE_TORUS_TUBE,
+    radialSegments: 16,
+    tubularSegments: 64,
+  }),
+  [SceneSection.Design]: getTorusParticlePositions({
+    radius: DESIGN_TORUS_RADIUS + 0.1,
+    tube: DESIGN_TORUS_TUBE,
+    radialSegments: 16,
+    tubularSegments: 64 * 2,
+  }),
+  [SceneSection.Engineering]: getTorusParticlePositions({
+    radius: ENGINEERING_TORUS_RADIUS + 0.1,
+    tube: ENGINEERING_TORUS_TUBE,
+    radialSegments: 15,
+    tubularSegments: 64 * 3,
+  }),
+} as const
+
+export { POINTS_POSITIONS, ROTATE_SPEEDS, TORUS_ARGS }
