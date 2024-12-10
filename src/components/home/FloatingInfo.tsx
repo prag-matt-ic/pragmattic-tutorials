@@ -28,9 +28,10 @@ const HEADINGS: Record<SceneSection, ReactNode> = {
 } as const
 
 const PARAGRAPHS: Record<SceneSection, ReactNode> = {
-  [SceneSection.Purpose]: 'Purpose at the core of all that we do. Mission-driven businesses outperform the rest.',
-  [SceneSection.Design]: null,
-  [SceneSection.Engineering]: null,
+  [SceneSection.Purpose]: 'Purpose is at the core of all that we do. Mission-driven businesses outperform the rest.',
+  [SceneSection.Design]: 'Good design solves the problem and delights the user.',
+  [SceneSection.Engineering]:
+    'My team and I have delivered dozens of fast and secure web solutions. Built with the latest technologies.',
 } as const
 
 const FloatingInfo: FC<Props> = ({ section }) => {
@@ -80,8 +81,9 @@ const FloatingInfo: FC<Props> = ({ section }) => {
     modalTextTween.current?.kill()
     modalTextTween.current = gsap.to(refs.floating.current, {
       opacity: 0,
-      duration: 0.3,
-      ease: 'power1.in',
+      duration: 0.5,
+      scale: 0.95,
+      ease: 'power2.out',
     })
   }
 
@@ -99,7 +101,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
         <div
           ref={refs.setFloating}
           style={floatingStyles}
-          className="pointer-events-none absolute w-[calc(100vw-80px)] space-y-2.5 opacity-0 md:w-[420px] 2xl:w-[560px]">
+          className="pointer-events-none absolute w-[calc(100vw-80px)] origin-top-left space-y-2 opacity-0 md:w-[420px] 2xl:w-[560px]">
           <span
             className={twJoin(
               OVERLINE_CLASSES[section],

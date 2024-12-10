@@ -37,7 +37,7 @@ const HomeHeader: FC = () => {
         .to('h2', {
           keyframes: [
             { scale: 1, opacity: 1, duration: 0.2 },
-            { scale: 0.9, opacity: 0, duration: 0.1 },
+            { scale: 0.9, opacity: 0, duration: 0.05 },
           ],
         })
     },
