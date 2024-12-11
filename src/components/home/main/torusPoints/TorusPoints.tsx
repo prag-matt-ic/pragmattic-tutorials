@@ -6,6 +6,7 @@ import React, { type FC, useEffect, useRef } from 'react'
 import { AdditiveBlending, Color, ShaderMaterial } from 'three'
 
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
+import { POINT_VEC3 } from '@/resources/colours'
 
 import { POINTS_POSITIONS, ROTATE_SPEEDS } from '../torusResources'
 import pointsFragmentShader from './torusPoints.frag'
@@ -101,7 +102,7 @@ type PointsUniforms = {
 const POINTS_UNIFORMS: PointsUniforms = {
   uTime: 0,
   uRotateSpeed: 0.3,
-  uColour: new Color('#9A93A9'),
+  uColour: POINT_VEC3,
   uScrollProgress: 0,
   uActiveProgress: 0,
 }

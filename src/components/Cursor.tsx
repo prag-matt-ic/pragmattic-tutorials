@@ -42,18 +42,18 @@ const Cursor: FC = () => {
       const isHovered = type === 'hover'
       if (isHovered) {
         gsap.to('#pointer-ring', { scale: 3, duration: 0.4 })
-        gsap.fromTo(
-          '#pointer-label',
-          { opacity: 0, scale: 0.6 },
-          { opacity: isHovered ? 1 : 0, scale: 1, duration: 0.3 },
-        )
+        // gsap.fromTo(
+        //   '#pointer-label',
+        //   { opacity: 0, scale: 0.6 },
+        //   { opacity: isHovered ? 1 : 0, scale: 1, duration: 0.3 },
+        // )
       } else {
         gsap.to('#pointer-ring', { scale: 1, duration: 0.4 })
-        gsap.to('#pointer-label', {
-          opacity: 0,
-          scale: 0.6,
-          duration: 0.3,
-        })
+        // gsap.to('#pointer-label', {
+        //   opacity: 0,
+        //   scale: 0.6,
+        //   duration: 0.3,
+        // })
       }
     },
     { scope: pointer, dependencies: [type, label] },
@@ -61,8 +61,8 @@ const Cursor: FC = () => {
 
   // Event listener for pointer move
   useEffect(() => {
-    const setCursorX = gsap.quickTo(pointer.current, 'x', { duration: 0.15 })
-    const setCursorY = gsap.quickTo(pointer.current, 'y', { duration: 0.15 })
+    const setCursorX = gsap.quickTo(pointer.current, 'x', { duration: 0.1 })
+    const setCursorY = gsap.quickTo(pointer.current, 'y', { duration: 0.1 })
 
     const onPointerMove = (e: PointerEvent) => {
       setCursorX(e.clientX)
@@ -77,10 +77,8 @@ const Cursor: FC = () => {
 
   return (
     <div ref={pointer} className="pointer-events-none absolute flex items-center justify-center">
-      <div id="pointer-ring" className="size-4 rounded-full border-2 border-light opacity-60" />
-      <div id="pointer-label" className="absolute size-10 text-center text-4xl opacity-0">
-        {label}
-      </div>
+      <div id="pointer-ring" className="size-5 rounded-full border-2 border-light" />
+      {/* <div className="absolute size-1 rounded-full bg-white" /> */}
     </div>
   )
 }

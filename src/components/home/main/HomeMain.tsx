@@ -9,9 +9,9 @@ import { Group, PointLight } from 'three'
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
 
 import FloatingInfo from '../FloatingInfo'
+import Points from './points/Points'
 import Torus from './torus/Torus'
 import TorusPoints from './torusPoints/TorusPoints'
-import Points from './points/Points'
 
 const HomeMain: FC = () => {
   const torusGroup = useRef<Group>(null)

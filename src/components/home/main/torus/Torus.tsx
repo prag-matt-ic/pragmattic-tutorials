@@ -7,7 +7,7 @@ import { BufferGeometry, Color, Mesh, MeshLambertMaterial, type NormalBufferAttr
 import CustomShaderMaterial from 'three-custom-shader-material'
 
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
-import { CYAN_VEC3, GREEN_VEC3, LIGHT_VEC3, ORANGE_VEC3 } from '@/resources/colours'
+import { GREEN_VEC3, POINT_VEC3, SECTION_COLOURS } from '@/resources/colours'
 
 import { ROTATE_SPEEDS, TORUS_ARGS } from '../torusResources'
 import fragmentShader from './torus.frag'
@@ -103,7 +103,7 @@ const PURPOSE_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
   uRotateSpeed: { value: ROTATE_SPEEDS.purpose },
   uIsActive: { value: false },
-  uColour: { value: new Color('#BDB8C6') },
+  uColour: { value: POINT_VEC3 },
   uActiveColour: { value: GREEN_VEC3 },
   uActiveProgress: { value: 0 },
   uRadius: { value: TORUS_ARGS.purpose[0] },
@@ -114,8 +114,8 @@ const DESIGN_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
   uRotateSpeed: { value: ROTATE_SPEEDS.design },
   uIsActive: { value: false },
-  uColour: { value: new Color('#9A93A9') },
-  uActiveColour: { value: ORANGE_VEC3 },
+  uColour: { value: POINT_VEC3 },
+  uActiveColour: { value: SECTION_COLOURS[SceneSection.Design] },
   uActiveProgress: { value: 0 },
   uRadius: { value: TORUS_ARGS.design[0] },
   uTube: { value: TORUS_ARGS.design[1] },
@@ -125,8 +125,8 @@ const ENGINEERING_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
   uRotateSpeed: { value: ROTATE_SPEEDS[SceneSection.Engineering] },
   uIsActive: { value: false },
-  uColour: { value: LIGHT_VEC3 },
-  uActiveColour: { value: CYAN_VEC3 },
+  uColour: { value: POINT_VEC3 },
+  uActiveColour: { value: SECTION_COLOURS[SceneSection.Engineering] },
   uActiveProgress: { value: 0 },
   uRadius: { value: TORUS_ARGS.engineering[0] },
   uTube: { value: TORUS_ARGS.engineering[1] },
