@@ -9,9 +9,9 @@ import CustomShaderMaterial from 'three-custom-shader-material'
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
 import { CYAN_VEC3, GREEN_VEC3, LIGHT_VEC3, ORANGE_VEC3 } from '@/resources/colours'
 
+import { ROTATE_SPEEDS, TORUS_ARGS } from '../torusResources'
 import fragmentShader from './torus.frag'
 import vertexShader from './torus.vert'
-import { ROTATE_SPEEDS, TORUS_ARGS } from './torusResources'
 
 type Props = {
   section: SceneSection
@@ -29,7 +29,7 @@ const SectionTorus: FC<Props> = ({ section }) => {
   useEffect(
     () =>
       useHomeSceneStore.subscribe((s) => {
-        isActive.current = s.activeSection === section
+        isActive.current = s.allAreActive || s.activeSection === section
         if (isActive.current) {
           if (activeProgress.current.value === 1) return
           activeTween.current?.kill()

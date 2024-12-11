@@ -1,7 +1,7 @@
 // Torus Vertex shader
 
-#pragma glslify: rotateTorus = require('./rotation.glsl')
-#pragma glslify: noiseTorus = require('./noise.glsl')
+#pragma glslify: rotateTorus = require('../rotation.glsl')
+#pragma glslify: noiseTorus = require('../noise.glsl')
 
 uniform float uTime;
 uniform float uRotateSpeed;

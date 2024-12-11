@@ -26,7 +26,7 @@ const CONFIG: Record<
   [SceneSection.Purpose]: {
     overlineClass: 'text-green',
     heading: 'Use technology to improve human performance',
-    paragraph: `Purpose fuels progress. That's why purpose is at the core of everything we create together.`,
+    paragraph: `Purpose fuels progress. That's why it's at the core of everything we create together.`,
   },
   [SceneSection.Design]: {
     overlineClass: 'text-orange',
@@ -43,8 +43,7 @@ const CONFIG: Record<
 
 const FloatingInfo: FC<Props> = ({ section }) => {
   const activeSection = useHomeSceneStore((s) => s.activeSection)
-  const hasCompletedIntroScroll = useHomeSceneStore((s) => s.hasCompletedIntroScroll)
-  const isOpen = hasCompletedIntroScroll && activeSection === section
+  const isOpen = activeSection === section
 
   const modalTextTween = useRef<GSAPTween>()
   const container = useRef<HTMLDivElement>(null)

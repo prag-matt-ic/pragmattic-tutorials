@@ -79,7 +79,7 @@ function getTorusParticlePositions({
   }
 }
 
-const POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusParticlePositions>> = {
+const TORUS_POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusParticlePositions>> = {
   [SceneSection.Purpose]: getTorusParticlePositions({
     radius: PURPOSE_TORUS_RADIUS,
     tube: PURPOSE_TORUS_TUBE,
@@ -100,4 +100,4 @@ const POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusParticleP
   }),
 } as const
 
-export { POINTS_POSITIONS, ROTATE_SPEEDS, TORUS_ARGS }
+export { TORUS_POINTS_POSITIONS as POINTS_POSITIONS, ROTATE_SPEEDS, TORUS_ARGS }

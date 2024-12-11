@@ -23,7 +23,7 @@ const HomeHeader: FC = () => {
           scrollTrigger: {
             start: 0,
             trigger: container.current,
-            end: 'bottom top',
+            end: 1250,
             scrub: true,
             fastScrollEnd: true,
             pin: '#home-header',

@@ -1,6 +1,4 @@
 // Torus Fragment shader
-
-#pragma glslify: ease = require('glsl-easings/cubic-in') 
 #pragma glslify: noise = require('glsl-noise/simplex/3d')
 
 uniform float uTime;

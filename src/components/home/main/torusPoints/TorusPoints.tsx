@@ -7,9 +7,9 @@ import { AdditiveBlending, Color, ShaderMaterial } from 'three'
 
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
 
+import { POINTS_POSITIONS, ROTATE_SPEEDS } from '../torusResources'
 import pointsFragmentShader from './torusPoints.frag'
 import pointsVertexShader from './torusPoints.vert'
-import { POINTS_POSITIONS, ROTATE_SPEEDS } from './torusResources'
 
 type TorusPointsProps = {
   section: SceneSection
@@ -25,7 +25,7 @@ const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
   useEffect(
     () =>
       useHomeSceneStore.subscribe((s) => {
-        isActive.current = s.activeSection === section
+        isActive.current = s.allAreActive || s.activeSection === section
         if (isActive.current) {
           if (activeProgress.current.value === 1) return
           activeTween.current?.kill()

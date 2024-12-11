@@ -5,7 +5,6 @@ import { extend, type ShaderMaterialProps, useFrame, useThree } from '@react-thr
 import React, { type FC, useRef } from 'react'
 import { Color, ShaderMaterial } from 'three'
 
-import { useHomeSceneStore } from '@/hooks/home/useHomeStore'
 import { BLACK_VEC3, LIGHT_VEC3, MID_VEC3, OFF_BLACK_VEC3 } from '@/resources/colours'
 
 import bgFragment from './background.frag'
@@ -44,7 +43,7 @@ const HomeBackgroundPlane: FC = () => {
   })
 
   return (
-    <Plane args={[viewport.width * 2.5, viewport.height * 2.5, 1, 1]} position={[0, 0, -4]}>
+    <Plane args={[viewport.width * 3, viewport.height * 3, 1, 1]} position={[0, 0, -6]}>
       <homeBackgroundShaderMaterial
         key={HomeBackgroundShaderMaterial.key}
         ref={shader}

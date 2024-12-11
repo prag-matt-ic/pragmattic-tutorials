@@ -64,15 +64,15 @@ const HomeScrollManager: FC = () => {
   }
 
   return (
-    <nav className="fixed bottom-0 left-4 top-0 z-[100] hidden items-center justify-center sm:flex">
-      <div id="scroll-bar" className="relative w-1.5 rounded-full bg-light/20">
+    <nav className="fixed bottom-0 left-6 top-0 z-[100] hidden items-center justify-center sm:flex">
+      <div id="scroll-bar" className="relative w-2.5 rounded-full bg-light/20">
         {/* "h-10" corresponds to a 1000px height section */}
         <div className="h-10 w-full shrink-0" />
         <div className="h-10 w-full shrink-0" />
         <button
           className={twJoin(
             'h-10 w-full shrink-0 rounded-full bg-green transition-opacity duration-200 hover:opacity-100',
-            activeSection === SceneSection.Purpose ? 'opacity-100' : 'opacity-20',
+            activeSection === SceneSection.Purpose ? 'animate-pulse opacity-100' : 'opacity-20',
           )}
           onClick={() => onLinkClick(SceneSection.Purpose)}
         />
@@ -80,7 +80,7 @@ const HomeScrollManager: FC = () => {
         <button
           className={twJoin(
             'h-10 w-full shrink-0 rounded-full bg-orange transition-opacity duration-200 hover:opacity-100',
-            activeSection === SceneSection.Design ? 'opacity-100' : 'opacity-20',
+            activeSection === SceneSection.Design ? 'animate-pulse opacity-100' : 'opacity-20',
           )}
           onClick={() => onLinkClick(SceneSection.Design)}
         />
@@ -88,7 +88,7 @@ const HomeScrollManager: FC = () => {
         <button
           className={twJoin(
             'h-10 w-full shrink-0 rounded-full bg-cyan transition-opacity duration-200 hover:opacity-100',
-            activeSection === SceneSection.Engineering ? 'opacity-100' : 'opacity-20',
+            activeSection === SceneSection.Engineering ? 'animate-pulse opacity-100' : 'opacity-20',
           )}
           onClick={() => onLinkClick(SceneSection.Engineering)}
         />
@@ -96,6 +96,7 @@ const HomeScrollManager: FC = () => {
         <div className="h-10 w-full shrink-0" />
 
         <div id="scroll-indicator" className="absolute left-1 top-0 size-5">
+          {/* Bounce this on the X axis */}
           <Image src={positionArrow} alt="arrow" className="size-5 -translate-y-1/2" />
         </div>
       </div>

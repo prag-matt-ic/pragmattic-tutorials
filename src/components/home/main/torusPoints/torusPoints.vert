@@ -1,12 +1,8 @@
 // Torus Points Vertex shader
-#pragma glslify: easeElastic = require('glsl-easings/elastic-out') 
-#pragma glslify: easeSine= require('glsl-easings/sine-in') 
+#pragma glslify: easeElastic = require('glsl-easings/elastic-out')  
 
-#pragma glslify: rotateTorus = require('./rotation.glsl')
-#pragma glslify: noiseTorus = require('./noise.glsl')
-
-// #pragma glslify: noise = require('glsl-noise/simplex/3d')
-
+#pragma glslify: rotateTorus = require('../rotation.glsl')
+#pragma glslify: noiseTorus = require('../noise.glsl')
 
 attribute vec3 inactivePosition;
 attribute vec3 scatteredPosition;
