@@ -30,14 +30,15 @@ const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
         if (isActive.current) {
           if (activeProgress.current.value === 1) return
           activeTween.current?.kill()
-          activeTween.current = gsap.to(activeProgress.current, { duration: 1.2, ease: 'power2.in', value: 1 })
+          activeTween.current = gsap.to(activeProgress.current, { duration: 1.2, ease: 'power2.out', value: 1 })
         } else {
           if (activeProgress.current.value === 0) return
           activeTween.current?.kill()
           activeTween.current = gsap.to(activeProgress.current, {
-            duration: 0.8,
+            duration: 2,
             ease: 'power1.out',
             value: 0,
+            delay: 0.2,
           })
         }
       }),

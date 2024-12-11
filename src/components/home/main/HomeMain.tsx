@@ -20,7 +20,7 @@ const HomeMain: FC = () => {
   const setAllAreActive = useHomeSceneStore((s) => s.setAllAreActive)
 
   const introScrollProgress = useRef<number>(0)
-  const outroScrollProgress = useRef<number>(0)
+  // const outroScrollProgress = useRef<number>(0)
 
   // // Translate the group in as the header text moves out
   useGSAP(() => {
@@ -35,22 +35,20 @@ const HomeMain: FC = () => {
     })
     if (!torusGroup.current) return
     gsap.to(torusGroup.current.position, {
-      z: -5,
-      ease: 'none',
+      z: -3.5,
+      x: 5.5,
+      ease: 'power1.out',
       scrollTrigger: {
         trigger: '#home-footer',
         start: 'top bottom',
         end: 'bottom top',
         scrub: true,
         onEnter: () => {
-          // Make them all colourful!
+          // Make all the rings colourful!
           setAllAreActive(true)
         },
         onLeaveBack: () => {
           setAllAreActive(false)
-        },
-        onUpdate: (self) => {
-          outroScrollProgress.current = self.progress
         },
       },
     })

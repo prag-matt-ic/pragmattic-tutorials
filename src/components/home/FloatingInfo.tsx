@@ -77,7 +77,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
       {
         opacity: 1,
         duration: 0.5,
-        stagger: 0.016,
+        stagger: 0.014,
         ease: 'power2.out',
       },
     )
@@ -116,7 +116,7 @@ const FloatingInfo: FC<Props> = ({ section }) => {
             {section}
           </span>
           <h3 className="w-full text-lg font-bold md:text-2xl lg:text-3xl 2xl:text-4xl">{CONFIG[section].heading}</h3>
-          <p className="w-full max-w-xl text-lg text-white/60">{CONFIG[section].paragraph}</p>
+          <p className="w-full max-w-xl text-lg text-light">{CONFIG[section].paragraph}</p>
         </div>
       </Transition>
     </Html>

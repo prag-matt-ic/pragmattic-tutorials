@@ -10,7 +10,7 @@ import { POINT_VEC3, SECTION_COLOURS } from '@/resources/colours'
 import pointsFragmentShader from './points.frag'
 import pointsVertexShader from './points.vert'
 
-const PARTICLE_COUNT = 160
+const PARTICLE_COUNT = 128
 
 const getRandomSpherePositions = (count: number): Float32Array => {
   const positions = new Float32Array(count * 3)
@@ -27,18 +27,35 @@ const getRandomSpherePositions = (count: number): Float32Array => {
   return positions
 }
 
-const getColours = (count: number, activeSection: SceneSection | null): Float32Array => {
+const getColours = (count: number, activeSection: 'all' | SceneSection | null): Float32Array => {
   const colours = new Float32Array(count * 3)
+
+  if (activeSection === null) {
+    for (let i = 0; i < count; i++) {
+      colours.set([...POINT_VEC3], i * 3)
+    }
+    return colours
+  }
+
+  if (activeSection === 'all') {
+    for (let i = 0; i < count; i++) {
+      //  There are 3 section, alternate each particle colour
+      if (i % 3 === 0) colours.set([...SECTION_COLOURS[SceneSection.Purpose]], i * 3)
+      if (i % 3 === 1) colours.set([...SECTION_COLOURS[SceneSection.Design]], i * 3)
+      if (i % 3 === 2) colours.set([...SECTION_COLOURS[SceneSection.Engineering]], i * 3)
+    }
+    return colours
+  }
+
+  // Random value between 8 and 16 for the coloured particle
+  const randomColourIndex = Math.floor(Math.random() * 8) + 8
   const activeColour = activeSection ? SECTION_COLOURS[activeSection] : POINT_VEC3
 
-  // Random value between 6 and 12 for the colour change
-  const randomColourIndex = Math.floor(Math.random() * 6) + 6
-
   for (let i = 0; i < count; i++) {
-    if (!!activeSection && i % randomColourIndex === 0) {
-      colours.set([activeColour.r, activeColour.g, activeColour.b], i * 3)
+    if (i % randomColourIndex === 0) {
+      colours.set([...activeColour], i * 3)
     } else {
-      colours.set([POINT_VEC3.r, POINT_VEC3.g, POINT_VEC3.b], i * 3)
+      colours.set([...POINT_VEC3], i * 3)
     }
   }
   return colours
@@ -58,7 +75,7 @@ const PointsPlane: FC<Props> = () => {
       useHomeSceneStore.subscribe((s) => {
         if (!coloursAttribute.current) return
         // Generate the new colors array
-        const newColours = getColours(PARTICLE_COUNT, s.activeSection)
+        const newColours = getColours(PARTICLE_COUNT, s.allAreActive ? 'all' : s.activeSection)
         // Update the array and mark it for an update
         coloursAttribute.current.array = newColours
         coloursAttribute.current.needsUpdate = true

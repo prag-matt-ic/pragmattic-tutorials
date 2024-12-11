@@ -22,9 +22,17 @@ type Props = {
   className?: string
 }
 
-const ICONS: StaticImageData[] = [gsapIcon, nextIcon, openGLIcon, reactIcon, tailwindIcon, threeIcon, typescriptIcon]
+const TECHNOLOGY_ICONS: StaticImageData[] = [
+  gsapIcon,
+  nextIcon,
+  openGLIcon,
+  reactIcon,
+  tailwindIcon,
+  threeIcon,
+  typescriptIcon,
+]
 
-const ELEMENTS = [...ICONS, ...ICONS]
+const ELEMENTS = [...TECHNOLOGY_ICONS, ...TECHNOLOGY_ICONS]
 
 const Marquee: FC<Props> = ({ isReversed = false, className }) => {
   const movingContainer = useRef<HTMLDivElement>(null)
