@@ -3,7 +3,7 @@ import { MathUtils } from 'three'
 import { SceneSection } from '@/hooks/home/useHomeStore'
 
 const ROTATE_SPEEDS: Record<SceneSection, number> = {
-  [SceneSection.Purpose]: 0.2,
+  [SceneSection.Purpose]: 0.25,
   [SceneSection.Design]: 0.15,
   [SceneSection.Engineering]: 0.1,
 } as const
@@ -81,19 +81,19 @@ function getTorusParticlePositions({
 
 const POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusParticlePositions>> = {
   [SceneSection.Purpose]: getTorusParticlePositions({
-    radius: PURPOSE_TORUS_RADIUS + 0.1,
+    radius: PURPOSE_TORUS_RADIUS,
     tube: PURPOSE_TORUS_TUBE,
     radialSegments: 16,
     tubularSegments: 64,
   }),
   [SceneSection.Design]: getTorusParticlePositions({
-    radius: DESIGN_TORUS_RADIUS + 0.1,
+    radius: DESIGN_TORUS_RADIUS,
     tube: DESIGN_TORUS_TUBE,
     radialSegments: 16,
     tubularSegments: 64 * 2,
   }),
   [SceneSection.Engineering]: getTorusParticlePositions({
-    radius: ENGINEERING_TORUS_RADIUS + 0.1,
+    radius: ENGINEERING_TORUS_RADIUS,
     tube: ENGINEERING_TORUS_TUBE,
     radialSegments: 15,
     tubularSegments: 64 * 3,

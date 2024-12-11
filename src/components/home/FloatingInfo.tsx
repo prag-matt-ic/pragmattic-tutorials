@@ -15,23 +15,30 @@ type Props = {
   section: SceneSection
 }
 
-const OVERLINE_CLASSES: Record<SceneSection, string> = {
-  [SceneSection.Purpose]: 'text-green',
-  [SceneSection.Design]: 'text-orange',
-  [SceneSection.Engineering]: 'text-cyan',
-} as const
-
-const HEADINGS: Record<SceneSection, ReactNode> = {
-  [SceneSection.Purpose]: 'Using technology to improve human performance',
-  [SceneSection.Design]: 'Balanced function and aesthetics',
-  [SceneSection.Engineering]: 'Turn your vision into reality',
-} as const
-
-const PARAGRAPHS: Record<SceneSection, ReactNode> = {
-  [SceneSection.Purpose]: 'Purpose is at the core of all that we do. Mission-driven businesses outperform the rest.',
-  [SceneSection.Design]: 'Good design solves the problem and delights the user.',
-  [SceneSection.Engineering]:
-    'My team and I have delivered dozens of fast and secure web solutions. Built with the latest technologies.',
+const CONFIG: Record<
+  SceneSection,
+  {
+    overlineClass: string
+    heading: ReactNode
+    paragraph: ReactNode
+  }
+> = {
+  [SceneSection.Purpose]: {
+    overlineClass: 'text-green',
+    heading: 'Use technology to improve human performance',
+    paragraph: `Purpose fuels progress. That's why purpose is at the core of everything we create together.`,
+  },
+  [SceneSection.Design]: {
+    overlineClass: 'text-orange',
+    heading: 'Where form meets function',
+    paragraph:
+      'By deeply understanding the problem and any constraints, we design solutions that are both effective and delightful.',
+  },
+  [SceneSection.Engineering]: {
+    overlineClass: 'text-cyan',
+    heading: 'From concept to impact',
+    paragraph: 'We bring your vision to life with cutting-edge web solutions. Fast, secure, and built to maintain.',
+  },
 } as const
 
 const FloatingInfo: FC<Props> = ({ section }) => {
@@ -104,13 +111,13 @@ const FloatingInfo: FC<Props> = ({ section }) => {
           className="pointer-events-none absolute w-[calc(100vw-80px)] origin-top-left space-y-2 opacity-0 md:w-[420px] 2xl:w-[560px]">
           <span
             className={twJoin(
-              OVERLINE_CLASSES[section],
+              CONFIG[section].overlineClass,
               'span block w-full text-xl font-black capitalize italic tracking-wide opacity-0 xl:text-2xl',
             )}>
             {section}
           </span>
-          <h3 className="w-full text-lg font-bold md:text-2xl lg:text-3xl 2xl:text-4xl">{HEADINGS[section]}</h3>
-          <p className="w-full max-w-xl text-lg text-white/60">{PARAGRAPHS[section]}</p>
+          <h3 className="w-full text-lg font-bold md:text-2xl lg:text-3xl 2xl:text-4xl">{CONFIG[section].heading}</h3>
+          <p className="w-full max-w-xl text-lg text-white/60">{CONFIG[section].paragraph}</p>
         </div>
       </Transition>
     </Html>
