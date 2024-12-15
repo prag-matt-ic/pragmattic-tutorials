@@ -1,7 +1,7 @@
 'use client'
 import { shaderMaterial } from '@react-three/drei'
-import { extend, type ShaderMaterialProps } from '@react-three/fiber'
-import React, { type FC, useEffect, useRef } from 'react'
+import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
+import React, { type FC, useEffect, useMemo, useRef } from 'react'
 import { AdditiveBlending, BufferAttribute, MathUtils, ShaderMaterial } from 'three'
 
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
@@ -9,8 +9,6 @@ import { POINT_VEC3, SECTION_COLOURS } from '@/resources/colours'
 
 import pointsFragmentShader from './points.frag'
 import pointsVertexShader from './points.vert'
-
-const PARTICLE_COUNT = 128
 
 const getRandomSpherePositions = (count: number): Float32Array => {
   const positions = new Float32Array(count * 3)
@@ -47,8 +45,8 @@ const getColours = (count: number, activeSection: 'all' | SceneSection | null): 
     return colours
   }
 
-  // Random value between 8 and 16 for the coloured particle
-  const randomColourIndex = Math.floor(Math.random() * 8) + 8
+  // Random value between 6 and 10 for the coloured particle
+  const randomColourIndex = Math.floor(Math.random() * 6) + 4
   const activeColour = activeSection ? SECTION_COLOURS[activeSection] : POINT_VEC3
 
   for (let i = 0; i < count; i++) {
@@ -61,37 +59,46 @@ const getColours = (count: number, activeSection: 'all' | SceneSection | null): 
   return colours
 }
 
-const POSITIONS = getRandomSpherePositions(PARTICLE_COUNT)
-const INACTIVE_COLORS = getColours(PARTICLE_COUNT, null)
+type Props = {
+  isMobile: boolean
+}
 
-type Props = {}
-
-const PointsPlane: FC<Props> = () => {
+const PointsPlane: FC<Props> = ({ isMobile }) => {
   const pointsShaderMaterial = useRef<ShaderMaterial & Uniforms>(null)
   const coloursAttribute = useRef<BufferAttribute>(null)
+
+  const particleCount = isMobile ? 48 : 128
+
+  const POSITIONS = useMemo(() => getRandomSpherePositions(particleCount), [particleCount])
+  const INACTIVE_COLORS = useMemo(() => getColours(particleCount, null), [particleCount])
 
   useEffect(
     () =>
       useHomeSceneStore.subscribe((s) => {
         if (!coloursAttribute.current) return
         // Generate the new colors array
-        const newColours = getColours(PARTICLE_COUNT, s.allAreActive ? 'all' : s.activeSection)
+        const newColours = getColours(particleCount, s.allAreActive ? 'all' : s.activeSection)
         // Update the array and mark it for an update
         coloursAttribute.current.array = newColours
         coloursAttribute.current.needsUpdate = true
       }),
-    [],
+    [particleCount],
   )
+
+  useFrame(({ clock }) => {
+    if (!pointsShaderMaterial.current) return
+    pointsShaderMaterial.current.uniforms.uTime.value = clock.elapsedTime
+  })
 
   return (
     <points>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" array={POSITIONS} count={PARTICLE_COUNT} itemSize={3} />
+        <bufferAttribute attach="attributes-position" array={POSITIONS} count={particleCount} itemSize={3} />
         <bufferAttribute
           ref={coloursAttribute}
           attach="attributes-colour"
           array={INACTIVE_COLORS}
-          count={PARTICLE_COUNT}
+          count={particleCount}
           itemSize={3}
         />
       </bufferGeometry>

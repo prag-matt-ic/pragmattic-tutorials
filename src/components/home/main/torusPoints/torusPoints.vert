@@ -1,14 +1,14 @@
 // Torus Points Vertex shader
 #pragma glslify: easeElastic = require('glsl-easings/elastic-out')  
 
-#pragma glslify: rotateTorus = require('../rotation.glsl')
+#pragma glslify: rotateTorus = require('../rotateTorus.glsl')
 #pragma glslify: noiseTorus = require('../noise.glsl')
 
 attribute vec3 inactivePosition;
 attribute vec3 scatteredPosition;
 
 uniform float uTime;
-uniform float uRotateSpeed;
+uniform float uRotateAngle;
 uniform float uScrollProgress;
 uniform float uActiveProgress;
 // varying vec3 vViewPosition;
@@ -29,7 +29,7 @@ void main() {
     vec3 particlePosition = mix(introPosition, inactivePosition, uScrollProgress);
     particlePosition = mix(particlePosition, position, uActiveProgress);
 
-    particlePosition = rotateTorus(particlePosition, uTime, uRotateSpeed);
+    particlePosition = rotateTorus(particlePosition, uRotateAngle);
     particlePosition = noiseTorus(particlePosition, uTime);
 
     vec4 modelPosition = modelMatrix * vec4(particlePosition, 1.0);

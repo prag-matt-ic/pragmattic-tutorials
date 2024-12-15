@@ -1,8 +1,7 @@
 import React, { type FC } from 'react'
-import Marquee from '../examples/Marquee'
 import { twJoin } from 'tailwind-merge'
-import Image from 'next/image'
-import avatarPic from '@/assets/avatar.jpg'
+
+import Marquee from '../examples/Marquee'
 
 const HomeFooter: FC = () => {
   const sectionClasses = 'h-fit rounded-xl border border-off-black/50 bg-black/20 p-10 backdrop-blur-lg'
@@ -29,8 +28,8 @@ const HomeFooter: FC = () => {
 
       <Marquee className="py-4 opacity-40" />
 
-      <footer className="w-full bg-[#000] py-3 horizontal-padding">
-        <span className="block text-center text-xs text-white/50">Copyright 2024 - Pragmattic Ltd</span>
+      <footer className="w-full bg-black py-3 horizontal-padding">
+        <span className="block text-center font-mono text-xs text-white/50">© Pragmattic Ltd - 2024</span>
       </footer>
     </div>
   )

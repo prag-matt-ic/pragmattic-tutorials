@@ -18,14 +18,14 @@ const float INTRO_DURATION = 1.6;
 
     // float introAlpha = introProgress;
     float normalAlpha = 0.6; // points fade in when inactive (normal state)
-    float activeAlpha = 0.0; // points fade out when active
+    float activeAlpha = 0.1; // points fade out when active
     float alpha = mix(mix(0.0, normalAlpha, introProgress), activeAlpha, uActiveProgress);
 
     // Calculate the distance from the center of the point (normalized to [0, 1])
     vec2 coord = gl_PointCoord - vec2(0.5);
-    float ringAlpha = getRingAlpha(coord);
+    float ringAlpha = getRingAlpha(coord, uTime);
 
-    // // Reduce opacity with distance
+    // Reduce opacity with distance
     // float vdist = distance(vViewPosition, vec3(0.0));
     // float fadeOutAlpha = 1.0 - smoothstep(-2.0, 1.0, dist);
     

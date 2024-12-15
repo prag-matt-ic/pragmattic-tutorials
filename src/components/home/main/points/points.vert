@@ -6,7 +6,7 @@ attribute vec3 colour;
 varying vec3 vColour;
 
 const float MIN_PT_SIZE = 6.0;
-const float MAX_PT_SIZE = 72.0;
+const float MAX_PT_SIZE = 48.0;
 
 void main() {
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);

@@ -1,12 +1,9 @@
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { useRef } from 'react'
 import { MathUtils } from 'three'
 
 import { SceneSection } from '@/hooks/home/useHomeStore'
-
-const ROTATE_SPEEDS: Record<SceneSection, number> = {
-  [SceneSection.Purpose]: 0.25,
-  [SceneSection.Design]: 0.15,
-  [SceneSection.Engineering]: 0.1,
-} as const
 
 const PURPOSE_TORUS_RADIUS = 0.5 as const
 const PURPOSE_TORUS_TUBE = 0.1 as const
@@ -18,9 +15,9 @@ const ENGINEERING_TORUS_RADIUS = 1.5 as const
 const ENGINEERING_TORUS_TUBE = 0.1 as const
 
 const TORUS_ARGS: Record<SceneSection, [number, number, number, number]> = {
-  [SceneSection.Purpose]: [PURPOSE_TORUS_RADIUS, PURPOSE_TORUS_TUBE, 16, 32],
-  [SceneSection.Design]: [DESIGN_TORUS_RADIUS, DESIGN_TORUS_TUBE, 16, 64],
-  [SceneSection.Engineering]: [ENGINEERING_TORUS_RADIUS, ENGINEERING_TORUS_TUBE, 16, 128],
+  [SceneSection.Purpose]: [PURPOSE_TORUS_RADIUS, PURPOSE_TORUS_TUBE, 10, 32],
+  [SceneSection.Design]: [DESIGN_TORUS_RADIUS, DESIGN_TORUS_TUBE, 10, 32 * 2],
+  [SceneSection.Engineering]: [ENGINEERING_TORUS_RADIUS, ENGINEERING_TORUS_TUBE, 10, 32 * 3],
 }
 
 function getTorusParticlePositions({
@@ -55,9 +52,9 @@ function getTorusParticlePositions({
 
       // Spread the particles out
       inactivePositions.push(
-        x + (Math.random() - 0.25) * 0.12,
-        y + (Math.random() - 0.25) * 0.12,
-        z + (Math.random() - 0.25) * 0.08,
+        x + (Math.random() - 0.5) * 0.12,
+        y + (Math.random() - 0.5) * 0.12,
+        z + (Math.random() - 0.5) * 0.12,
       )
 
       // Create random positions around a sphere
@@ -83,21 +80,60 @@ const TORUS_POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusPar
   [SceneSection.Purpose]: getTorusParticlePositions({
     radius: PURPOSE_TORUS_RADIUS,
     tube: PURPOSE_TORUS_TUBE,
-    radialSegments: 16,
-    tubularSegments: 64,
+    radialSegments: 8,
+    tubularSegments: 40,
   }),
   [SceneSection.Design]: getTorusParticlePositions({
     radius: DESIGN_TORUS_RADIUS,
     tube: DESIGN_TORUS_TUBE,
-    radialSegments: 16,
-    tubularSegments: 64 * 2,
+    radialSegments: 8,
+    tubularSegments: 40 * 2,
   }),
   [SceneSection.Engineering]: getTorusParticlePositions({
     radius: ENGINEERING_TORUS_RADIUS,
     tube: ENGINEERING_TORUS_TUBE,
-    radialSegments: 15,
-    tubularSegments: 64 * 3,
+    radialSegments: 8,
+    tubularSegments: 40 * 3,
   }),
 } as const
 
-export { TORUS_POINTS_POSITIONS as POINTS_POSITIONS, ROTATE_SPEEDS, TORUS_ARGS }
+const ROTATE_DURATION: Record<SceneSection, number> = {
+  [SceneSection.Purpose]: 14,
+  [SceneSection.Design]: 18,
+  [SceneSection.Engineering]: 22,
+} as const
+
+function useTorusRotate(section: SceneSection) {
+  const angle = useRef({ value: 0 })
+  const rotateTween = useRef<gsap.core.Tween>()
+  const timeScaleTween = useRef<gsap.core.Tween>()
+
+  useGSAP(() => {
+    rotateTween.current = gsap.to(angle.current, {
+      duration: ROTATE_DURATION[section],
+      value: Math.PI * 2,
+      repeat: -1,
+      ease: 'none',
+    })
+  }, [section])
+
+  const rotateFast = () => {
+    if (!rotateTween.current) return
+    timeScaleTween.current?.kill()
+    timeScaleTween.current = gsap.to(rotateTween.current, { timeScale: 3, duration: 2 })
+  }
+
+  const rotateNormal = () => {
+    if (!rotateTween.current) return
+    timeScaleTween.current?.kill()
+    timeScaleTween.current = gsap.to(rotateTween.current, { timeScale: 1, duration: 1 })
+  }
+
+  return {
+    angle,
+    rotateFast,
+    rotateNormal,
+  }
+}
+
+export { TORUS_POINTS_POSITIONS as POINTS_POSITIONS, ROTATE_DURATION as ROTATE_SPEEDS, TORUS_ARGS, useTorusRotate }

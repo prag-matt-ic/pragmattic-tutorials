@@ -6,10 +6,10 @@ import React, { type FC, useEffect, useRef } from 'react'
 import { BufferGeometry, Color, Mesh, MeshLambertMaterial, type NormalBufferAttributes, ShaderMaterial } from 'three'
 import CustomShaderMaterial from 'three-custom-shader-material'
 
+import { ROTATE_SPEEDS, TORUS_ARGS, useTorusRotate } from '@/components/home/main/torusResources'
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
 import { GREEN_VEC3, POINT_VEC3, SECTION_COLOURS } from '@/resources/colours'
 
-import { ROTATE_SPEEDS, TORUS_ARGS } from '../torusResources'
 import fragmentShader from './torus.frag'
 import vertexShader from './torus.vert'
 
@@ -19,11 +19,13 @@ type Props = {
 
 const SectionTorus: FC<Props> = ({ section }) => {
   const torusMesh = useRef<Mesh<BufferGeometry<NormalBufferAttributes>>>(null)
-  const shaderMaterial = useRef<ShaderMaterial>(null)
+  const shaderMaterial = useRef<ShaderMaterial & UniformValues>(null)
 
   const isActive = useRef<boolean>(false)
   const activeProgress = useRef({ value: 0 })
-  const activeTween = useRef<gsap.core.Tween>()
+  const progressTween = useRef<gsap.core.Tween>()
+
+  const { angle, rotateFast, rotateNormal } = useTorusRotate(section)
 
   // Connect to the store on mount, disconnect on unmount, catch state-changes in a reference
   useEffect(
@@ -32,28 +34,31 @@ const SectionTorus: FC<Props> = ({ section }) => {
         isActive.current = s.allAreActive || s.activeSection === section
         if (isActive.current) {
           if (activeProgress.current.value === 1) return
-          activeTween.current?.kill()
-          activeTween.current = gsap.to(activeProgress.current, {
+          progressTween.current?.kill()
+          progressTween.current = gsap.to(activeProgress.current, {
             duration: 1.2,
             delay: 0.3,
             ease: 'power2.in',
             value: 1,
           })
+          rotateFast()
         } else {
           if (activeProgress.current.value === 0) return
-          activeTween.current?.kill()
-          activeTween.current = gsap.to(activeProgress.current, { duration: 0.7, ease: 'power1.out', value: 0 })
+          progressTween.current?.kill()
+          progressTween.current = gsap.to(activeProgress.current, { duration: 0.7, ease: 'power1.out', value: 0 })
+          rotateNormal()
         }
       }),
     [section],
   )
 
   useFrame(({ clock }) => {
-    if (!shaderMaterial.current) return
+    if (!shaderMaterial.current || !angle.current) return
     const elapsedTime = clock.elapsedTime
     shaderMaterial.current.uniforms.uTime.value = elapsedTime
     shaderMaterial.current.uniforms.uActiveProgress.value = activeProgress.current.value
     shaderMaterial.current.uniforms.uIsActive.value = isActive.current
+    shaderMaterial.current.uniforms.uRotateAngle.value = angle.current.value
   })
 
   return (
@@ -76,7 +81,7 @@ type UniformValues = {
   uTime: {
     value: number
   }
-  uRotateSpeed: {
+  uRotateAngle: {
     value: number
   }
   uIsActive: {
@@ -101,7 +106,7 @@ type UniformValues = {
 
 const PURPOSE_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
-  uRotateSpeed: { value: ROTATE_SPEEDS.purpose },
+  uRotateAngle: { value: 0 },
   uIsActive: { value: false },
   uColour: { value: POINT_VEC3 },
   uActiveColour: { value: GREEN_VEC3 },
@@ -112,7 +117,7 @@ const PURPOSE_UNIFORMS: UniformValues = {
 
 const DESIGN_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
-  uRotateSpeed: { value: ROTATE_SPEEDS.design },
+  uRotateAngle: { value: 0 },
   uIsActive: { value: false },
   uColour: { value: POINT_VEC3 },
   uActiveColour: { value: SECTION_COLOURS[SceneSection.Design] },
@@ -123,7 +128,7 @@ const DESIGN_UNIFORMS: UniformValues = {
 
 const ENGINEERING_UNIFORMS: UniformValues = {
   uTime: { value: 0 },
-  uRotateSpeed: { value: ROTATE_SPEEDS[SceneSection.Engineering] },
+  uRotateAngle: { value: 0 },
   uIsActive: { value: false },
   uColour: { value: POINT_VEC3 },
   uActiveColour: { value: SECTION_COLOURS[SceneSection.Engineering] },

@@ -8,7 +8,7 @@ import { AdditiveBlending, Color, ShaderMaterial } from 'three'
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
 import { POINT_VEC3 } from '@/resources/colours'
 
-import { POINTS_POSITIONS, ROTATE_SPEEDS } from '../torusResources'
+import { POINTS_POSITIONS, useTorusRotate } from '../torusResources'
 import pointsFragmentShader from './torusPoints.frag'
 import pointsVertexShader from './torusPoints.vert'
 
@@ -22,16 +22,21 @@ const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
   const isActive = useRef<boolean>(false)
   const activeProgress = useRef({ value: 0 })
   const activeTween = useRef<gsap.core.Tween>()
+  const { angle, rotateFast, rotateNormal } = useTorusRotate(section)
 
   useEffect(
     () =>
       useHomeSceneStore.subscribe((s) => {
         isActive.current = s.allAreActive || s.activeSection === section
-        if (isActive.current) {
+
+        const toActive = () => {
           if (activeProgress.current.value === 1) return
           activeTween.current?.kill()
           activeTween.current = gsap.to(activeProgress.current, { duration: 1.2, ease: 'power2.out', value: 1 })
-        } else {
+          rotateFast()
+        }
+
+        const toInactive = () => {
           if (activeProgress.current.value === 0) return
           activeTween.current?.kill()
           activeTween.current = gsap.to(activeProgress.current, {
@@ -40,8 +45,13 @@ const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
             value: 0,
             delay: 0.2,
           })
+          rotateNormal()
         }
+
+        if (isActive.current) toActive()
+        else toInactive()
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [section],
   )
 
@@ -49,8 +59,9 @@ const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
     if (!pointsShaderMaterial.current) return
     const elapsedTime = clock.elapsedTime
     pointsShaderMaterial.current.uTime = elapsedTime
-    pointsShaderMaterial.current.uScrollProgress = getScrollProgress()
     pointsShaderMaterial.current.uActiveProgress = activeProgress.current.value
+    pointsShaderMaterial.current.uRotateAngle = angle.current.value
+    pointsShaderMaterial.current.uScrollProgress = getScrollProgress()
   })
 
   return (
@@ -83,7 +94,7 @@ const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
         fragmentShader={pointsFragmentShader}
         depthTest={false}
         transparent={true}
-        uRotateSpeed={ROTATE_SPEEDS[section]}
+        uRotateAngle={0}
         blending={AdditiveBlending}
       />
     </points>
@@ -94,7 +105,7 @@ export default TorusPoints
 
 type PointsUniforms = {
   uTime: number
-  uRotateSpeed: number
+  uRotateAngle: number
   uColour: Color
   uScrollProgress: number
   uActiveProgress: number
@@ -102,7 +113,7 @@ type PointsUniforms = {
 
 const POINTS_UNIFORMS: PointsUniforms = {
   uTime: 0,
-  uRotateSpeed: 0.3,
+  uRotateAngle: 0,
   uColour: POINT_VEC3,
   uScrollProgress: 0,
   uActiveProgress: 0,

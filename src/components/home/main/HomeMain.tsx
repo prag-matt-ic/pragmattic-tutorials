@@ -1,6 +1,5 @@
 'use client'
 import { useGSAP } from '@gsap/react'
-import { Billboard } from '@react-three/drei'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import React, { type FC, useRef } from 'react'
@@ -13,52 +12,57 @@ import Points from './points/Points'
 import Torus from './torus/Torus'
 import TorusPoints from './torusPoints/TorusPoints'
 
-const HomeMain: FC = () => {
+type Props = {
+  isMobile: boolean
+}
+
+const HomeMain: FC<Props> = ({ isMobile }) => {
   const torusGroup = useRef<Group>(null)
   const pointLight = useRef<PointLight>(null)
 
+  const introScrollProgress = useRef<number>(0)
   const setAllAreActive = useHomeSceneStore((s) => s.setAllAreActive)
 
-  const introScrollProgress = useRef<number>(0)
-  // const outroScrollProgress = useRef<number>(0)
-
   // // Translate the group in as the header text moves out
-  useGSAP(() => {
-    // Particles start scattered and move in as the header text transitions
-    ScrollTrigger.create({
-      start: 0,
-      end: 1000,
-      scrub: true,
-      onUpdate: (self) => {
-        introScrollProgress.current = self.progress
-      },
-    })
-    if (!torusGroup.current) return
-    gsap.to(torusGroup.current.position, {
-      z: -3.5,
-      x: 5.5,
-      ease: 'power1.out',
-      scrollTrigger: {
-        trigger: '#home-footer',
-        start: 'top bottom',
-        end: 'bottom top',
+  useGSAP(
+    () => {
+      // Particles start scattered and move in as the header text transitions
+      ScrollTrigger.create({
+        start: 0,
+        end: 1000,
         scrub: true,
-        onEnter: () => {
-          // Make all the rings colourful!
-          setAllAreActive(true)
+        onUpdate: (self) => {
+          introScrollProgress.current = self.progress
         },
-        onLeaveBack: () => {
-          setAllAreActive(false)
+      })
+      if (!torusGroup.current) return
+      gsap.to(torusGroup.current.position, {
+        z: -3.5,
+        x: 5,
+        ease: 'power1.out',
+        scrollTrigger: {
+          trigger: '#home-footer',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+          onEnter: () => {
+            // Make all the rings colourful!
+            setAllAreActive(true)
+          },
+          onLeaveBack: () => {
+            setAllAreActive(false)
+          },
         },
-      },
-    })
-  }, [])
+      })
+    },
+    { dependencies: [] },
+  )
 
   const getScrollProgress = (): number => introScrollProgress.current
 
   return (
     <>
-      <Points />
+      <Points isMobile={isMobile} />
       <group ref={torusGroup} position={[0, 0, 0]}>
         <pointLight ref={pointLight} position={[1.0, 1.7, 0.5]} intensity={5.0} color="#FFF" />
         <Torus section={SceneSection.Purpose} />
@@ -69,15 +73,9 @@ const HomeMain: FC = () => {
         <TorusPoints section={SceneSection.Engineering} getScrollProgress={getScrollProgress} />
       </group>
       <group>
-        <Billboard position={[-1.1, 0.7, 1]}>
-          <FloatingInfo section={SceneSection.Purpose} />
-        </Billboard>
-        <Billboard position={[1.6, 0, 2]}>
-          <FloatingInfo section={SceneSection.Design} />
-        </Billboard>
-        <Billboard position={[-0.5, -2, 1]}>
-          <FloatingInfo section={SceneSection.Engineering} />
-        </Billboard>
+        <FloatingInfo section={SceneSection.Purpose} isMobile={isMobile} />
+        <FloatingInfo section={SceneSection.Design} isMobile={isMobile} />
+        <FloatingInfo section={SceneSection.Engineering} isMobile={isMobile} />
       </group>
     </>
   )

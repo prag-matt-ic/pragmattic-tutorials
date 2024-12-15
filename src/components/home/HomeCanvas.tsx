@@ -14,17 +14,20 @@ import HomeMain from './main/HomeMain'
 
 gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger)
 
-const MIN_DPR = 0.8 as const
+type Props = {
+  isMobile: boolean
+}
 
-const HomeCanvas: FC = () => {
+const HomeCanvas: FC<Props> = ({ isMobile }) => {
   const [dpr, setDpr] = useState(1.6)
+  const minDpr = isMobile ? 0.8 : 1.2
 
   const onPerformanceInline = (api: PerformanceMonitorApi) => {
     if (dpr < window.devicePixelRatio) setDpr((prev) => prev + 0.2)
   }
 
   const onPerformanceDecline = (api: PerformanceMonitorApi) => {
-    if (dpr > MIN_DPR) setDpr((prev) => prev - 0.2)
+    if (dpr > minDpr) setDpr((prev) => prev - 0.2)
   }
 
   return (
@@ -42,9 +45,9 @@ const HomeCanvas: FC = () => {
         flipflops={4}
       />
       <ambientLight intensity={1} />
-      <PointerCamera cameraProps={{ far: 20, position: [0, 0, 5] }} intensity={0.04} />
+      {!isMobile && <PointerCamera cameraProps={{ far: 20, position: [0, 0, 5] }} intensity={0.04} />}
       <HomeBackgroundPlane />
-      <HomeMain />
+      <HomeMain isMobile={isMobile} />
     </Canvas>
   )
 }
