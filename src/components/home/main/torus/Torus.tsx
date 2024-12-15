@@ -31,7 +31,7 @@ const SectionTorus: FC<Props> = ({ section }) => {
   useEffect(
     () =>
       useHomeSceneStore.subscribe((s) => {
-        isActive.current = s.allAreActive || s.activeSection === section
+        isActive.current = s.activeSection === section
         if (isActive.current) {
           if (activeProgress.current.value === 1) return
           progressTween.current?.kill()
@@ -49,6 +49,7 @@ const SectionTorus: FC<Props> = ({ section }) => {
           rotateNormal()
         }
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [section],
   )
 

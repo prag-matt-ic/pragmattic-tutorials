@@ -5,7 +5,7 @@ attribute vec3 colour;
 
 varying vec3 vColour;
 
-const float MIN_PT_SIZE = 6.0;
+const float MIN_PT_SIZE = 8.0;
 const float MAX_PT_SIZE = 48.0;
 
 void main() {

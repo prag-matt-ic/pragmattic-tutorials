@@ -9,6 +9,9 @@ uniform vec3 uColour;
 
 const float INTRO_DURATION = 1.6;
 
+const float ALPHA = 0.6; // points fade in when inactive (normal state)
+const float ACTIVE_ALPHA = 0.0; // points fade out when active
+
   void main() {
     float introProgress = smoothstep(
         0.0, 
@@ -16,10 +19,7 @@ const float INTRO_DURATION = 1.6;
         uTime
     );
 
-    // float introAlpha = introProgress;
-    float normalAlpha = 0.6; // points fade in when inactive (normal state)
-    float activeAlpha = 0.1; // points fade out when active
-    float alpha = mix(mix(0.0, normalAlpha, introProgress), activeAlpha, uActiveProgress);
+    float alpha = mix(mix(0.0, ALPHA, introProgress), ACTIVE_ALPHA, uActiveProgress);
 
     // Calculate the distance from the center of the point (normalized to [0, 1])
     vec2 coord = gl_PointCoord - vec2(0.5);

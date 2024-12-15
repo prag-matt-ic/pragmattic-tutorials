@@ -27,7 +27,7 @@ const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
   useEffect(
     () =>
       useHomeSceneStore.subscribe((s) => {
-        isActive.current = s.allAreActive || s.activeSection === section
+        isActive.current = s.activeSection === section
 
         const toActive = () => {
           if (activeProgress.current.value === 1) return
