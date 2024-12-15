@@ -58,7 +58,6 @@ void main() {
 
   finalColor = mix(finalColor, SCENE_COLOR, fogAmount);
 
-
   gl_FragColor = finalColor;
 }
 

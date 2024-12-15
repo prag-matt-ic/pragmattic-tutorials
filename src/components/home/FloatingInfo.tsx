@@ -20,8 +20,8 @@ const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
   const activeSection = useHomeSceneStore((s) => s.activeSection)
   const isOpen = activeSection === section
 
-  const modalTextTween = useRef<GSAPTween>()
   const container = useRef<HTMLDivElement>(null)
+  const timeline = useRef<GSAPTimeline>()
   const { contextSafe } = useGSAP({ scope: container })
 
   const { refs, floatingStyles } = useFloating({
@@ -32,35 +32,51 @@ const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
 
   const onModalEnter = contextSafe(() => {
     if (!refs.floating.current) return
-    modalTextTween.current?.kill()
+    timeline.current?.kill()
 
-    const splitParagraph = new SplitText('h3, p', {
+    const splitHeading = new SplitText('h3', {
       charsClass: 'opacity-0',
     })
 
     gsap.set(refs.floating.current, { opacity: 1 })
 
-    gsap.to('.span', {
-      opacity: 1,
-      duration: 1,
-      ease: 'power2.out',
-    })
-
-    modalTextTween.current = gsap.fromTo(
-      splitParagraph.chars,
-      { opacity: 0 },
-      {
+    timeline.current = gsap
+      .timeline()
+      .to('.span', {
         opacity: 1,
-        duration: 0.5,
-        stagger: 0.014,
+        duration: 1,
         ease: 'power2.out',
-      },
-    )
+      })
+      .fromTo(
+        splitHeading.chars,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.016,
+          ease: 'power2.out',
+        },
+        0,
+      )
+      .fromTo(
+        'p',
+        {
+          opacity: 0,
+          y: 8,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+        },
+        0.5,
+      )
   })
 
   const onModalExit = () => {
-    modalTextTween.current?.kill()
-    modalTextTween.current = gsap.to(refs.floating.current, {
+    timeline.current?.kill()
+    timeline.current = gsap.timeline().to(refs.floating.current, {
       opacity: 0,
       duration: 0.5,
       scale: 0.95,
@@ -75,7 +91,7 @@ const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
         <div ref={refs.setReference} className="size-5 -translate-x-1/2 -translate-y-1/2" />
         <Transition
           in={isOpen}
-          timeout={{ enter: 0, exit: 350 }}
+          timeout={{ enter: 0, exit: 500 }}
           mountOnEnter={true}
           unmountOnExit={true}
           onEnter={onModalEnter}
@@ -87,13 +103,13 @@ const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
             className="pointer-events-none absolute w-[calc(100vw-64px)] origin-top-left space-y-2.5 opacity-0 md:w-[420px] 2xl:w-[560px]">
             <span
               className={twJoin(
-                CONFIG[section].overlineClass,
-                'span block w-full text-xl font-black capitalize italic tracking-wide opacity-0 xl:text-2xl',
+                CONFIG[section].overlineClassName,
+                'span block w-full text-xl font-black capitalize italic tracking-wide opacity-0 lg:text-2xl',
               )}>
               {section}
             </span>
-            <h3 className="w-full text-lg font-bold md:text-2xl lg:text-3xl 2xl:text-4xl">{CONFIG[section].heading}</h3>
-            <p className="w-full max-w-lg text-sm text-light md:text-lg">{CONFIG[section].paragraph}</p>
+            <h3 className="w-full text-xl font-bold md:text-2xl lg:text-3xl">{CONFIG[section].heading}</h3>
+            <p className="w-full max-w-lg text-light md:text-lg">{CONFIG[section].paragraph}</p>
           </div>
         </Transition>
       </Html>
@@ -105,27 +121,27 @@ const CONFIG: Record<
   SceneSection,
   {
     position: [number, number, number]
-    overlineClass: string
+    overlineClassName: string
     heading: ReactNode
     paragraph: ReactNode
   }
 > = {
   [SceneSection.Purpose]: {
     position: [-1.1, 0.7, 1],
-    overlineClass: 'text-green',
+    overlineClassName: 'text-green',
     heading: 'Use technology to improve human performance',
     paragraph: `Purpose fuels progress. That's why it's at the core of everything we create together.`,
   },
   [SceneSection.Design]: {
     position: [1.6, 0, 2],
-    overlineClass: 'text-orange',
+    overlineClassName: 'text-orange',
     heading: 'Where form meets function',
     paragraph:
       'By deeply understanding the problem and any constraints, we design solutions that are both effective and delightful.',
   },
   [SceneSection.Engineering]: {
     position: [-1, -2, 1],
-    overlineClass: 'text-cyan',
+    overlineClassName: 'text-cyan',
     heading: 'From concept to impact',
     paragraph: 'We bring your vision to life with cutting-edge web solutions. Fast, secure, and built to maintain.',
   },

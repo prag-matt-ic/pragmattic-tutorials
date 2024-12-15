@@ -48,11 +48,11 @@ const HomeHeader: FC = () => {
     <div className="pointer-events-none relative z-20 h-[1000px] w-full" ref={container}>
       <header
         id="home-header"
-        className="pointer-events-none flex h-lvh w-full select-none flex-col items-center justify-center px-4 text-center text-white opacity-0">
-        <h1 className="relative max-w-4xl text-2xl font-extrabold !leading-[1.3] tracking-tight md:text-6xl xl:text-7xl">
+        className="pointer-events-none flex h-lvh w-full select-none flex-col items-center justify-center px-6 pb-20 text-center text-white opacity-0 sm:pb-0">
+        <h1 className="relative max-w-4xl text-4xl font-extrabold !leading-[1.3] tracking-tight md:text-6xl xl:text-7xl">
           Helping innovative teams bring big ideas to life
         </h1>
-        <h2 className="absolute max-w-4xl scale-110 text-2xl font-extrabold !leading-[1.3] tracking-tight opacity-0 md:text-6xl xl:text-7xl">
+        <h2 className="absolute max-w-4xl scale-110 text-balance text-4xl font-extrabold !leading-[1.3] tracking-tight opacity-0 md:text-6xl xl:text-7xl">
           with purposeful design and engineering
         </h2>
       </header>

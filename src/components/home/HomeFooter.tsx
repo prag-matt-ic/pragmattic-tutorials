@@ -5,9 +5,10 @@ import Marquee from '../examples/Marquee'
 
 const HomeFooter: FC = () => {
   const sectionClasses = 'h-fit rounded-xl border border-off-black/50 bg-black/20 p-10 backdrop-blur-lg'
+
   return (
-    <div id="home-footer" className="relative grid h-lvh w-full grid-cols-1 grid-rows-[1fr_auto_auto] gap-4">
-      <div className="grid grid-cols-3 grid-rows-2 gap-8 py-16 horizontal-padding sm:py-24">
+    <div id="home-footer" className="relative grid h-lvh w-full grid-cols-1 grid-rows-[1fr_auto_auto] gap-4 pt-16">
+      <div className="grid grid-cols-1 grid-rows-2 gap-8 py-12 horizontal-padding sm:py-24 md:grid-cols-3">
         <section className={sectionClasses}>
           <h3 className="font-bold uppercase">🚧 under construction 🚧</h3>
           <p className="mt-2 text-light">

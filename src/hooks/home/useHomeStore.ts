@@ -20,11 +20,11 @@ export const useHomeSceneStore = create<SceneStore>((set, get) => ({
   activeSection: null,
   prevActiveSection: null,
   setActiveSection: (activeSection) => {
-    const previousActiveSection = get().activeSection
-    if (activeSection === previousActiveSection) return
+    const currentActiveSection = get().activeSection
+    if (activeSection === currentActiveSection) return
     set({
-      activeSection: activeSection || null,
-      prevActiveSection: previousActiveSection,
+      activeSection: activeSection,
+      prevActiveSection: currentActiveSection,
     })
   },
   allAreActive: false,

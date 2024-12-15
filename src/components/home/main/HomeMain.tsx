@@ -63,7 +63,7 @@ const HomeMain: FC<Props> = ({ isMobile }) => {
   return (
     <>
       <Points isMobile={isMobile} />
-      <group ref={torusGroup} position={[0, 0, 0]}>
+      <group ref={torusGroup} position={isMobile ? [0, 0.5, 0] : [0, 0, 0]}>
         <pointLight ref={pointLight} position={[1.0, 1.7, 0.5]} intensity={5.0} color="#FFF" />
         <Torus section={SceneSection.Purpose} />
         <TorusPoints section={SceneSection.Purpose} getScrollProgress={getScrollProgress} />
