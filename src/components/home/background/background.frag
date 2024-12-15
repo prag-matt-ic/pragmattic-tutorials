@@ -16,10 +16,10 @@ void main() {
   float noiseA = noise(vec3(vUv * 2., uTime * 0.2)) * 0.5 + 0.5;
   float noiseB = noise(vec3(vUv * 4., uTime * 0.1)) * 0.5 + 0.5;
 
-  // mix of 3 colours based on noise values
+  // mix 3 colours based on noise values
   vec3 colour = mix(mix(uMidColour, uOffBlackColour, noiseB), uLightColour, noiseA);
 
-  // vignette with a dynamic falloff
+  // vignette
   vec2 uv = vUv * 2.0 - 1.0;
   uv.x *= uAspect;
   float vignette = distance(uv, vec2(0.0));
@@ -27,10 +27,10 @@ void main() {
   colour = mix(colour, uBlackColour, vig);
 
   // high frequency noise for a grainy effect
-  float noiseV = noise(vec3(vUv * 320.0, uTime)); 
+  float noiseV = noise(vec3(vUv * 296.0, 1.0)); 
   vec3 noiseColour = mix(colour, uLightColour, noiseV);
 
-  colour = mix(colour, noiseColour, 0.3);
+  colour = mix(colour, noiseColour, 0.33);
 
   gl_FragColor = vec4(colour, 1.0);
 }

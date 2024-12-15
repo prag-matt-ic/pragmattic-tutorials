@@ -22,7 +22,6 @@ const HomeHeader: FC = () => {
           defaults: { ease: 'none' },
           scrollTrigger: {
             start: 0,
-            trigger: container.current,
             end: 1250,
             scrub: true,
             fastScrollEnd: true,
@@ -37,7 +36,7 @@ const HomeHeader: FC = () => {
         .to('h2', {
           keyframes: [
             { scale: 1, opacity: 1, duration: 0.2 },
-            { scale: 0.9, opacity: 0, duration: 0.05 },
+            { scale: 0.9, opacity: 0, duration: 0.1 },
           ],
         })
     },
@@ -50,7 +49,7 @@ const HomeHeader: FC = () => {
         id="home-header"
         className="pointer-events-none flex h-lvh w-full select-none flex-col items-center justify-center px-6 pb-20 text-center text-white opacity-0 sm:pb-0">
         <h1 className="relative max-w-4xl text-4xl font-extrabold !leading-[1.3] tracking-tight md:text-6xl xl:text-7xl">
-          Helping innovative teams bring big ideas to life
+          Helping innovative teams <span className="text-green">bring big ideas to life</span>
         </h1>
         <h2 className="absolute max-w-4xl scale-110 text-balance text-4xl font-extrabold !leading-[1.3] tracking-tight opacity-0 md:text-6xl xl:text-7xl">
           with purposeful design and engineering

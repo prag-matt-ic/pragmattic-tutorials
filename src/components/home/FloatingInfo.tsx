@@ -104,11 +104,11 @@ const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
             <span
               className={twJoin(
                 CONFIG[section].overlineClassName,
-                'span block w-full text-xl font-black capitalize italic tracking-wide opacity-0 lg:text-2xl',
+                'span block w-full text-xl font-semibold capitalize tracking-wide opacity-0 lg:text-2xl',
               )}>
               {section}
             </span>
-            <h3 className="w-full text-xl font-bold md:text-2xl lg:text-3xl">{CONFIG[section].heading}</h3>
+            <h3 className="w-full text-xl font-extrabold md:text-2xl lg:text-4xl">{CONFIG[section].heading}</h3>
             <p className="w-full max-w-lg text-light md:text-lg">{CONFIG[section].paragraph}</p>
           </div>
         </Transition>

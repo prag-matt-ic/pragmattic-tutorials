@@ -1,20 +1,20 @@
 import './globals.css'
 
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Kumbh_Sans } from 'next/font/google'
 
 import CustomCursor from '@/components/Cursor'
 import Nav from '@/components/Nav'
 
-const inter = Inter({
+const fontSans = Kumbh_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-sans',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: { template: '%s | Pragmattic', default: 'Pragmattic | design and engineering' },
-  description: 'Frontend development for commercial projects',
+  title: { template: '%s | Pragmattic', default: 'Pragmattic | Design and Engineering' },
+  description: 'Web app design and development for commercial projects',
 }
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} w-full bg-off-black font-sans antialiased`}>
+      <body className={`${fontSans.variable} w-full bg-black font-sans antialiased`}>
         <Nav />
         {children}
         <CustomCursor />
