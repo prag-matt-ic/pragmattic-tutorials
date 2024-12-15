@@ -6,7 +6,7 @@ import React, { type FC, useEffect, useRef } from 'react'
 import { BufferGeometry, Color, Mesh, MeshLambertMaterial, type NormalBufferAttributes, ShaderMaterial } from 'three'
 import CustomShaderMaterial from 'three-custom-shader-material'
 
-import { ROTATE_SPEEDS, TORUS_ARGS, useTorusRotate } from '@/components/home/main/torusResources'
+import { TORUS_ARGS, useTorusRotate } from '@/components/home/main/torusResources'
 import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
 import { GREEN_VEC3, POINT_VEC3, SECTION_COLOURS } from '@/resources/colours'
 

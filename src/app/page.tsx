@@ -16,11 +16,11 @@ export default async function HomePage() {
       <HomeHeader />
 
       <div className={SECTION_CLASSES} />
-      <section id="purpose-section" className={SECTION_CLASSES} />
+      <div id="purpose-section" className={SECTION_CLASSES} />
       <div className={SECTION_CLASSES} />
-      <section id="design-section" className={SECTION_CLASSES} />
+      <div id="design-section" className={SECTION_CLASSES} />
       <div className={SECTION_CLASSES} />
-      <section id="engineering-section" className={SECTION_CLASSES} />
+      <div id="engineering-section" className={SECTION_CLASSES} />
       <div className={SECTION_CLASSES} />
       <div className={SECTION_CLASSES} />
 
