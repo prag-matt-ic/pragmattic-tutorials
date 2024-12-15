@@ -104,8 +104,11 @@ const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
             <span
               className={twJoin(
                 CONFIG[section].overlineClassName,
-                'span block w-full text-xl font-semibold capitalize tracking-wide opacity-0 lg:text-2xl',
+                'span flex w-full items-center gap-3 text-xl font-semibold capitalize tracking-wide opacity-0 lg:text-2xl',
               )}>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="2" />
+              </svg>
               {section}
             </span>
             <h3 className="w-full text-xl font-extrabold md:text-2xl lg:text-4xl">{CONFIG[section].heading}</h3>
