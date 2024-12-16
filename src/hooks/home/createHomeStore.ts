@@ -67,7 +67,7 @@ export const createHomeStore = (isMobile: boolean) => {
 
   ScrollTrigger.create({
     start: 0,
-    end: 1250,
+    end: 1000,
     scrub: true,
     onUpdate: ({ progress }) => {
       initialValues.introScrollProgress.value = progress

@@ -20,7 +20,6 @@ export default async function HomePage() {
       <main className="w-full overflow-x-hidden bg-black text-white">
         <HomeCanvas isMobile={isMobile} />
         <HomeHeader />
-        <div className={SECTION_CLASSES} />
         <div id="purpose-section" className={SECTION_CLASSES} />
         <div id="design-section" className={SECTION_CLASSES} />
         <div id="engineering-section" className={SECTION_CLASSES} />

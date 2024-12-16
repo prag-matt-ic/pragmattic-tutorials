@@ -72,7 +72,6 @@ const HomeScrollManager: FC = () => {
     <nav className="fixed bottom-0 left-6 top-0 z-[100] hidden items-center justify-center sm:flex xl:left-8">
       <div id="scroll-bar" className="relative w-2.5 rounded-full bg-light/30 xl:w-3">
         <div className={spacerClasses} />
-        <div className={spacerClasses} />
         <button
           className={twJoin(
             buttonClasses,

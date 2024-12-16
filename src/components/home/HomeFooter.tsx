@@ -17,7 +17,7 @@ const HomeFooter: FC = () => {
       <section className="flex flex-col items-center justify-center gap-4 horizontal-padding md:flex-row md:gap-8 md:py-24">
         <div className="relative flex aspect-square size-fit w-3/4 items-center justify-center md:w-auto">
           <div className="absolute size-[80%] rounded-full bg-mid/40 backdrop-blur-sm" />
-          <Image src={profilePic} alt="Matt Frawley" width={400} height={400} className="relative object-contain" />
+          <Image src={profilePic} alt="Matthew Frawley" width={400} height={400} className="relative object-contain" />
         </div>
         {/* about text */}
         <div className="h-fit max-w-lg space-y-4 sm:space-y-6">

@@ -22,16 +22,16 @@ const HomeHeader: FC = () => {
           defaults: { ease: 'none' },
           scrollTrigger: {
             start: 0,
-            end: 1250,
+            end: 1000,
             scrub: true,
             fastScrollEnd: true,
             pin: '#home-header',
           },
         })
         .to('h1', {
-          scale: 0.8,
+          scale: 0.9,
           opacity: 0,
-          duration: 0.3,
+          duration: 0.15,
         })
         .to('h2', {
           keyframes: [
@@ -44,10 +44,10 @@ const HomeHeader: FC = () => {
   )
 
   return (
-    <div className="pointer-events-none relative z-20 h-[1000px] w-full" ref={container}>
+    <div ref={container} className="pointer-events-none relative z-20 h-[1000px] w-full">
       <header
         id="home-header"
-        className="pointer-events-none flex h-lvh w-full select-none flex-col items-center justify-center px-6 pb-20 text-center text-white opacity-0 sm:pb-0">
+        className="flex h-lvh w-full select-none flex-col items-center justify-center px-6 pb-20 text-center text-white opacity-0 sm:pb-0">
         <h1 className="relative max-w-4xl text-4xl font-extrabold !leading-[1.3] tracking-tight md:text-6xl xl:text-7xl">
           Helping innovative teams <span className="text-green">bring big ideas to life</span>
         </h1>
