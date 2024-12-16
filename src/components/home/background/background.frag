@@ -27,10 +27,10 @@ void main() {
   colour = mix(colour, uBlackColour, vig);
 
   // high frequency noise for a grainy effect
-  float noiseV = noise(vec3(vUv * 296.0, 1.0)); 
+  float noiseV = noise(vec3(vUv * 280.0, uTime)); 
   vec3 noiseColour = mix(colour, uLightColour, noiseV);
 
-  colour = mix(colour, noiseColour, 0.33);
+  colour = mix(colour, noiseColour, 0.35);
 
   gl_FragColor = vec4(colour, 1.0);
 }
