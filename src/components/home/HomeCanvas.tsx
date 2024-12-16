@@ -11,6 +11,7 @@ import PointerCamera from '@/components/PointerCamera'
 
 import HomeBackgroundPlane from './background/HomeBackgroundPlane'
 import HomeMain from './main/HomeMain'
+import PointsPlane from './main/points/Points'
 
 gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger)
 
@@ -34,6 +35,7 @@ const HomeCanvas: FC<Props> = ({ isMobile }) => {
     <Canvas
       className="!fixed inset-0"
       dpr={dpr}
+      camera={{ position: [0, 0, 5], far: 20 }}
       gl={{
         antialias: false,
         powerPreference: 'high-performance',
@@ -47,6 +49,7 @@ const HomeCanvas: FC<Props> = ({ isMobile }) => {
       <ambientLight intensity={1} />
       {!isMobile && <PointerCamera cameraProps={{ far: 20, position: [0, 0, 5] }} intensity={0.04} />}
       <HomeBackgroundPlane />
+      <PointsPlane isMobile={isMobile} />
       <HomeMain isMobile={isMobile} />
     </Canvas>
   )

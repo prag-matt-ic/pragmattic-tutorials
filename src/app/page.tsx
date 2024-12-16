@@ -4,6 +4,7 @@ import HomeCanvas from '@/components/home/HomeCanvas'
 import HomeFooter from '@/components/home/HomeFooter'
 import HomeHeader from '@/components/home/HomeHeader'
 import HomeScrollManager from '@/components/home/HomeScrollManager'
+import { HomeProvider } from '@/hooks/home/HomeProvider'
 
 export default async function HomePage() {
   const headersList = headers()
@@ -11,22 +12,22 @@ export default async function HomePage() {
   const isMobile = !!userAgent?.includes('Mobile')
 
   return (
-    <main className="w-full overflow-x-hidden bg-black text-white">
-      <HomeCanvas isMobile={isMobile} />
-      <HomeHeader />
-
-      <div className={SECTION_CLASSES} />
-      <div id="purpose-section" className={SECTION_CLASSES} />
-      <div className={SECTION_CLASSES} />
-      <div id="design-section" className={SECTION_CLASSES} />
-      <div className={SECTION_CLASSES} />
-      <div id="engineering-section" className={SECTION_CLASSES} />
-      <div className={SECTION_CLASSES} />
-      <div className={SECTION_CLASSES} />
-
-      <HomeFooter />
-      <HomeScrollManager />
-    </main>
+    <HomeProvider isMobile={isMobile}>
+      <main className="w-full overflow-x-hidden bg-black text-white">
+        <HomeCanvas isMobile={isMobile} />
+        <HomeHeader />
+        <div className={SECTION_CLASSES} />
+        <div id="purpose-section" className={SECTION_CLASSES} />
+        <div className={SECTION_CLASSES} />
+        <div id="design-section" className={SECTION_CLASSES} />
+        <div className={SECTION_CLASSES} />
+        <div id="engineering-section" className={SECTION_CLASSES} />
+        <div className={SECTION_CLASSES} />
+        <div className={SECTION_CLASSES} />
+        <HomeFooter />
+        <HomeScrollManager />
+      </main>
+    </HomeProvider>
   )
 }
 

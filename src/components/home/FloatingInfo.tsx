@@ -9,7 +9,8 @@ import { type FC, type ReactNode, useRef } from 'react'
 import { Transition } from 'react-transition-group'
 import { twJoin } from 'tailwind-merge'
 
-import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
+import { useHomeStore } from '@/hooks/home/HomeProvider'
+import { SceneSection } from '@/resources/home'
 
 type Props = {
   isMobile: boolean
@@ -17,7 +18,7 @@ type Props = {
 }
 
 const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
-  const activeSection = useHomeSceneStore((s) => s.activeSection)
+  const activeSection = useHomeStore((s) => s.activeSection)
   const isOpen = activeSection === section
 
   const container = useRef<HTMLDivElement>(null)

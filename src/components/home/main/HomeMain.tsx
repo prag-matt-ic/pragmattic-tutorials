@@ -5,10 +5,10 @@ import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import React, { type FC, useRef } from 'react'
 import { Group, PointLight } from 'three'
 
-import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
+import { useHomeStore } from '@/hooks/home/HomeProvider'
+import { SceneSection } from '@/resources/home'
 
 import FloatingInfo from '../FloatingInfo'
-import Points from './points/Points'
 import Torus from './torus/Torus'
 import TorusPoints from './torusPoints/TorusPoints'
 
@@ -21,7 +21,7 @@ const HomeMain: FC<Props> = ({ isMobile }) => {
   const pointLight = useRef<PointLight>(null)
 
   const introScrollProgress = useRef<number>(0)
-  const setAllAreActive = useHomeSceneStore((s) => s.setAllAreActive)
+  const setAllAreActive = useHomeStore((s) => s.setAllAreActive)
 
   // // Translate the group in as the header text moves out
   useGSAP(
@@ -61,7 +61,6 @@ const HomeMain: FC<Props> = ({ isMobile }) => {
 
   return (
     <>
-      <Points isMobile={isMobile} />
       <group ref={torusGroup} position={isMobile ? [0, 0.5, 0] : [0, 0, 0]}>
         <pointLight ref={pointLight} position={[1.0, 1.7, 0.5]} intensity={5.0} color="#FFF" />
         <Torus section={SceneSection.Purpose} />

@@ -4,8 +4,8 @@ import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
 import React, { type FC, useEffect, useMemo, useRef } from 'react'
 import { AdditiveBlending, BufferAttribute, MathUtils, ShaderMaterial } from 'three'
 
-import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
-import { POINT_VEC3, SECTION_COLOURS } from '@/resources/colours'
+import { useHomeStore } from '@/hooks/home/HomeProvider'
+import { POINT_VEC3, SceneSection, SECTION_COLOURS } from '@/resources/home'
 
 import pointsFragmentShader from './points.frag'
 import pointsVertexShader from './points.vert'
@@ -71,19 +71,17 @@ const PointsPlane: FC<Props> = ({ isMobile }) => {
 
   const POSITIONS = useMemo(() => getRandomSpherePositions(particleCount), [particleCount])
   const INACTIVE_COLORS = useMemo(() => getColours(particleCount, null), [particleCount])
+  const activeSection = useHomeStore((s) => s.activeSection)
+  const allAreActive = useHomeStore((s) => s.allAreActive)
 
-  useEffect(
-    () =>
-      useHomeSceneStore.subscribe((s) => {
-        if (!coloursAttribute.current) return
-        // Generate the new colors array
-        const newColours = getColours(particleCount, s.allAreActive ? 'all' : s.activeSection)
-        // Update the array and mark it for an update
-        coloursAttribute.current.array = newColours
-        coloursAttribute.current.needsUpdate = true
-      }),
-    [particleCount],
-  )
+  useEffect(() => {
+    if (!coloursAttribute.current) return
+    // Generate the new colors array
+    const newColours = getColours(particleCount, allAreActive ? 'all' : activeSection)
+    // Update the array and mark it for an update
+    coloursAttribute.current.array = newColours
+    coloursAttribute.current.needsUpdate = true
+  }, [particleCount, activeSection, allAreActive])
 
   useFrame(({ clock }) => {
     if (!pointsShaderMaterial.current) return

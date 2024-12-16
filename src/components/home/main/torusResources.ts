@@ -1,9 +1,6 @@
-import { useGSAP } from '@gsap/react'
-import gsap from 'gsap'
-import { useRef } from 'react'
 import { MathUtils } from 'three'
 
-import { SceneSection } from '@/hooks/home/useHomeStore'
+import { SceneSection } from '@/resources/home'
 
 const PURPOSE_TORUS_RADIUS = 0.5 as const
 const PURPOSE_TORUS_TUBE = 0.1 as const
@@ -103,37 +100,4 @@ const ROTATE_DURATION: Record<SceneSection, number> = {
   [SceneSection.Engineering]: 22,
 } as const
 
-function useTorusRotate(section: SceneSection) {
-  const angle = useRef({ value: 0 })
-  const rotateTween = useRef<gsap.core.Tween>()
-  const timeScaleTween = useRef<gsap.core.Tween>()
-
-  useGSAP(() => {
-    rotateTween.current = gsap.to(angle.current, {
-      duration: ROTATE_DURATION[section],
-      value: Math.PI * 2,
-      repeat: -1,
-      ease: 'none',
-    })
-  }, [section])
-
-  const rotateFast = () => {
-    if (!rotateTween.current) return
-    timeScaleTween.current?.kill()
-    timeScaleTween.current = gsap.to(rotateTween.current, { timeScale: 3, duration: 2 })
-  }
-
-  const rotateNormal = () => {
-    if (!rotateTween.current) return
-    timeScaleTween.current?.kill()
-    timeScaleTween.current = gsap.to(rotateTween.current, { timeScale: 1, duration: 1 })
-  }
-
-  return {
-    angle,
-    rotateFast,
-    rotateNormal,
-  }
-}
-
-export { TORUS_POINTS_POSITIONS as POINTS_POSITIONS, ROTATE_DURATION as ROTATE_SPEEDS, TORUS_ARGS, useTorusRotate }
+export { TORUS_POINTS_POSITIONS as POINTS_POSITIONS, ROTATE_DURATION, TORUS_ARGS }

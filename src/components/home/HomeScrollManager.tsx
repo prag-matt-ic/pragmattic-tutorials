@@ -8,13 +8,14 @@ import { type FC } from 'react'
 import { twJoin } from 'tailwind-merge'
 
 import positionArrow from '@/assets/icons/scroll-position.svg'
-import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
+import { useHomeStore } from '@/hooks/home/HomeProvider'
+import { SceneSection } from '@/resources/home'
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP)
 
 const HomeScrollManager: FC = () => {
-  const activeSection = useHomeSceneStore((s) => s.activeSection)
-  const setActiveSection = useHomeSceneStore((s) => s.setActiveSection)
+  const activeSection = useHomeStore((s) => s.activeSection)
+  const setActiveSection = useHomeStore((s) => s.setActiveSection)
 
   useGSAP(
     () => {

@@ -1,14 +1,13 @@
 'use client'
 import { shaderMaterial } from '@react-three/drei'
 import { extend, type ShaderMaterialProps, useFrame } from '@react-three/fiber'
-import gsap from 'gsap'
-import React, { type FC, useEffect, useRef } from 'react'
+import React, { type FC, useRef } from 'react'
 import { AdditiveBlending, Color, ShaderMaterial } from 'three'
 
-import { SceneSection, useHomeSceneStore } from '@/hooks/home/useHomeStore'
-import { POINT_VEC3 } from '@/resources/colours'
+import { useHomeStore } from '@/hooks/home/HomeProvider'
+import { POINT_VEC3, SceneSection } from '@/resources/home'
 
-import { POINTS_POSITIONS, useTorusRotate } from '../torusResources'
+import { POINTS_POSITIONS } from '../torusResources'
 import pointsFragmentShader from './torusPoints.frag'
 import pointsVertexShader from './torusPoints.vert'
 
@@ -19,48 +18,16 @@ type TorusPointsProps = {
 
 const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
   const pointsShaderMaterial = useRef<ShaderMaterial & PointsUniforms>(null)
-  const isActive = useRef<boolean>(false)
-  const activeProgress = useRef({ value: 0 })
-  const activeTween = useRef<gsap.core.Tween>()
-  const { angle, rotateFast, rotateNormal } = useTorusRotate(section)
 
-  useEffect(
-    () =>
-      useHomeSceneStore.subscribe((s) => {
-        isActive.current = s.activeSection === section
-
-        const toActive = () => {
-          if (activeProgress.current.value === 1) return
-          activeTween.current?.kill()
-          activeTween.current = gsap.to(activeProgress.current, { duration: 1.2, ease: 'power2.out', value: 1 })
-          rotateFast()
-        }
-
-        const toInactive = () => {
-          if (activeProgress.current.value === 0) return
-          activeTween.current?.kill()
-          activeTween.current = gsap.to(activeProgress.current, {
-            duration: 2,
-            ease: 'power1.out',
-            value: 0,
-            delay: 0.2,
-          })
-          rotateNormal()
-        }
-
-        if (isActive.current) toActive()
-        else toInactive()
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [section],
-  )
+  const activeProgress = useHomeStore((s) => s.activeProgress[section])
+  const rotateAngle = useHomeStore((s) => s.rotateAngles[section])
 
   useFrame(({ clock }) => {
     if (!pointsShaderMaterial.current) return
     const elapsedTime = clock.elapsedTime
     pointsShaderMaterial.current.uTime = elapsedTime
-    pointsShaderMaterial.current.uActiveProgress = activeProgress.current.value
-    pointsShaderMaterial.current.uRotateAngle = angle.current.value
+    pointsShaderMaterial.current.uActiveProgress = activeProgress.value
+    pointsShaderMaterial.current.uRotateAngle = rotateAngle.value
     pointsShaderMaterial.current.uScrollProgress = getScrollProgress()
   })
 
