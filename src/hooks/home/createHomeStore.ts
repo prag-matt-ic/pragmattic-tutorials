@@ -62,29 +62,30 @@ export const createHomeStore = (isMobile: boolean) => {
       [SceneSection.Engineering]: { value: 0 },
     },
   }
+
+  const rotateFast = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 4, duration: 1.6 })
+  const rotateNormal = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 1, duration: 0.6 })
+
+  const activate = (progressValue: { value: number }) =>
+    gsap.to(progressValue, {
+      duration: 1.2,
+      delay: 0.2,
+      ease: 'power2.in',
+      value: 1,
+    })
+  const deactivate = (progressValue: { value: number }) =>
+    gsap.to(progressValue, {
+      duration: 0.7,
+      ease: 'power1.out',
+      value: 0,
+    })
+
   return createStore<HomeState>()((set, get) => ({
     ...initialValues,
     setAllAreActive: (allAreActive) => set({ allAreActive }),
     setActiveSection: (newActiveSection) => {
       const currentActiveSection = get().activeSection
       if (newActiveSection === currentActiveSection) return
-
-      const rotateFast = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 4, duration: 1.6 })
-      const rotateNormal = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 1, duration: 0.6 })
-
-      const activate = (progressValue: { value: number }) =>
-        gsap.to(progressValue, {
-          duration: 1.2,
-          delay: 0.2,
-          ease: 'power2.in',
-          value: 1,
-        })
-      const deactivate = (progressValue: { value: number }) =>
-        gsap.to(progressValue, {
-          duration: 0.7,
-          ease: 'power1.out',
-          value: 0,
-        })
 
       let activeProgressTweens = { ...get().activeProgressTweens }
       let rotateTimescaleTweens = { ...get().rotateTimescaleTweens }
