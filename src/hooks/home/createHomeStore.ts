@@ -91,6 +91,7 @@ export const createHomeStore = (isMobile: boolean) => {
 
       if (!!currentActiveSection) {
         activeProgressTweens[currentActiveSection]?.kill()
+        rotateTimescaleTweens[currentActiveSection]?.kill()
         activeProgressTweens[currentActiveSection] = deactivate(get().activeProgress[currentActiveSection])
         rotateTimescaleTweens[currentActiveSection] = rotateNormal(get().rotateTweens[currentActiveSection])
       }
@@ -101,15 +102,16 @@ export const createHomeStore = (isMobile: boolean) => {
           activeProgressTweens,
           rotateTimescaleTweens,
         })
-      } else {
-        activeProgressTweens[newActiveSection] = activate(get().activeProgress[newActiveSection])
-        rotateTimescaleTweens[newActiveSection] = rotateFast(get().rotateTweens[newActiveSection])
-        set({
-          activeSection: newActiveSection,
-          activeProgressTweens,
-          rotateTimescaleTweens,
-        })
+        return
       }
+
+      activeProgressTweens[newActiveSection] = activate(get().activeProgress[newActiveSection])
+      rotateTimescaleTweens[newActiveSection] = rotateFast(get().rotateTweens[newActiveSection])
+      set({
+        activeSection: newActiveSection,
+        activeProgressTweens,
+        rotateTimescaleTweens,
+      })
     },
   }))
 }
