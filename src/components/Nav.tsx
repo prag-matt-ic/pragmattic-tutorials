@@ -9,6 +9,8 @@ import logo from '@/assets/brand/pragmattic.svg'
 import menuIcon from '@/assets/icons/menu.svg'
 import Menu from '@/components/Menu'
 
+import Button from './buttons/Button'
+
 const Nav: FC = () => {
   const pathname = usePathname()
   const hideLogo = pathname.includes('rebuild')
@@ -17,7 +19,7 @@ const Nav: FC = () => {
 
   return (
     <>
-      <nav className="fixed left-0 right-0 top-0 z-[500] flex items-center justify-between pl-6">
+      <nav className="fixed left-0 right-0 top-0 z-[500] flex items-center justify-between py-2 pl-6 pr-4">
         <Link href="/">
           <Image
             alt="Pragmattic"
@@ -27,9 +29,15 @@ const Nav: FC = () => {
           />
         </Link>
 
-        <button className="rounded-bl-lg bg-black p-2.5" onClick={() => setIsMenuShowing((prev) => !prev)}>
-          <Image src={menuIcon} alt="menu" width={32} height={32} />
-        </button>
+        <div className="flex items-center gap-2">
+          <Button variant="outlined" size="small" href="mailto:pragmattic.ltd@gmail.com">
+            Work together
+          </Button>
+
+          <button className="p-2" onClick={() => setIsMenuShowing((prev) => !prev)}>
+            <Image src={menuIcon} alt="menu" width={32} height={32} />
+          </button>
+        </div>
       </nav>
       <Menu isShowing={isMenuShowing} onClose={() => setIsMenuShowing(false)} />
     </>

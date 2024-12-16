@@ -101,7 +101,7 @@ const Marquee: FC<Props> = ({ isReversed = false, className }) => {
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
       style={{
-        maskImage: 'linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%)',
+        maskImage: 'linear-gradient(to right, transparent 0%, black 25%, black 75%, transparent 100%)',
       }}>
       <div ref={movingContainer} className="flex w-fit">
         {list}
