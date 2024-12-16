@@ -9,8 +9,8 @@ import { Transition } from 'react-transition-group'
 import { twJoin } from 'tailwind-merge'
 
 import pragmatticLogo from '@/assets/brand/pragmattic.svg'
-import githubIcon from '@/assets/icons/github.svg'
-import youtubeIcon from '@/assets/icons/youtube.svg'
+import githubIcon from '@/assets/icons/socials/github.svg'
+import youtubeIcon from '@/assets/icons/socials/youtube.svg'
 import { EXAMPLES } from '@/resources/navigation'
 
 type Props = {

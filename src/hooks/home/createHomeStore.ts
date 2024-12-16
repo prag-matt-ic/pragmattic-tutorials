@@ -74,8 +74,8 @@ export const createHomeStore = (isMobile: boolean) => {
     },
   })
 
-  const rotateFast = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 4, duration: 1.6 })
-  const rotateNormal = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 1, duration: 0.6 })
+  const rotateFast = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 4, duration: 1.5 })
+  const rotateNormal = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 1, duration: 0.5 })
 
   const activate = (progressValue: { value: number }) =>
     gsap.to(progressValue, {
