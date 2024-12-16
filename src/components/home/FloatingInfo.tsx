@@ -113,7 +113,7 @@ const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
               {section}
             </span>
             <h3 className="w-full text-xl font-extrabold md:text-2xl lg:text-4xl">{CONFIG[section].heading}</h3>
-            <p className="w-full max-w-lg text-light md:text-lg">{CONFIG[section].paragraph}</p>
+            <p className="w-full max-w-md text-light md:text-lg">{CONFIG[section].paragraph}</p>
           </div>
         </Transition>
       </Html>

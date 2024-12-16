@@ -5,10 +5,10 @@ import { SceneSection } from '@/resources/home'
 const PURPOSE_TORUS_RADIUS = 0.5 as const
 const PURPOSE_TORUS_TUBE = 0.08 as const
 
-const DESIGN_TORUS_RADIUS = 0.9 as const
+const DESIGN_TORUS_RADIUS = 0.85 as const
 const DESIGN_TORUS_TUBE = 0.08 as const
 
-const ENGINEERING_TORUS_RADIUS = 1.3 as const
+const ENGINEERING_TORUS_RADIUS = 1.2 as const
 const ENGINEERING_TORUS_TUBE = 0.08 as const
 
 const TORUS_ARGS: Record<SceneSection, [number, number, number, number]> = {
