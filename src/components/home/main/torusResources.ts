@@ -78,19 +78,19 @@ const TORUS_POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusPar
     radius: PURPOSE_TORUS_RADIUS,
     tube: PURPOSE_TORUS_TUBE,
     radialSegments: 8,
-    tubularSegments: 40,
+    tubularSegments: 32,
   }),
   [SceneSection.Design]: getTorusParticlePositions({
     radius: DESIGN_TORUS_RADIUS,
     tube: DESIGN_TORUS_TUBE,
     radialSegments: 8,
-    tubularSegments: 40 * 2,
+    tubularSegments: 32 * 2,
   }),
   [SceneSection.Engineering]: getTorusParticlePositions({
     radius: ENGINEERING_TORUS_RADIUS,
     tube: ENGINEERING_TORUS_TUBE,
     radialSegments: 8,
-    tubularSegments: 40 * 3,
+    tubularSegments: 32 * 3,
   }),
 } as const
 

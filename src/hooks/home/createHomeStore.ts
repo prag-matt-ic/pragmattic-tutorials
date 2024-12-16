@@ -68,34 +68,41 @@ export const createHomeStore = (isMobile: boolean) => {
       const rotateFast = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 4, duration: 1.6 })
       const rotateNormal = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 1, duration: 0.6 })
 
+      const activate = (progressValue: { value: number }) =>
+        gsap.to(progressValue, {
+          duration: 1.2,
+          delay: 0.2,
+          ease: 'power2.in',
+          value: 1,
+        })
+      const deactivate = (progressValue: { value: number }) =>
+        gsap.to(progressValue, {
+          duration: 0.7,
+          ease: 'power1.out',
+          value: 0,
+        })
+
       get().rotateTimescaleTween?.kill()
 
       if (!newActiveSection) {
+        // Deactivating the current section
         if (!currentActiveSection) return
         get().activeProgressTweens[currentActiveSection]?.kill()
         set({
           activeSection: null,
           activeProgressTweens: {
             ...get().activeProgressTweens,
-            [currentActiveSection]: gsap.to(get().activeProgress[currentActiveSection], {
-              duration: 0.7,
-              ease: 'power1.out',
-              value: 0,
-            }),
+            [currentActiveSection]: deactivate(get().activeProgress[currentActiveSection]),
           },
           rotateTimescaleTween: rotateNormal(get().rotateTweens[currentActiveSection]),
         })
       } else {
+        // Activating a new section
         set({
           activeSection: newActiveSection,
           activeProgressTweens: {
             ...get().activeProgressTweens,
-            [newActiveSection]: gsap.to(get().activeProgress[newActiveSection], {
-              duration: 1.2,
-              delay: 0.2,
-              ease: 'power2.in',
-              value: 1,
-            }),
+            [newActiveSection]: activate(get().activeProgress[newActiveSection]),
           },
           rotateTimescaleTween: rotateFast(get().rotateTweens[newActiveSection]),
         })
