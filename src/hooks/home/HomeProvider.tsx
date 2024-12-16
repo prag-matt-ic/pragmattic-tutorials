@@ -18,6 +18,6 @@ export const HomeProvider: FC<Props> = ({ children, isMobile }) => {
 
 export function useHomeStore<T>(selector: (state: HomeState) => T): T {
   const store = useContext(HomeContext)
-  if (!store) throw new Error('Missing HomeContext in the tree')
+  if (!store) throw new Error('useHomeStore must be used within HomeProvider')
   return useStore(store, selector)
 }

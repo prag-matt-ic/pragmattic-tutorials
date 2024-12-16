@@ -13,7 +13,7 @@ export type HomeState = {
   activeProgress: Record<SceneSection, { value: number }>
 
   rotateTweens: Record<SceneSection, GSAPTween>
-  rotateTimescaleTween: GSAPTween | null
+  rotateTimescaleTweens: Record<SceneSection, GSAPTween | null>
   rotateAngles: Record<SceneSection, { value: number }>
 
   allAreActive: boolean
@@ -46,7 +46,11 @@ export const createHomeStore = (isMobile: boolean) => {
       [SceneSection.Design]: createRotateTween(SceneSection.Design),
       [SceneSection.Engineering]: createRotateTween(SceneSection.Engineering),
     },
-    rotateTimescaleTween: null,
+    rotateTimescaleTweens: {
+      [SceneSection.Purpose]: null,
+      [SceneSection.Design]: null,
+      [SceneSection.Engineering]: null,
+    },
     activeProgressTweens: {
       [SceneSection.Purpose]: null,
       [SceneSection.Design]: null,
@@ -82,29 +86,28 @@ export const createHomeStore = (isMobile: boolean) => {
           value: 0,
         })
 
-      get().rotateTimescaleTween?.kill()
+      let activeProgressTweens = { ...get().activeProgressTweens }
+      let rotateTimescaleTweens = { ...get().rotateTimescaleTweens }
+
+      if (!!currentActiveSection) {
+        activeProgressTweens[currentActiveSection]?.kill()
+        activeProgressTweens[currentActiveSection] = deactivate(get().activeProgress[currentActiveSection])
+        rotateTimescaleTweens[currentActiveSection] = rotateNormal(get().rotateTweens[currentActiveSection])
+      }
 
       if (!newActiveSection) {
-        // Deactivating the current section
-        if (!currentActiveSection) return
-        get().activeProgressTweens[currentActiveSection]?.kill()
         set({
           activeSection: null,
-          activeProgressTweens: {
-            ...get().activeProgressTweens,
-            [currentActiveSection]: deactivate(get().activeProgress[currentActiveSection]),
-          },
-          rotateTimescaleTween: rotateNormal(get().rotateTweens[currentActiveSection]),
+          activeProgressTweens,
+          rotateTimescaleTweens,
         })
       } else {
-        // Activating a new section
+        activeProgressTweens[newActiveSection] = activate(get().activeProgress[newActiveSection])
+        rotateTimescaleTweens[newActiveSection] = rotateFast(get().rotateTweens[newActiveSection])
         set({
           activeSection: newActiveSection,
-          activeProgressTweens: {
-            ...get().activeProgressTweens,
-            [newActiveSection]: activate(get().activeProgress[newActiveSection]),
-          },
-          rotateTimescaleTween: rotateFast(get().rotateTweens[newActiveSection]),
+          activeProgressTweens,
+          rotateTimescaleTweens,
         })
       }
     },
