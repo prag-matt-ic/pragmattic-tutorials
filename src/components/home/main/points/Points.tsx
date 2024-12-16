@@ -25,22 +25,12 @@ const getRandomSpherePositions = (count: number): Float32Array => {
   return positions
 }
 
-const getColours = (count: number, activeSection: 'all' | SceneSection | null): Float32Array => {
+const getColours = (count: number, activeSection: SceneSection | null): Float32Array => {
   const colours = new Float32Array(count * 3)
 
   if (activeSection === null) {
     for (let i = 0; i < count; i++) {
       colours.set([...POINT_VEC3], i * 3)
-    }
-    return colours
-  }
-
-  if (activeSection === 'all') {
-    for (let i = 0; i < count; i++) {
-      //  There are 3 section, alternate each particle colour
-      if (i % 3 === 0) colours.set([...SECTION_COLOURS[SceneSection.Purpose]], i * 3)
-      if (i % 3 === 1) colours.set([...SECTION_COLOURS[SceneSection.Design]], i * 3)
-      if (i % 3 === 2) colours.set([...SECTION_COLOURS[SceneSection.Engineering]], i * 3)
     }
     return colours
   }
@@ -72,16 +62,15 @@ const PointsPlane: FC<Props> = ({ isMobile }) => {
   const POSITIONS = useMemo(() => getRandomSpherePositions(particleCount), [particleCount])
   const INACTIVE_COLORS = useMemo(() => getColours(particleCount, null), [particleCount])
   const activeSection = useHomeStore((s) => s.activeSection)
-  const allAreActive = useHomeStore((s) => s.allAreActive)
 
   useEffect(() => {
     if (!coloursAttribute.current) return
     // Generate the new colors array
-    const newColours = getColours(particleCount, allAreActive ? 'all' : activeSection)
+    const newColours = getColours(particleCount, activeSection)
     // Update the array and mark it for an update
     coloursAttribute.current.array = newColours
     coloursAttribute.current.needsUpdate = true
-  }, [particleCount, activeSection, allAreActive])
+  }, [particleCount, activeSection])
 
   useFrame(({ clock }) => {
     if (!pointsShaderMaterial.current) return

@@ -13,14 +13,13 @@ import pointsVertexShader from './torusPoints.vert'
 
 type TorusPointsProps = {
   section: SceneSection
-  getScrollProgress: () => number
 }
 
-const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
+const TorusPoints: FC<TorusPointsProps> = ({ section }) => {
   const pointsShaderMaterial = useRef<ShaderMaterial & PointsUniforms>(null)
-
   const activeProgress = useHomeStore((s) => s.activeProgress[section])
   const rotateAngle = useHomeStore((s) => s.rotateAngles[section])
+  const introScrollProgress = useHomeStore((s) => s.introScrollProgress)
 
   useFrame(({ clock }) => {
     if (!pointsShaderMaterial.current) return
@@ -28,7 +27,7 @@ const TorusPoints: FC<TorusPointsProps> = ({ section, getScrollProgress }) => {
     pointsShaderMaterial.current.uTime = elapsedTime
     pointsShaderMaterial.current.uActiveProgress = activeProgress.value
     pointsShaderMaterial.current.uRotateAngle = rotateAngle.value
-    pointsShaderMaterial.current.uScrollProgress = getScrollProgress()
+    pointsShaderMaterial.current.uScrollProgress = introScrollProgress.value
   })
 
   return (

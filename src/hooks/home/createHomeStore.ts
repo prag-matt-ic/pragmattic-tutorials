@@ -1,11 +1,14 @@
 'use client'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { createStore, type StoreApi } from 'zustand'
 
 import { ROTATE_DURATION } from '@/components/home/main/torusResources'
 import { SceneSection } from '@/resources/home'
 
 export type HomeState = {
+  introScrollProgress: { value: number }
+
   activeSection: SceneSection | null
   setActiveSection: (activeSection: SceneSection | null) => void
 
@@ -15,9 +18,6 @@ export type HomeState = {
   rotateTweens: Record<SceneSection, GSAPTween>
   rotateTimescaleTweens: Record<SceneSection, GSAPTween | null>
   rotateAngles: Record<SceneSection, { value: number }>
-
-  allAreActive: boolean
-  setAllAreActive: (allAreActive: boolean) => void
 }
 
 export type HomeStore = StoreApi<HomeState>
@@ -37,9 +37,11 @@ export const createHomeStore = (isMobile: boolean) => {
       ease: 'none',
     })
 
-  const initialValues: Omit<HomeState, 'setActiveSection' | 'setAllAreActive'> = {
+  const initialValues: Omit<HomeState, 'setActiveSection'> = {
+    introScrollProgress: {
+      value: 0,
+    },
     activeSection: null,
-    allAreActive: false,
     rotateAngles,
     rotateTweens: {
       [SceneSection.Purpose]: createRotateTween(SceneSection.Purpose),
@@ -63,6 +65,15 @@ export const createHomeStore = (isMobile: boolean) => {
     },
   }
 
+  ScrollTrigger.create({
+    start: 0,
+    end: 1250,
+    scrub: true,
+    onUpdate: ({ progress }) => {
+      initialValues.introScrollProgress.value = progress
+    },
+  })
+
   const rotateFast = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 4, duration: 1.6 })
   const rotateNormal = (rotateTween: GSAPTween) => gsap.to(rotateTween, { timeScale: 1, duration: 0.6 })
 
@@ -82,7 +93,6 @@ export const createHomeStore = (isMobile: boolean) => {
 
   return createStore<HomeState>()((set, get) => ({
     ...initialValues,
-    setAllAreActive: (allAreActive) => set({ allAreActive }),
     setActiveSection: (newActiveSection) => {
       const currentActiveSection = get().activeSection
       if (newActiveSection === currentActiveSection) return
