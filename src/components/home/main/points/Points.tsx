@@ -59,8 +59,8 @@ const PointsPlane: FC<Props> = ({ isMobile }) => {
 
   const particleCount = isMobile ? 48 : 128
 
-  const POSITIONS = useMemo(() => getRandomSpherePositions(particleCount), [particleCount])
-  const INACTIVE_COLORS = useMemo(() => getColours(particleCount, null), [particleCount])
+  const positions = useMemo(() => getRandomSpherePositions(particleCount), [particleCount])
+  const colours = useMemo(() => getColours(particleCount, null), [particleCount])
   const activeSection = useHomeStore((s) => s.activeSection)
 
   useEffect(() => {
@@ -80,11 +80,11 @@ const PointsPlane: FC<Props> = ({ isMobile }) => {
   return (
     <points>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" array={POSITIONS} count={particleCount} itemSize={3} />
+        <bufferAttribute attach="attributes-position" array={positions} count={particleCount} itemSize={3} />
         <bufferAttribute
           ref={coloursAttribute}
           attach="attributes-colour"
-          array={INACTIVE_COLORS}
+          array={colours}
           count={particleCount}
           itemSize={3}
         />

@@ -7,11 +7,10 @@ import ScrollTrigger from 'gsap/dist/ScrollTrigger'
 import SplitText from 'gsap/dist/SplitText'
 import React, { type FC, useState } from 'react'
 
+import HomeBackgroundPlane from '@/components/home/background/HomeBackgroundPlane'
+import HomeMain from '@/components/home/main/HomeMain'
+import PointsPlane from '@/components/home/main/points/Points'
 import PointerCamera from '@/components/PointerCamera'
-
-import HomeBackgroundPlane from './background/HomeBackgroundPlane'
-import HomeMain from './main/HomeMain'
-import PointsPlane from './main/points/Points'
 
 gsap.registerPlugin(useGSAP, SplitText, ScrollTrigger)
 
