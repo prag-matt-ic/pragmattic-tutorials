@@ -14,7 +14,6 @@ import Button from './buttons/Button'
 const Nav: FC = () => {
   const pathname = usePathname()
   const hideLogo = pathname.includes('rebuild')
-
   const [isMenuShowing, setIsMenuShowing] = useState(false)
 
   return (
@@ -30,7 +29,10 @@ const Nav: FC = () => {
         </Link>
 
         <div className="flex items-center gap-2">
-          <Button variant="outlined" size="small" href="mailto:pragmattic.ltd@gmail.com">
+          <Button
+            variant="outlined"
+            size="small"
+            href="mailto:pragmattic.ltd@gmail.com&subject=Let's%20work%20together">
             Work together
           </Button>
 

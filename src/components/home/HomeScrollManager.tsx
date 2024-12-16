@@ -66,7 +66,7 @@ const HomeScrollManager: FC = () => {
 
   // "h-10" corresponds to a 1000px height section */
   const spacerClasses = 'h-10 w-full shrink-0'
-  const buttonClasses = 'h-10 w-full shrink-0 rounded-full transition-opacity duration-200 hover:opacity-100'
+  const buttonClasses = 'h-10 w-full shrink-0 rounded-full hover:opacity-100'
 
   return (
     <nav className="fixed bottom-0 left-6 top-0 z-[100] hidden items-center justify-center sm:flex xl:left-8">
@@ -81,7 +81,6 @@ const HomeScrollManager: FC = () => {
           )}
           onClick={() => onLinkClick(SceneSection.Purpose)}
         />
-        <div className={spacerClasses} />
         <button
           className={twJoin(
             buttonClasses,
@@ -90,7 +89,6 @@ const HomeScrollManager: FC = () => {
           )}
           onClick={() => onLinkClick(SceneSection.Design)}
         />
-        <div className={spacerClasses} />
         <button
           className={twJoin(
             buttonClasses,
@@ -99,7 +97,6 @@ const HomeScrollManager: FC = () => {
           )}
           onClick={() => onLinkClick(SceneSection.Engineering)}
         />
-        <div className={spacerClasses} />
         <div className={spacerClasses} />
 
         <div id="scroll-indicator" className="absolute left-1 top-0 size-5 xl:size-6">
