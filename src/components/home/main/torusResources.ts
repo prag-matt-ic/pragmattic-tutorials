@@ -3,13 +3,13 @@ import { MathUtils } from 'three'
 import { SceneSection } from '@/resources/home'
 
 const PURPOSE_TORUS_RADIUS = 0.5 as const
-const PURPOSE_TORUS_TUBE = 0.1 as const
+const PURPOSE_TORUS_TUBE = 0.08 as const
 
-const DESIGN_TORUS_RADIUS = 1.0 as const
-const DESIGN_TORUS_TUBE = 0.1 as const
+const DESIGN_TORUS_RADIUS = 0.9 as const
+const DESIGN_TORUS_TUBE = 0.08 as const
 
-const ENGINEERING_TORUS_RADIUS = 1.5 as const
-const ENGINEERING_TORUS_TUBE = 0.1 as const
+const ENGINEERING_TORUS_RADIUS = 1.3 as const
+const ENGINEERING_TORUS_TUBE = 0.08 as const
 
 const TORUS_ARGS: Record<SceneSection, [number, number, number, number]> = {
   [SceneSection.Purpose]: [PURPOSE_TORUS_RADIUS, PURPOSE_TORUS_TUBE, 10, 32],
@@ -95,9 +95,9 @@ const TORUS_POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusPar
 } as const
 
 const ROTATE_DURATION: Record<SceneSection, number> = {
-  [SceneSection.Purpose]: 14,
-  [SceneSection.Design]: 18,
-  [SceneSection.Engineering]: 22,
+  [SceneSection.Purpose]: 18,
+  [SceneSection.Design]: 22,
+  [SceneSection.Engineering]: 26,
 } as const
 
 export { TORUS_POINTS_POSITIONS as POINTS_POSITIONS, ROTATE_DURATION, TORUS_ARGS }

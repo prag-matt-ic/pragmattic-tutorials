@@ -28,7 +28,7 @@ const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
   const { refs, floatingStyles } = useFloating({
     open: isOpen,
     placement: 'top',
-    middleware: [shift({ padding: 24 }), offset({ mainAxis: 24 }), flip()],
+    middleware: [shift({ padding: 24 }), offset({ mainAxis: 0 }), flip()],
   })
 
   const onModalEnter = contextSafe(() => {
@@ -89,7 +89,7 @@ const FloatingInfo: FC<Props> = ({ isMobile, section }) => {
     // Mobile position is same for each section
     <Billboard position={isMobile ? [0, -3.5, 0] : CONFIG[section].position}>
       <Html ref={container} className="pointer-events-none select-none">
-        <div ref={refs.setReference} className="size-5 -translate-x-1/2 -translate-y-1/2" />
+        <div ref={refs.setReference} className="size-4 -translate-x-1/2 -translate-y-1/2" />
         <Transition
           in={isOpen}
           timeout={{ enter: 0, exit: 500 }}
@@ -131,20 +131,20 @@ const CONFIG: Record<
   }
 > = {
   [SceneSection.Purpose]: {
-    position: [-1.1, 0.7, 1],
+    position: [-1.2, 0.6, 1],
     overlineClassName: 'text-green',
     heading: 'Use technology to improve human performance',
     paragraph: `Purpose fuels progress. That's why it's at the core of everything we create together.`,
   },
   [SceneSection.Design]: {
-    position: [1.6, 0, 2],
+    position: [-1.4, -0.2, 2],
     overlineClassName: 'text-orange',
     heading: 'Where form meets function',
     paragraph:
       'By deeply understanding the problem and any constraints, we design solutions that are both effective and delightful.',
   },
   [SceneSection.Engineering]: {
-    position: [-1, -2, 1],
+    position: [-1.2, -1.2, 1],
     overlineClassName: 'text-cyan',
     heading: 'From concept to impact',
     paragraph: 'We bring your vision to life with cutting-edge web solutions. Fast, secure, and built to maintain.',
