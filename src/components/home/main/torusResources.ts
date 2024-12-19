@@ -95,9 +95,9 @@ const TORUS_POINTS_POSITIONS: Record<SceneSection, ReturnType<typeof getTorusPar
 } as const
 
 const ROTATE_DURATION: Record<SceneSection, number> = {
-  [SceneSection.Purpose]: 18,
-  [SceneSection.Design]: 22,
-  [SceneSection.Engineering]: 26,
+  [SceneSection.Purpose]: 30,
+  [SceneSection.Design]: 40,
+  [SceneSection.Engineering]: 50,
 } as const
 
 export { TORUS_POINTS_POSITIONS as POINTS_POSITIONS, ROTATE_DURATION, TORUS_ARGS }
